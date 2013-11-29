@@ -1,0 +1,35 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--入口文件</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>入口文件，所有的操作必须经过入口文件，入口文件加载配置和加载单一入口控制类，并实例化和执行单一入口应用。</li>
+				<li>程序执行流程具体控制由cpApp.class.php控制</li>
+				<li>程序实现的功能，由用户在模块和操作方法中实现</li>
+				<li>不同项目的单一入口文件，可以是相同的</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="title">示例：</div>
+	<pre id="php" class="php">
+<?php
+//定义CanPHP框架目录
+define('CP_PATH',dirname(__FILE__).'/CanPHP/');//注意目录后面加“/”
+
+require(dirname(__FILE__).'/config.php');//加载配置
+require(CP_PATH.'core/cpApp.class.php');//加载应用控制类
+
+$app=new cpApp($config);//实例化单一入口应用控制类
+//执行项目
+$app->run();
+?>
+	</pre>
+	</div>
+		
+	<div class="footer" id="footer"></div>
+</div>
+

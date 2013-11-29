@@ -1,0 +1,48 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--模块和操作方法</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">模块和操作方法的概念</span><ul>
+				<li><strong>模块</strong>是指module目录里面的一个类，如indexMod.class.php，这个就是index模块</li>
+				<li><strong>操作方法</strong>就是模块里面的一个类方法，如indexMod.class.php，index()方法</li>
+				<li>模块和操作方法的调用 http://域名/index.php/模块名/方法名</li>
+				<li>相对于传统编程方式来说，一个模块相当于一个目录，一个方法，相当于一个页面</li>
+				<li>程序需要实现的功能均在模块和操作方法中实现</li>
+				</ul>
+			</span></div>
+	</div>	
+	<div class="bd">
+			<div class="readme"><span class="title">默认模块与默认操作方法</span><ul>
+				<li><strong>默认模块</strong>是指网址中没有指定模块的时候，默认调用的模块(index)</li>
+				<li><strong>默认方法</strong>是指网址中没有指定方法的时候，默认调用的方法(index)</li>
+				<li>如http://www.canhp.com/  等价于http://www.canphp.com/index.php/index/index 因为没有指定模块调用了index模块，没有指定方法调用了index方法</li>
+				</ul>
+			</span></div>
+	</div>	
+	<div class="bd">
+			<div class="readme"><span class="title">空模块与空方法</span><ul>
+				<li><strong>空模块</strong>是指定的模块不存在的时候自动调用的模块emptyMod.class.php，如果不存在空模块，指定模块不存在的时候，将会报错模块不存在</li>
+				<li><strong>空方法</strong>是指定的方法不存在的时候，自动调用的方法_empty()，如果没有写空方法，指定的方法不存在时，将会报方法不存在</li>
+				<li>巧妙利用空模块和空方法可以让网址构造得对seo更优友好一些</li>
+				</ul>
+			</span></div>
+	</div>			
+	<div class="bd">
+			<div class="readme"><span class="title">在程序中获取当前模块和当前方法</span><ul>
+				<li>获取当前模块 $_GET['_module']</li>
+				<li>获取当前操作方法 $_GET['_action']</li>
+				</ul>
+			</span></div>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">模块相互调用</span><ul>
+				<li>module('模块名')->方法名();</li>
+				<li>如调用文章的获取列表模块 $list=module('article')->getList(参数);</li>
+				</ul>
+			</span></div>
+	</div>
+	<div class="footer" id="footer"></div>
+</div>
+

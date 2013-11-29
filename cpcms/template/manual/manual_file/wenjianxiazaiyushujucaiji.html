@@ -1,0 +1,89 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--文件下载与数据采集</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Http.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：download($filename, $showname='',$expire=1800) </div>
+			<div class="readme"><span class="title">说明：</span><span>用于下载文件</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$filename，包含路径的文件名</li>
+				<li>$showname，下载显示的文件名，需要自行转成gbk编码，如果带空格，需要自行替换成其他字符</li>
+				<li>$expire，下载内容浏览器缓存时间</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+	$showname='最新资料.zip';
+	$showname=auto_charset($showname,'utf-8','gbk');//utf-8编码转成gbk编码
+	Http::download('upload/123.zip',$showname);
+	</pre>
+	</div>
+		
+	<div class="bd">
+			<div class="fun">方法：doGet($url,$timeout=5,$header='')</div>
+			<div class="readme"><span class="title">说明：</span>采用get方法请求页面，会自动使用最快的访问方式，获取数据</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$url，网址</li>
+				<li>$timeout，超时时间</li>
+				<li>$header，http请求头，用于发送cookie等信息</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php2" class="php">
+	echo Http::doGet('http://www.baidu.com');
+	</pre>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：doPost($url,$data,$timeout=5,$header='')</div>
+			<div class="readme"><span class="title">说明：</span>采用post方法请求页面，会自动使用最快的访问方式，获取数据</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$url，网址</li>
+				<li>$data，待发送的数据，类型数组。</li>
+				<li>$timeout，超时时间</li>
+				<li>$header，http请求头，用于发送cookie等信息</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php3" class="php">
+		$url='http://www.canphp.com/test.php';
+		$data['name']='单骑';
+		$data['email']='admin@canphp.com';
+		Http::doPost($url,$data,10);
+		
+		test.php页面接收数据
+		$_POST['name'];
+		$_POST['email'];
+	</pre>
+	</div>
+		<div class="bd">
+			<div class="fun">方法：setWay($way)</div>
+			<div class="readme"><span class="title">说明：</span>手动设置doGet()和doPost()访问方式</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$way：参数可以1或2或3</li>
+				<li>参数1时：采用curl</li>
+				<li>参数2时：采用socket</li>
+				<li>参数3时：采用file_get_contents()函数模拟</li>
+				<li>若不设置访问方式，会自动获取当前环境的支持方式，选择最佳的方式去访问，优先度curl > socket > file_get_contents
+				</li>
+
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php2" class="php">
+	Http::setWay(3);
+	echo Http::doGet('http://www.baidu.com');//将采用file_get_contents()方式获取内容
+	</pre>
+	</div>
+	<div class="footer" id="footer"></div>
+</div>
+

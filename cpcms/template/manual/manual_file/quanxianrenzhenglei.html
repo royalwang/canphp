@@ -1,0 +1,90 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--权限认证类</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Auth.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：check($model,$config=array())</div>
+			<div class="readme"><span class="title">说明：</span><span>自动检查是否登录，是否有权限操作，一般放置在公共模块的构造函数里面</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$model，cp框架实例化后的数据库模型对象</li>
+				<li>$config，权限认证配置</li>
+				</ul>
+			</span></div>
+			<pre id="php" class="php">
+//权限认证配置
+$config['AUTH_LOGIN_URL']='http://www.canphp.com/admin/index.php/index/login.html';//登录地址
+$config['AUTH_LOGIN_NO']=array('index'=> array('login','verify'),'common'=>'*');//不需要认证的模块和操作
+$config['AUTH_SESSION_PREFIX']='auth_';//认证session前缀
+$config['AUTH_POWER_CACHE']=false;//是否缓存权限信息，如果设置为false，每次都需要从数据库读取数据
+$config['AUTH_TABLE']=array(
+							'group'=>array(
+									'name'=>'group',
+									'field'=>array('id'=>'id','power'=>'power_value'),
+								 ),
+							'resource'=>array(
+									'name'=>'resource',
+									'field'=>array('id'=>'id','pid'=>'pid','operate'=>'operate'),
+								 ),	
+						);//数据库表和字段映射	
+//权限认证配置结束
+</pre>
+			<div class="fun">方法：set($groupid)</div>
+			<div class="readme"><span class="title">说明：</span><span>设置认证用户组id，用于用户登录成功的时候，设置</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$groupid，当前用户的用户组id</li>
+				</ul>
+			</span></div>
+			<div class="fun">方法：clear()</div>
+			<div class="readme"><span class="title">说明：</span><span>清除认证，用于用户退出的时候，调用</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>参数为空，不需要传递参数</li>
+				</ul>
+			</span></div>
+			
+			<div class="fun">方法：getModule($model,$config=array(),$module_path='',$module_suffix='')</div>
+			<div class="readme"><span class="title">说明：</span><span>自动获取模块信息，调试时使用</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+			<li>$model，cp框架实例化后的数据库模型对象</li>
+			<li>$config，权限认证配置</li>
+			<li>$module_path，模块存放路径,参数为空则默认为'./module/'</li>
+			<li>$module_suffix，模块后缀，参数为空则默认为'Mod.class.php'</li>		
+				</ul>
+			</span></div>
+			
+			<div class="fun">方法：checkPower($module,$action=NULL)</div>
+			<div class="readme"><span class="title">说明：</span><span>检查模块和操作的权限，常用在模板中，根据权限，显示不同的菜单</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$module，模块名称</li>
+				<li>$action，操作名称</li>
+				<li>有权限返回true，没有权限返回false</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+	//检查是否有文章模块的权限
+	if(Auth::checkPower('article'))
+	{
+		
+	}
+	或
+	//检查是否有文章模块的删除操作权限
+	if(Auth::checkPower('article','del'))
+	{
+		
+	}
+	</pre>
+	</div>
+	
+
+	<div class="footer" id="footer"></div>
+</div>
+

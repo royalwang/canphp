@@ -1,0 +1,183 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--表单验证类</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Check.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				<li>使用场景，对$_GET和$_POST接收的数据进行验证</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：rule($array=array())</div>
+			<div class="readme"><span class="title">说明：</span><span>用于设置验证规则，并进行验证</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$array，验证规则数组，还可以不用数组传参，采用无限个参数方式传参</li>
+				<li>验证通过，返回true，否则返回指定的错误信息</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+			用法方法：
+		Check::rule(
+					array(验证函数1，'错误返回值1'),
+					array(验证函数2，'错误返回值2'),
+					);
+		若有一个验证函数返回false,则返回对应的错误返回值，若全部通过验证，则返回true。
+		验证函数，可以是自定义的函数或类方法，返回true表示通过，返回false，表示没有通过
+		
+		使用样例
+		$str='127.1.1.122';
+		$str1='127.1.1.1212';
+		$str2='127.1.1.1212';
+		$msg=Check::rule(
+					array(check::must($str),'必须的'),
+					array(check::tel('020-12345678'),'固定电话号码格式不对'),
+					array(check::len($str,6,10),'长度不对'),
+					array(check::same($str1,$str2),'不相同'),
+					array(check::email('404352772@qq.com'),'邮箱不对')
+					);
+		if($msg!==true)
+		{
+			echo 'error:'.$msg;
+		}
+		else
+		{
+			echo 'ok';
+		}
+	</pre>
+	</div>
+		
+	<div class="bd">
+			<div class="fun">方法：len($str,$min=0,$max=255)</div>
+			<div class="readme"><span class="title">说明：</span>检查字符串长度，按字节计算</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> $min，字符串最短长度，包含当前最短长度</li>
+				<li> $max，字符串最大长度，包含当前最大长度</li>
+				<li> 符合条件返回true，不符合返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：must($str)</div>
+			<div class="readme"><span class="title">说明：</span>检查字符串是否为空</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> 字符串不为空返回true，为空返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：same($str1,$str2)</div>
+			<div class="readme"><span class="title">说明：</span>检查两次输入的值是否相同</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str1，待比较字符串1</li>
+				<li> $str2，待比较字符串2</li>
+				<li> 相同返回true，不相同返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：userName($str,$len_min=0,$len_max=255,$type='ALL')</div>
+			<div class="readme"><span class="title">说明：</span>检查用户名</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> $len_min，字符串最短长度，包含当前最短长度</li>
+				<li> $len_max，字符串最大长度，包含当前最大长度</li>
+				<li> $type，$type='ALL',大小写字母数字和-_特殊字符;$type='ENNUM',大小写字母数字;$type='EN',纯大小写字母;$type为其他值，表示为自定义的正则表达式</li>
+				<li> 符合条件返回true，不符合返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：email($str)</div>
+			<div class="readme"><span class="title">说明：</span>验证邮箱</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> 符合条件返回true，不符合返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：mobile($str)</div>
+			<div class="readme"><span class="title">说明：</span>验证手机号码</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> 符合条件返回true，不符合返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：tel($str)</div>
+			<div class="readme"><span class="title">说明：</span>验证固定电话</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> 符合条件返回true，不符合返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：qq($str)</div>
+			<div class="readme"><span class="title">说明：</span>验证qq号码</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> 符合条件返回true，不符合返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：zipCode($str)</div>
+			<div class="readme"><span class="title">说明：</span>验证邮政编码</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> 符合条件返回true，不符合返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：ip($str)</div>
+			<div class="readme"><span class="title">说明：</span>验证ip</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> 符合条件返回true，不符合返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：idCard($str)</div>
+			<div class="readme"><span class="title">说明：</span>验证身份证(中国)</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> 符合条件返回true，不符合返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：url($str)</div>
+			<div class="readme"><span class="title">说明：</span>验证网址</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $str，待验证字符串</li>
+				<li> 符合条件返回true，不符合返回false</li>
+			</ul>
+			</span></div>
+	</div>
+	
+	<div class="footer" id="footer"></div>
+</div>
+

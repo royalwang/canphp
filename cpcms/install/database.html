@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>欢迎使用CanPHP安装！</title>
+<link href="images/style.css" rel="stylesheet" type="text/css" />
+</head><body>
+<div id='content'>
+<div id='pageheader'>
+	<div id="logo" style="margin-top:10px; margin-left:15px;"><img src="images/logo.jpg" border="0" alt="canphp" /></div>
+	<div id="version" class="rightheader">Canphp正式版</div>
+</div>
+<div id='innercontent'>
+	<h1>CanPHP正式版安装向导</h1>
+	<div>数据库配置信息</div>
+    <div class="botBorder">
+	<form action="install.php" method="post" name="form" id="form">
+    <p style="text-align:left">数据库类型&nbsp;&nbsp;&nbsp;<input name="DB_TYPE" type="text" value="mysql"  disabled="disabled"/>不需要修改
+    </p>
+	<p style="text-align:left">数据库主机&nbsp;&nbsp;&nbsp;<input  name="DB_HOST" type="text" value="localhost"/>一般不需要修改
+	</p>
+	<p style="text-align:left">数据库用户名<input  name="DB_USER" type="text" value="root"/>
+	</p>
+	<p style="text-align:left">数据库密码&nbsp;&nbsp;&nbsp;<input type="text"  name="DB_PWD"/></p>
+    <p style="text-align:left">数据库端口&nbsp;&nbsp;&nbsp;<input name="DB_PORT" type="text" value="3306"/>一般不需要修改
+    </p>
+	<p style="text-align:left">数据库名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input  name="DB_NAME" type="text" value="cp"/>数据库不存在，则自动创建
+	</p>
+	<p style="text-align:left">数据库编码&nbsp;&nbsp;&nbsp;<input  name="DB_CHARSET" type="text" value="utf8" disabled="disabled"/>不需要修改
+	</p>
+    <p style="text-align:left">数据库前缀&nbsp;&nbsp;&nbsp;<input  name="DB_PREFIX" type="text" value="cp_"/>
+    </p>
+	<p style="text-align:left">永久连接<select  name="DB_PCONNECT">
+	<option value="false">否</option>
+	<option value="true">是</option>
+	</select></p>
+	<p class="center"><input type="submit" class="submit" name="next" value="下一步" /></p>
+	</form>
+</div>
+</div>
+<div class='copyright'>CanPHP版权</div>
+</div>
+<div style="display:none;">
+</div>
+</body>
+</html>

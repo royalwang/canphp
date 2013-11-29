@@ -1,0 +1,42 @@
+CanPHP  CanPHP 框架目录
+
+config.php 配置文件，前台后台调用同一个配置文件
+index.php 前台入口文件
+.htaccess 前台网址重写，去掉网址中的index.php (apache有效)
+
+module	存放前台程序模块
+	--commonMod.class.php 前台公共模块
+	--indexMod.class.php 前台首页模块
+	……其他模块
+
+template 存放前台模板
+public	前台公共目录
+      --css 前台css
+      --images 前台图片
+      --js 前台js
+
+data	存放前台模版编译缓存，数据库缓存，日志信息
+      --db_cache 数据库缓存
+      --tpl_cache 前台模版编译缓存 
+      --log 出错日志信息 
+
+
+
+admin	后台目录
+	--index.php 后台入口文件
+	.htaccess 后台网址重写，去掉网址中的index.php (apache有效)
+	--module  存放后台程序模块
+		--commonMod.class.php 后台公共模块
+		--indexMod.class.php 后台首页模块
+		……其他模块
+
+	--template 存放后台模板
+	--public 后台公共目录
+     	        --css 后台css
+    	        --images 后台图片
+    	        --js 后台js
+
+	--data	存放后台模版编译缓存，数据库缓存，日志信息
+     	       --db_cache 数据库缓存
+     	       --tpl_cache 后台模版编译缓存 
+     	       --log 后台日志信息 

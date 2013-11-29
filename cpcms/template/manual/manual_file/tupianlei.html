@@ -1,0 +1,68 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--图片类</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Image.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：buildImageVerify($width=48,$height=22,$randval=NULL,$verifyName='verify')</div>
+			<div class="readme"><span class="title">说明：</span><span>用于生成验证码</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$width，生成的验证码宽度</li>
+				<li>$height，生成的验证码高度</li>
+				<li>$randval，手动设置验证码的内容，默认是随机的四位数字</li>
+				<li>$verifyName，验证码的session下标，如在判断验证码是否正确的时候， $_SESSION['verify']</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+	Image::buildImageVerify();//生成验证码
+	</pre>
+	</div>
+		
+	<div class="bd">
+			<div class="fun">方法：thumb($image,$thumbname,$type='',$maxWidth=200,$maxHeight=50,$interlace=true)</div>
+			<div class="readme"><span class="title">说明：</span>生成图片缩略图</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $image，原图</li>
+				<li> $thumbname，缩略图文件名</li>
+				<li> $type，图像格式,为空时，自动获取图片格式</li>
+				<li> $maxWidth，生成的缩略图最大宽度</li>
+				<li> $maxHeight，生成的缩略图最大高度</li>
+				<li>$interlace，启用隔行扫描</li>
+				<li>缩略成功后，返回$thumbname</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php2" class="php">
+	Image::thumb($image,$thumbname,'',100,100);//生成图片缩略图
+	</pre>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：water($image, $water, $waterPos =9)</div>
+			<div class="readme"><span class="title">说明：</span>图片加水印</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $image，原图</li>
+				<li> $water，水印图片</li>
+				<li> $waterPos，水印位置(0-9) 0为随机，其他代表上中下9个部分位置</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php3" class="php">
+	$image="a.jpg";
+	$water="logo.png";
+	Image::water($image,$water);//图片a.jpg加上水印
+	</pre>
+	</div>
+	
+	<div class="footer" id="footer"></div>
+</div>
+

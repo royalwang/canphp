@@ -1,0 +1,2 @@
+2012-03-26 09:51:04 | 127.0.0.1 | /cp/cpcms/index.php/test/ |test模块不存在
+2012-03-26 09:55:21 | 127.0.0.1 | /cp/cpcms//index.php/article/show-121.html |preg_replace() [<a href='function.preg-replace'>function.preg-replace</a>]: Unknown modifier 'P'

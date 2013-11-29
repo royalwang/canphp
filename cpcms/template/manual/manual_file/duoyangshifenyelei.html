@@ -1,0 +1,95 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--多样式分页类</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Page.class.php</li>
+				<li>分页类，提供四种显示样式，和ajax支持</li>
+				<li>默认会自动加载，不需要手动include</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：__construct($array=array()) </div>
+			<div class="readme"><span class="title">说明：</span><span>构造函数</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>若不采用ajax分页，可以不用传递参数</li>
+				<li>若采用ajax分页，传递$array['ajax']='默认ajax触发的动作';</li>
+				</ul>
+			</span></div>
+			<div class="fun">方法：getCurPage($url="") </div>
+			<div class="readme"><span class="title">说明：</span><span>获取当前页的页码</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$url，设定的基准地址</li>
+				<li>返回当前的页码</li>
+				</ul>
+			</span></div>
+			
+			<div class="fun">方法：show($url="",$total=0,$perPage=10,$pageBarNum=10,$mode=1) </div>
+			<div class="readme"><span class="title">说明：</span><span>控制分页显示风格，并返回输出结果</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$url，基准网址，若为空，将会自动获取，不建议设置为空</li>
+				<li>$total，信息总条数</li>
+				<li>$perPage，每页显示行数</li>
+				<li>$pageBarNum，分页栏每页显示的页数</li>
+				<li>$mode，显示风格，参数可为整数1，2，3，4任意一个</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+	//显示列表
+	//得到的分页地址如：http://www.canphp.com/article/1-2.html
+	public function _empty()
+	{
+		$cat_id=intval($_GET['_action']);//文章id
+		if(empty($cat_id))
+		{
+			$this->error('参数传递有误');
+		}
+
+		$url=__URL__.'/'.$cat_id.'-{page}.html';//分页基准网址
+		$page=new Page();		
+		$listRows=1;//每页显示的信息条数
+		$cur_page=$page->getCurPage($url);
+		$limit_start=($cur_page-1)*$listRows;
+		$limit=$limit_start.','.$listRows;
+		
+		$where="";
+		$condition=array();		
+		
+		$condition['cat_id']=$cat_id;
+		$condition['status']=1;
+		//获取行数
+		$count=$this->model->table('article')->where($condition)->count();	
+				
+		$list=$this->model->table('article')->where($condition)->order('id desc')->limit($limit)->select();
+		
+		$this->assign('list',$list);
+		$this->assign('page',$page->show($url,$count,$listRows));
+		$this->display('article/list');
+	}
+	</pre>
+	</div>
+	
+				<div class="fun">contentPage($content,$separator="[page]",$url="",$pageBarNum=10,$mode=1) </div>
+			<div class="readme"><span class="title">说明：</span><span>长文章内容分页</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$content，数据内容</li>
+				<li>内容分页的分隔符，需要自己定义分隔符</li>
+				<li>$url，基准网址，若为空，将会自动获取，不建议设置为空</li>
+				<li>$pageBarNum，分页栏每页显示的页数</li>
+				<li>$mode，显示风格，参数可为整数1，2，3，4任意一个</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php2" class="php">
+		$page=new Page();	
+		$this->assign('page',$page->contentPage($content));
+	</pre>
+
+	<div class="footer" id="footer"></div>
+</div>
+

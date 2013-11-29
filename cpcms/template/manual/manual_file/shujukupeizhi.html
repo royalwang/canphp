@@ -1,0 +1,43 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册——数据库配置</h1>
+	</div>
+	<div class="bd">
+		<div class="fun">数据库配置</div>
+		<div class="readme"><span class="title">说明：</span><ul>
+			<li>$config['DB_PCONNECT']一般设置为false。</li>
+			<li>数据库缓存$config['DB_CACHE_ON']设置为true，表示开启数据库缓存。</li>
+			<li>缓存时间，如果在模块中指定->cache(缓存时间)，那么在模块指定的优先度高于全局配置。</li>
+			<li>若改变缓存文件大小，需要先删除掉原来的缓存文件，才会生效。</li>
+			<li>只有特殊情况，系统不支持文件锁，$config['DB_CACHE_FLOCK']才会设置为false，设置为false后，效率将大打折扣。</li>
+			<li>只会生成一个数据缓存文件，这个数据缓存文件超过指定大小限制之后，旧的数据会被自动删除。</li>
+		</ul>
+		</span></div>
+		<div class="title">详细：</div>
+<pre id="php" class="php">
+//数据库配置
+$config['DB_TYPE']='mysql';//数据库类型，一般不需要修改
+$config['DB_HOST']='localhost';//数据库主机，一般不需要修改
+$config['DB_USER']='root';//数据库用户名
+$config['DB_PWD']='123456';//数据库密码
+$config['DB_PORT']=3306;//数据库端口，mysql默认是3306，一般不需要修改
+$config['DB_NAME']='cp';//数据库名
+$config['DB_CHARSET']='utf8';//数据库编码，一般不需要修改
+$config['DB_PREFIX']='';//数据库前缀
+$config['DB_PCONNECT']=false;//true表示使用永久连接，false表示不适用永久连接，一般不使用永久连接
+
+$config['DB_CACHE_ON']=false;//是否开启数据库缓存，true开启，false不开启
+$config['DB_CACHE_PATH']='./data/db_cache/';//数据库查询内容缓存目录，地址相对于入口文件，一般不需要修改
+$config['DB_CACHE_TIME']=0;//缓存时间,0不缓存，-1永久缓存
+$config['DB_CACHE_CHECK']=false;//是否对缓存进行校验，一般不需要修改
+$config['DB_CACHE_FILE']='cachedata';//缓存的数据文件名
+$config['DB_CACHE_SIZE']='15M';//预设的缓存大小，最小为10M，最大为1G
+$config['DB_CACHE_FLOCK']=true;//是否存在文件锁，设置为false，将模拟文件锁，一般不需要修改
+//数据库配置结束
+</pre>
+
+	</div>
+	<div class="footer" id="footer">	
+	</div>
+</div>

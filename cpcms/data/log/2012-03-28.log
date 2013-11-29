@@ -1,0 +1,85 @@
+2012-03-28 09:47:26 | 127.0.0.1 | /cp/cpcms/index.php/test/ss |test模块不存在
+2012-03-28 09:56:17 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: SELECT id,title FROM cp_article  ORDER BY id desc LIMIT 9<br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 09:56:37 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 09:57:07 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 09:57:10 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 09:58:07 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 09:58:09 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 09:58:26 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 09:58:55 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | 无法连接到数据库服务器<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: Access denied for user 'root2'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-28 09:59:02 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | 无法连接到数据库服务器<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: Access denied for user 'root2'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-28 09:59:41 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:00:03 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:00:04 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:00:04 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:00:05 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:00:05 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:00:06 | 127.0.0.1 | /cp/cpcms/index.php/article/index.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:00:48 | 127.0.0.1 | /cp/cpcms/index.php/article/index-10.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:01:29 | 127.0.0.1 | /cp/cpcms/index.php/article/index-10.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:02:56 | 127.0.0.1 | /cp/cpcms/index.php/article/index-10.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:02:57 | 127.0.0.1 | /cp/cpcms/index.php/article/index-10.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>
+2012-03-28 10:02:57 | 127.0.0.1 | /cp/cpcms/index.php/article/index-10.html | MySQL Query Error<br>
+					<b>SQL</b>: SELECT count(*) FROM cp_article  WHERE  `status` = '1' <br>
+					<b>错误详情</b>: No database selected<br>
+					<b>错误代码</b>:1046<br>

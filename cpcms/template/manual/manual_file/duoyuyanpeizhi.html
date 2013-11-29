@@ -1,0 +1,27 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册——多语言配置</h1>
+	</div>
+	<div class="bd">
+		<div class="fun">多语言配置</div>
+		<div class="readme"><span class="title">说明：</span><ul>
+			<li>如果只是做中英文，不区分美国英语，英国英语，建议语言包中文使用./lang/zh/目录，英文使用./lang/en/目录。</li>
+			<li>如果网站规模不大，只用一个公共的语言包即可，如果规模有点大，不同模块，可以创建不同的语言包。</li>
+
+		</ul>
+		</span></div>
+		<div class="title">详细：</div>
+<pre id="php" class="php">
+//多语言配置
+$config['LANG_DEFAULT']='zh-cn';       //默认语言
+$config['LANG_PACK_PATH']='./lang/';      //语言包目录
+$config['LANG_PACK_SUFFIX']='.lang.php';    //语言包后缀
+$config['LANG_PACK_COMMON']='common';   //公用语言包，默认会自动加载
+//多语言配置结束
+</pre>
+
+	</div>
+	<div class="footer" id="footer">	
+	</div>
+</div>

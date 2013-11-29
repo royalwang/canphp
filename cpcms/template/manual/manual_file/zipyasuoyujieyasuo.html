@@ -1,0 +1,46 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--zip压缩与解压缩</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Zip.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				<li>使用场景：数据库的压缩备份与恢复，程序升级与备份</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：compress($zip_filename='cp.zip', $dir='./')</div>
+			<div class="readme"><span class="title">说明：</span><span>生成压缩文件</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$zip_filename，生成的zip压缩文件存放路径</li>
+				<li>$dir，待压缩的目录</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+	$zip=new Zip();
+	$zip->compress('template.zip','template');//将template目录的所有文件压缩到template.zip文件
+	</pre>
+	</div>
+		
+	<div class="bd">
+			<div class="fun">方法：decompress($zip_filename='cp.zip', $dir='./')</div>
+			<div class="readme"><span class="title">说明：</span>解压缩文件</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$zip_filename，待解压的zip压缩文件存放路径</li>
+				<li>$dir，zip文件解压到的目录</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php2" class="php">
+	$zip=new Zip();
+	$zip->decompress('template.zip','template2');//将template.zip压缩文件，解压到template2目录
+	</pre>
+	</div>
+	<div class="footer" id="footer"></div>
+</div>
+

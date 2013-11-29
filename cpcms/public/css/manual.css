@@ -1,0 +1,19 @@
+/* CSS Document */
+pre {
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.php {border:#999999 1px dotted;background-color:#F0F0F0;font-size:14px;}
+.main {width:90%; padding:10px; font:Arial, Helvetica, sans-serif; font-size:14px;}
+.header{width:100%; height:40px; border-bottom:#CCCCCC 1px solid; margin-bottom:5px; }
+.header h1{ padding-top:0px; padding-bottom:0px;}
+.bd{width:100%; height:auto; margin-top:5px; margin-bottom:5px; margin-top:10px;}
+#footer{width:100%; padding-top:5px; height:30px; border-top:#CCCCCC 1px solid; font-size:14px; font:'宋体'; color:#CCCCCC;}
+.title{color:#CC0000; font-weight:bold; font-size:16px; margin-top:10px;}
+.fun{ color:#6600FF; font-size:16px; font-weight:bold; margin-bottom:10px;}
+.readme{ margin-bottom:10px; line-height:20px}
+

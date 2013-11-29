@@ -1,0 +1,334 @@
+BODY {
+	FONT-FAMILY: arial, helvetica, sans-serif; BACKGROUND: #b8d7eb;  COLOR: #666; FONT-SIZE: 12px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+DIV {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+DL {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+DT {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+DD {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+UL {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+OL {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+LI {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H1 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H2 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H3 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H4 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H5 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+H6 {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+PRE {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+FORM {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+FIELDSET {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+INPUT {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+TEXTAREA {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+P {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+.clear {
+	clear:both; height:0px; line-height:0px; font-size:0
+}
+ul,li{
+	LIST-STYLE-TYPE: none
+}
+BLOCKQUOTE {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+TH {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+TD {
+	PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; PADDING-TOP: 0px
+}
+TABLE {
+	BORDER-SPACING: 0; BORDER-COLLAPSE: collapse
+}
+FIELDSET {
+	BORDER-RIGHT-WIDTH: 0px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px
+}
+IFRAME {
+	BORDER-RIGHT-WIDTH: 0px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px
+}
+IMG {
+	BORDER-RIGHT-WIDTH: 0px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px
+}
+A {
+	COLOR: #255794; text-decoration:none; 
+}
+A:hover {
+	CURSOR: pointer; COLOR: #393
+}
+.clearfix {
+	DISPLAY: block; HEIGHT: 0px; VISIBILITY: hidden; CLEAR: both; CONTENT: '.'
+}
+
+
+.top{height:100px; BACKGROUND: #FFF url(../images/topbg.png) repeat-x;}
+.top .head{ width: 960px; height:90px; margin:0px auto}
+.top .head h1{ float:left; height:90px; width: 260px; BACKGROUND: url(../images/logo.png) repeat-x;}
+.top .menu{ float:right; width:680px; padding-top:30px;}
+.menu ul.nav{
+	height:30px;
+	padding:0 0 0 0px;
+	float:left;
+}
+.menu ul.nav li{
+	float:left;
+	margin:0 5px 0 0;
+}
+.menu ul.nav li.noMargin{
+	margin:0;
+}
+.menu ul.nav li a{
+	float:left;
+	background:#0075de ;
+	height:30px;
+	line-height:30px;
+	font-weight:bold;
+    font-family: "Microsoft YaHei",ahoma, Arial, Helvetica, snas-serif;
+	font-size:14px;
+	padding: 0px 10px 0 10px;
+	color:#fff;
+	text-decoration:none;
+	text-align:center;
+}
+.menu ul.nav li a:hover{
+	background:#6fa724;
+	color:#fff;
+}
+
+.box {
+	 MARGIN: 0px auto; margin-top:20px; width:960px;
+}
+.box .left{ width:710px; float:left;}
+.box .left .h4{LINE-HEIGHT: 37px; PADDING-LEFT: 33px; height:40px; BACKGROUND: url(../images/tbg.png) ; COLOR: #000; CLEAR: both; FONT-SIZE: 14px; FONT-WEIGHT: 700}
+.boxleft{ border: #68a6de 1px solid; margin-bottom:6px; background:#FFF}
+.boxleft H1 {
+		font-size:24px; line-height:35px; color:#000; padding: 30px 20px 5px 20px; text-align:center; font-weight:bold;
+}
+
+
+
+.caseDisplay {
+	 HEIGHT: auto
+}
+.caseHolder {
+	FLOAT: left; WIDTH: 215px; height:200px; padding-left:10px;
+}
+.caseHolder p.thumb IMG{
+   DISPLAY: block; width:200px; height:120px; PADDING: 0px; margin: 0px;
+}
+.caseHolder  p.thumb A{
+   DISPLAY: block; BORDER-RIGHT: #c6c6c6 1px solid; width:200px; PADDING: 3px; BORDER-TOP: #c6c6c6 1px solid;
+BACKGROUND: #fff; BORDER-LEFT: #c6c6c6 1px solid;  BORDER-BOTTOM: #c6c6c6 1px solid;
+}
+.caseHolder  p.thumb A:hover {
+	BORDER-RIGHT: #ccdb10 1px solid; BORDER-TOP: #ccdb10 1px solid; BORDER-LEFT: #ccdb10 1px solid; BORDER-BOTTOM: #ccdb10 1px solid
+}
+.caseHolder P.txt {
+PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 12px; line-height:24px; height:24px; font-weight:bold; PADDING-BOTTOM: 0px; WIDTH: 100%; PADDING-TOP: 0px}
+.caseHolder P.txt a{ color:#000; text-decoration:none}
+.caseHolder P.txt A:hover{ color:#ff0000;}
+.caseHolder P.specs {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 12px; font-weight:normal;  MARGIN: 0px; COLOR: #868686; LINE-HEIGHT: 20px; PADDING-TOP: 0px
+}
+.pagesbox{ height:40px; line-height:40px; text-align:center;}
+
+
+
+
+.info{height:24px;line-height:17px;text-align:center;overflow:hidden;color:#777;}
+.info small{margin-left:8px;margin-right:3px;color:#999;font-size:12px;}
+.intro{line-height:25px;background:#FAFDFE;border:1px solid #DDD;font-size:12px;color:#666;margin:8px;padding:8px 16px;}
+
+
+
+.downloadtitle {font-size:14px; line-height:33px; font-weight:bold; border-bottom:1px solid #ddd; padding-left:20px;}
+.downloadbt{line-height:33px; font-size:14px; padding-left:20px; border-bottom:1px dashed #ddd;}
+.downloadbt a{ margin-right:10px; color:#06C; font-size:14px;text-decoration:none}
+.downloadjj{background:#eee; padding:10px; line-height:24px;  border-bottom:1px dashed #ddd;}
+
+
+
+.boxone{ border: #fff 1px solid; margin-bottom:6px; background:#FFF}
+.conbox { padding:15px;}
+.conboxnr{line-height:24px; font-size:14px;padding:15px; overflow:hidden;}
+.box .right{ width:240px; float:right;}
+.prev_next{
+	padding-left:10px;
+	padding-top:15px;
+	padding-bottom:10px;
+	font-size:12px;
+	line-height:22px;
+	border-top-width: 1px;
+	border-top-style: dotted;
+	border-top-color: #CCCCCC;
+}
+
+.box .right .title{ line-height:30px; height:30px; background: url(../images/dbg.png); padding-left:26px; font-size:14px; font-weight:bold; color:#FFF}
+.box .right .kjdownload {border: #ffffcc 1px solid; background: url(../images/kjdtg.png) repeat-x; margin-bottom:6px;}
+
+.r_txt ul{
+	FONT-SIZE: 12px; padding: 8px 0 8px 0; LINE-HEIGHT: 22px
+}
+.r_txt  LI {
+width:210px; height:26px;overflow:hidden;
+	PADDING-LEFT: 20px;  PADDING-BOTTOM: 0px; background: url(../images/ico-2.png) no-repeat 11px 9px; LINE-HEIGHT: 22px
+}
+
+
+.indexdld {
+	POSITION: relative; MARGIN: 0px auto; BACKGROUND: #FFF url(../images/top.jpg) no-repeat;width:960px; HEIGHT: 260px
+}
+.indexdld .thisdown {
+	POSITION: absolute; TEXT-INDENT: -20000px; WIDTH: 150px; HEIGHT: 45px; OVERFLOW: hidden; TOP: 200px; LEFT: 737px
+}
+.indexdld .thisver {
+	POSITION: absolute; WHITE-SPACE: nowrap; width:200px; HEIGHT: 125px; TOP: 79px; LEFT: 715px;
+}
+.indexdld .thisver p{font-size:14px; color:#FFF; line-height:24px;}
+.indexdld .thisver .lijixiazai{ margin:32px; margin-top:24px; width:132px; height:42px; display:block; }
+.indexfun {
+	POSITION: relative; BACKGROUND: url(../images/indexfun.png) #fff no-repeat; width:960px; margin:0px auto; HEIGHT: 138px
+}
+.indexfun H3 {
+	DISPLAY: none
+}
+.indexfun P {
+	POSITION: absolute; LINE-HEIGHT: 18px; WIDTH: 170px
+}
+.indexfun .thisp1 {
+	TOP: 57px; LEFT: 114px
+}
+.indexfun .thisp2 {
+	TOP: 57px; LEFT: 404px
+}
+.indexfun .thisp3 {
+	TOP: 57px; LEFT: 689px
+}
+
+
+
+
+.serviceWrapper {
+	MARGIN: 10px auto 0px; WIDTH: 960px; BACKGROUND: #FFF; text-align:left; HEIGHT: 330px
+}
+.serviceWrapper H4 {
+	LINE-HEIGHT: 37px; PADDING-LEFT: 33px; height:40px; BACKGROUND: url(../images/tbg.png) ; COLOR: #000; CLEAR: both; FONT-SIZE: 14px; FONT-WEIGHT: 700
+}
+.xxzn {
+	WIDTH: 300px; background:#FFF; FLOAT: left; MARGIN-LEFT: 10px
+}
+.xxzn .xxzntitle {font-size:14px; line-height:33px; font-weight:bold; padding-left:20px; color:#369}
+.xxzn .xxzninfo{line-height:22px; font-size:12px; padding-left:20px; border-bottom:1px dashed #ddd;}
+
+.indexxz {
+	WIDTH: 318px; background:#FFF; FLOAT: left; MARGIN-LEFT: 10px
+}
+
+.indexinfo {
+	WIDTH: 300px; background:#FFF; FLOAT: left; MARGIN-LEFT: 10px
+}
+.indexinfo ul{
+	FONT-SIZE: 12px; padding: 8px 0 8px 0;
+}
+.indexinfo LI {
+ width:280px; height:28px; overflow:hidden;
+	PADDING-LEFT: 20px;  PADDING-BOTTOM: 0px; background: url(../images/ico-2.png) no-repeat 11px 9px; LINE-HEIGHT: 28px; border-bottom:1px dashed #ddd;
+}
+
+
+.line {
+	BORDER-BOTTOM: #99bbdd 1px solid; BORDER-LEFT: #99bbdd 1px solid; MARGIN: 10px auto 0px; WIDTH: 960px; background:#FFF; BORDER-TOP: #99bbdd 1px solid; BORDER-RIGHT: #99bbdd 1px solid
+}
+.box_title H3 {
+	 LINE-HEIGHT: 33px; height:33px; border-bottom:1px solid #99bbdd; TEXT-INDENT: 14px; 
+}
+.box_line ul{ padding:6px;}
+.box_line LI {
+	LINE-HEIGHT: 25px; TEXT-INDENT: 12px
+}
+
+.footer {
+	PADDING-BOTTOM: 10px; MARGIN: 0px; margin-top:40px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; BACKGROUND: #FFF; COLOR: #888; border-top:2px solid #06599f; PADDING-TOP: 14px
+}
+.footer .inner {
+	MARGIN: 0px auto; WIDTH: 960px; text-align:center; OVERFLOW: hidden
+}
+.footer .inner P {
+	LINE-HEIGHT: 24px
+}
+.footer .inner P.about { font-size:14px;
+}
+.footer .inner A {
+	COLOR: #5e5f60
+}
+
+/*·ÖÒ³*/
+.current
+{
+ margin: 0;
+ background-color: #FFEDE1;
+ border: 1px solid #FD6D01;
+ height:12px;
+ line-height:12px;
+ color: #FD6D01;
+ padding: 3px 12px;
+ margin-right: 5px;
+ vertical-align: top;
+}
+.pages
+{
+ margin: 0;
+ border: 1px solid #CCCCCC;
+ padding: 3px 12px;
+ margin-right: 5px;
+ height:12px;
+ line-height:12px;
+ vertical-align: top;
+}
+.firstPage,.prePage,.nextPage,.lastPage
+{
+  margin: 0;
+  background-color: #FFEDE1;
+  border: 1px solid #FD6D01;
+  color: #FD6D01;
+  padding: 3px 8px;
+  margin-right: 5px;
+  height:12px;
+ line-height:12px;
+ vertical-align: top;
+}

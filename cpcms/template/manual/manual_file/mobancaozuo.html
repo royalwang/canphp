@@ -1,0 +1,147 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--模板操作</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>CP内置了一个简单高效的模板引擎，如果不能满足项目需求，请自行扩展其他第三方模板引擎，如smarty。</li>
+				<li>附加说明：CP自带的模板引擎特意设计得很简单，循环，条件判断等用原生php去实现。
+为什么CP的模板引擎设计要得那么简单呢？
+因为现在的开源系统中，大部分都有一套自己的模板引擎，学习一个系统，又需要去重新学习一套
+模板标签，大大增加了学习成本，为了减少大家学习CP的成本，故把模板引擎设计得很简单，需求复杂一点的，大家可以去使用smarty。</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">模板配置</div>
+			<div class="readme"><span class="title">说明：</span><span>在config.php文件中配置</span></div>
+			<div class="title">代码如下：</div>
+	<pre id="php" class="php">
+		//模板配置
+	$config['TPL_TEMPLATE_PATH']='./template/';//模板目录
+	$config['TPL_TEMPLATE_SUFFIX']='.html';//模板后缀，建议改成.php
+	$config['TPL_CACHE_ON']=false;//是否开启模板缓存，true开启,false不开启
+	$config['TPL_CACHE_PATH']='./data/tpl_cache/';//模板缓存目录
+	$config['TPL_CACHFILE_SUFFIX']='.php';//模板缓存后缀,一般不需要修改
+	//模板配置结束
+	</pre>
+	</div>
+
+	<div class="bd">
+			<div class="fun">实例化模板引擎类</div>
+			<div class="readme"><span class="title">说明：</span>在公共模块commodMod.class.php的构造函数中实例化</div>
+			<div class="title">参考代码如下：</div>
+	<pre id="php2" class="php">
+	<?php
+//公共类
+class commonMod
+{
+	public $model;//数据库模型对象
+	public $tpl;//模板对象
+	public $config;//全局配置
+	static $global;//静态变量，用来实现单例模式
+	public function __construct()
+	{	
+		session_start();//开启session
+
+		//参数配置			
+		if(!isset(self::$global['config']))
+		{
+			global $config;
+			self::$global['config']=$config;			
+		}
+		$this->config=self::$global['config'];//配置
+		//数据库模型初始化
+		if(!isset(self::$global['model']))
+		{
+			//require(CP_PATH.'core/cpModel.class.php');//加载数据库模型类
+			self::$global['model']=new cpModel($this->config);//实例化数据库模型类				
+		}
+		$this->model=self::$global['model'];//数据库模型对象
+		//模板初始化
+		if(!isset(self::$global['tpl']))
+		{	
+		  //  require(CP_PATH.'core/cpTemplate.class.php');//加载模板类
+		    self::$global['tpl']=new cpTemplate($this->config);//实例化模板类		
+		}
+		$this->tpl=self::$global['tpl'];//模板类对象
+	}
+	//模板变量解析
+	protected function assign($name, $value)
+	{
+		return $this->tpl->assign($name, $value);
+	}
+	//模板输出
+	protected  function display($tpl='')
+	{	
+		return $this->tpl->display($tpl);	
+	}
+	?>
+	</pre>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">模板赋值与输出</div>
+			<div class="title">使用方法：</div>
+	<pre id="php3" class="php">
+	1、模板赋值
+	$this->assign($name, $value);	
+	/*
+	如：$tpl->assign('name', $name);
+	$tpl->assign('user', $user);
+	$value可以是字符串，数组等任何类型
+	*/			
+	2、模板显示		
+	$this->display($tpl);
+	$this->display();
+	/*
+	如：$this->display('index/index');加载template/index/index.html模板
+		$this->display('index');加载template/index.html模板
+		$this->display();//不加参数，等价于$tpl->display(当前模块名/当前操作);
+	*/
+	</pre>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">模板标签</div>
+			<div class="readme"><span class="title">说明：</span>CP模板引擎内置的模板标签，只有变量输出和模板包含</div>
+			<div class="title">使用方法：</div>
+	<pre id="php4" class="php">
+	1、变量输出
+	{$name}				//最后解析为<?php echo $name;?>
+	{$user['name']}		//最后解析为<?php echo $user['name'];?>
+	
+	2、模板包含，常用于包含公共头部，公共底部	
+	{include file="模板名"}	
+	//如{include file="header"}
+	//注意：header模版名,目录相对于$config['TPL_TEMPLATE_PATH']='./template/'这个目录，后缀为$config['TPL_TEMPLATE_SUFFIX']='.html';设定的后缀
+	
+	3循环和判断等，用php原生代码实现，如
+	<?php if(is_array($list)) foreach($list as $vo){?>
+	{$vo['id']} {$vo['title']}
+	<?php}?>
+	</pre>
+	</div>
+
+	<div class="bd">
+			<div class="fun">自定义模板标签</div>
+			<div class="readme"><span class="title">说明：</span>CP模板引擎还可以自定义标签</div>
+			<div class="title">使用方法：</div>
+	<pre id="php5" class="php">
+	//在CanPHP/ext/extend.php(默认会加载，不需要手动导入)中实现下面的函数，即可完成自定义模板标签
+	//需要什么标签，自己写规则替换，此函数会被自动调用
+	//自定义模板标签解析函数
+	function tpl_parse_ext($template)
+	{
+		//在这里实现的模块标签替换
+		
+		return $template;
+	
+	}
+	</pre>
+	</div>
+	<div class="footer" id="footer"></div>
+</div>
+

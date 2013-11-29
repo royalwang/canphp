@@ -1,0 +1,79 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--无限分类</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Category.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：__construct($field=array())//构造函数</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$field，字段映射，分类id，上级分类pid,分类名称title,格式化后分类名称fulltitle
+	  				依次传递,例如在分类数据表中，分类id，字段名为cid,上级分类pid,字段名称name,希望格式化分类后输出cname,
+				  则，传递参数为,$field('cid','pid','name','cname');</li>
+				</ul>
+			</span></div>
+			<div class="fun">方法：getTree($data,$id=0)//得到格式化后分类的分类树； </div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$data，二维数组</li>
+				<li>$id，整型</li>
+				</ul>
+			</span></div>
+			<div class="fun">方法：getChild($pid,$data=array())//返回给定上级分类$pid的所有同一级子分类； </div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$pid，整型</li>
+				<li>,$data，二维数组</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+	<?php
+	require('Category.class.php');//导入Category.class.php类
+	//测试数据
+	$data[]=array('cat_id'=>1,'pid'=>0,'name'=>'中国');
+	$data[]=array('cat_id'=>2,'pid'=>0,'name'=>'美国');
+	$data[]=array('cat_id'=>3,'pid'=>0,'name'=>'韩国');
+	$data[]=array('cat_id'=>4,'pid'=>1,'name'=>'北京');
+	$data[]=array('cat_id'=>5,'pid'=>1,'name'=>'上海');
+	$data[]=array('cat_id'=>6,'pid'=>1,'name'=>'广西');
+	$data[]=array('cat_id'=>7,'pid'=>6,'name'=>'桂林');
+	$data[]=array('cat_id'=>8,'pid'=>6,'name'=>'南宁');
+	$data[]=array('cat_id'=>9,'pid'=>6,'name'=>'柳州');
+	$data[]=array('cat_id'=>10,'pid'=>2,'name'=>'纽约');
+	$data[]=array('cat_id'=>11,'pid'=>2,'name'=>'华盛顿');
+	$data[]=array('cat_id'=>12,'pid'=>3,'name'=>'首尔');
+	
+	$cat=new Category(array('cat_id','pid','name','cname'));
+	$s=$cat->getTree($data);//获取分类数据树结构
+	//$s=$cat->getTree($data,1);获取pid=1所有子类数据树结构
+	foreach($s as $vo)
+	{
+	 echo $vo['cname'].'<br>';
+	}
+?>	
+	</pre>
+	<div class="title">cpcms的使用方法：</div>
+	<pre id="php2" class="php">
+	//获取分类树，$id，分类id,$id=0，获取所有分类结构树
+	public function getCat($id=0)
+	{
+		require(CP_PATH.'lib/Category.class.php');//导入Category.class.php无限分类
+		//查询分类信息
+		$data=$this->model->field('id,pid,name')->table('category')->select();		
+		//array('id','pid','name','cname'),字段映射，格式化后的分类名次问cname
+		$cat=new Category(array('id','pid','name','cname'));//初始化无限分类
+		
+		return $cat->getTree($data,$id);//获取分类数据树结构
+	}
+	</pre>
+	</div>
+	
+	<div class="footer" id="footer"></div>
+</div>
+

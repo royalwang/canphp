@@ -1,0 +1,47 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--类自动加载机制</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>当使用或继承的所需的类不存在的时候，会自动加载，从而不需要使用include或require包含文件。</li>
+				<li>：注意：仅从模块目录，canphp核心core目录，lib扩展库目录，ext第三方扩展库目录,model模型目录去搜索，且只有命名规则符合"类名.class.php"这种形式，才会被自动加载</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="title">原理：</div>
+	<pre id="php" class="php">
+	在cpApp.class.php中构造函数中，注册了一个自动加载类的方法
+	if(function_exists('spl_autoload_register'))
+	{
+		spl_autoload_register('self::autoload');  //注册类的自动加载
+	}
+	//实现类的自动加载
+	static public function autoload($classname)   
+	{   
+		$class_array=array();
+		$base_path=cpApp_PATH;
+		$class_array[]=self::$config['MODULE_PATH'].$classname.'.class.php';//加载模块文件
+		$class_array[]=$base_path.'/'.$classname.'.class.php';//核心文件
+		$class_array[]=$base_path.'/../lib/'.$classname.'.class.php';//官方扩展库
+		$class_array[]=$base_path.'/../ext/'.$classname.'.class.php';//第三方扩展库
+		$class_array[]=self::$config['MODEL_PATH'].$classname.'.class.php';//加载模型文件
+		foreach($class_array as $file)
+		{
+			if(is_file($file))
+			{   
+			    require_once($file); 
+				return true;
+			} 
+		}
+		return false;
+	}  	
+	</pre>
+	</div>
+		
+	<div class="footer" id="footer"></div>
+</div>
+

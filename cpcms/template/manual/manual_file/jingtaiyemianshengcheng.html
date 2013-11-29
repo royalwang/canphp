@@ -1,0 +1,34 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册——静态页面配置</h1>
+	</div>
+	<div class="bd">
+		<div class="fun">静态页面配置</div>
+		<div class="readme"><span class="title">说明：</span><ul>
+			<li>只需指定要缓存的模块和操作以及缓存时间即可，参数会自动处理，不需要人工指定。</li>
+			<li>缓存时间到期了，会自动更新缓存。</li>
+			<li>建议，只设置数据不需要经常变化的网页生成静态页面，如文章显示页面，产品显示页面。</li>
+		</ul>
+		</span></div>
+		<div class="title">详细：</div>
+<pre id="php" class="php">
+		//静态页面缓存
+$config['HTML_CACHE_ON']=false;//是否开启静态页面缓存，true开启.false关闭
+$config['HTML_CACHE_PATH']='./data/html_cache/';//静态页面缓存目录，一般不需要修改
+$config['HTML_CACHE_SUFFIX']='.html';//静态页面缓存后缀，一般不需要修改
+$config['HTML_CACHE_RULE']['index']['index']=1000;//缓存时间,单位：秒
+/*
+缓存规则如下，可创建多条规则
+$config['HTML_CACHE_RULE']['模块名']['操作名']=缓存时间;//单位：秒,可创建多条数据
+$config['HTML_CACHE_RULE']['模块名1']['操作名1']=缓存时间;
+$config['HTML_CACHE_RULE']['模块名1']['操作名2']=缓存时间;
+$config['HTML_CACHE_RULE']['模块名2']['操作名1']=缓存时间;
+$config['HTML_CACHE_RULE']['模块名2']['操作名2']=缓存时间;
+*/
+</pre>
+
+	</div>
+	<div class="footer" id="footer">	
+	</div>
+</div>

@@ -1,0 +1,27 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册——网址构造配置</h1>
+	</div>
+	<div class="bd">
+		<div class="fun">网址构造配置</div>
+		<div class="readme"><span class="title">说明：</span><ul>
+			<li>若重写模式$config['URL_REWRITE_ON']设置为true，需要apache或iis开启重写模块。</li>
+			<li>伪静态后缀，仅用来识别网址参数，不会自动生成，需要人工设置。</li>
+			<li>通过修改模块，操作，参数的分隔符，可以灵活的构造出各种网址。</li>
+		</ul>
+		</span></div>
+		<div class="title">详细：</div>
+<pre id="php" class="php">
+		//网址配置
+$config['URL_REWRITE_ON']=false;//是否开启重写，true开启重写,false关闭重写
+$config['URL_MODULE_DEPR']='/';//模块分隔符，一般不需要修改
+$config['URL_ACTION_DEPR']='-';//操作分隔符，一般不需要修改
+$config['URL_PARAM_DEPR']='-';//参数分隔符，一般不需要修改
+$config['URL_HTML_SUFFIX']='.html';//伪静态后缀设置，，例如 .html ，一般不需要修改
+</pre>
+
+	</div>
+	<div class="footer" id="footer">	
+	</div>
+</div>

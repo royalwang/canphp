@@ -1,0 +1,37 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册——权限认证配置</h1>
+	</div>
+	<div class="bd">
+		<div class="fun">权限认证配置</div>
+		<div class="readme"><span class="title">说明：</span><ul>
+			<li>登录网址，若在配置文件中配置，需要指定详细的登录地址，如果在公共类中配置，可以使用__APP__去定位。</li>
+			<li>一定要把登录页面和验证码显示等页面设置为不需要认证。</li>
+			<li>$config['AUTH_LOGIN_NO']=array('index'=> array('login','verify'),'common'=>'*');,指定的模块的方法设置为'*',表示忽略该模块的所有操作方法。</li>
+		</ul>
+		</span></div>
+		<div class="title">详细：</div>
+<pre id="php" class="php">
+//权限认证配置
+$config['AUTH_LOGIN_URL']='http://www.canphp.com/admin/index.php/index/login.html';//登录地址
+$config['AUTH_LOGIN_NO']=array('index'=> array('login','verify'),'common'=>'*');//不需要认证的模块和操作
+$config['AUTH_SESSION_PREFIX']='auth_';//认证session前缀
+$config['AUTH_POWER_CACHE']=false;//是否缓存权限信息，如果设置为false，每次都需要从数据库读取数据
+$config['AUTH_TABLE']=array(
+							'group'=>array(
+									'name'=>'group',
+									'field'=>array('id'=>'id','power'=>'power_value'),
+								 ),
+							'resource'=>array(
+									'name'=>'resource',
+									'field'=>array('id'=>'id','pid'=>'pid','operate'=>'operate'),
+								 ),	
+						);//数据库表和字段映射	
+//权限认证配置结束
+</pre>
+
+	</div>
+	<div class="footer" id="footer">	
+	</div>
+</div>

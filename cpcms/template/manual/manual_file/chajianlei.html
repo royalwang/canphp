@@ -1,0 +1,131 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--插件类</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Plugin.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				<li>使用插件机制，系统中只要实现几个核心的模块即可，其他功能（如留言本，友情链接，首页幻灯片，广告管理等）均可用插件去实现，实现功能任意定制。
+</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：init($suffix='',$config=array())</div>
+			<div class="readme"><span class="title">说明：</span><span>初始化参数</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$suffix，用来控制前台插件模块和后台插件模块,前台使用设置为空，后台使用设置为'Admin'</li>
+				<li>$config，插件配置参数</li>
+				</ul>
+			</span></div>
+			<pre id="php" class="php">
+			//插件配置
+		$config['PLUGIN_PATH']='./plugins/';//插件目录
+		$config['PLUGIN_SUFFIX']='Plugin.class.php';//插件模块后缀
+			//插件配置结束
+			</pre>
+			
+			<div class="fun">方法：get() </div>
+			<div class="readme"><span class="title">说明：</span><span>//遍历获取所有插件</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>返回插件名和插件方法的数组</li>
+				</ul>
+			</span></div>
+			
+			<div class="fun">方法：run($plugin_name,$action_name,$data=NULL) </div>
+			<div class="readme"><span class="title">说明：</span><span>//运行插件	</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$plugin_name，插件名</li>
+				<li>$action_name，插件方法</li>
+				<li>$data，要传递的参数，支持数组，字符串</li>
+				<li>运行成功，返回true,运行失败，返回false</li>
+				</ul>
+			</span></div>
+			
+			<div class="fun">方法：hook($action_name,$plugin_name='',$data=NULL) </div>
+			<div class="readme"><span class="title">说明：</span><span>获取不同语言的值</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$action_name，插件方法</li>
+				<li>$plugin_name，插件名，如不指定插件名，默认会执行所有的插件的指定方法</li>
+				<li>$data，要传递的参数，可为数组，字符串，不指定参数，默认传递数据</li>
+				</ul>
+			</span></div>
+			
+			<div class="title">使用方法：</div>
+	<pre id="php2" class="php">
+
+//第一步, 公共模块commonMod.class.php构造函数初始化插件
+//前台的初始化方法
+		Plugin::init();
+//后台初始化
+		$config['PLUGIN_PATH']='./../plugins/';
+		Plugin::init('Admin',$config);
+第二步，创建一个模块，让它去执行插件，可以通过空模块去执行插件，代码如下
+//emptyMod.class.php
+<?php
+//插件模块，用于显示插件
+class emptyMod extends commonMod
+{
+
+	public function _empty()
+	{
+		$plugin_name=$_GET['_module'];
+		$action_name=$_GET['_action'];
+		
+		if(Plugin::run($plugin_name,$action_name)==false)
+		{
+			cpError::show($_GET['_module'].'模块或插件不存在');
+		}		
+	}
+
+}
+?>
+//注意，前台后台，都需要这个空模块文件
+
+//第三步,创建一个简单的插件
+/*
+在跟index.php入口文件同级的目录，创建plugins目录
+然后创建guestbook目录，在创建guestbookPlugin.class.php
+plugins/guestbook/guestbookPlugin.class.php
+*/
+<?php
+class guestbookPlugin
+{
+	public function hello()
+	{
+		echo 'hello word';
+	
+	}
+
+}
+?>
+/*
+注意路径和文件名类名规则
+前台插件模块
+plugins/插件名/插件名Plugin.class.php
+如：plugins/guestbook/guestbookPlugin.class.php
+
+后台插件模块
+plugins/插件名/插件名AdminPlugin.class.php
+plugins/guestbook/guestbookAdminPlugin.class.php
+*/
+
+
+第四步，直接执行插件
+执行：http://127.0.0.1/index.php/guestbook/hello
+将会输出 hello word
+
+第五步，通过hook方式执行插件
+	Plugin::hook('hello');
+可以将这句代码放到模块和模板中
+
+//更多的细节讲解，请到论坛查看http://www.canphp.com/bbs
+	</pre>
+	</div>
+	
+	<div class="footer" id="footer"></div>
+</div>
+

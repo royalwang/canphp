@@ -1,0 +1,87 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--数据库备份与恢复</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Dbbak.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				<li>使用场景：mysql数据库的备份与恢复，支持分卷</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：__construct($dbhost,$dbuser,$dbpw,$dbname,$charset='utf8',$dir='data/dbbak/')</div>
+			<div class="readme"><span class="title">说明：</span><span>构造函数</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$dbhost，数据库主机</li>
+				<li>$dbuser，数据库用户名</li>
+				<li>$dbpw，数据库密码</li>
+				<li>$dbname，数据库名称</li>
+				<li>$charset，数据库编码</li>
+				<li>$dir，备份文件存放的路径</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：getTables($database='')</div>
+			<div class="readme"><span class="title">说明：</span><span>获取数据库的所有表</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$database，数据库名称，若参数为空，为构造函数中指定的数据库名称</li>
+				<li>返回一个表名称数组</li>
+				</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">方法：exportSql($table='',$subsection=0)</div>
+			<div class="readme"><span class="title">说明：</span><span>导出数据，备份数据库</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$table，要导出的数据表，多个数据表用数组传参，若参数为空，则为构造函数中指定的数据库下的所有数据表</li>
+				<li>$subsection，分卷的大小，单位为字节，默认为0，不分卷</li>
+				<li>备份成功返回true，备份失败返回false</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+				<pre id="php" class="php">
+	$db = new Dbbak('localhost','root','123456','qy','utf8','data/dbbak/');
+
+	//备份并生成sql文件
+	if(!$db->exportSql(''))
+	{
+		echo '备份失败';
+	}
+	else
+	{
+		echo '备份成功';
+	}
+	</pre>
+	</div>	
+	<div class="bd">
+			<div class="fun">方法：importSql($dir='')</div>
+			<div class="readme"><span class="title">说明：</span>导入数据，恢复数据库</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li> $dir，待恢复的数据库目录，若为空，则为构造函数中定义的备份目录，若为文件名，则恢复指定文件名的数据</li>
+				<li>恢复成功返回true，恢复失败返回false</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php2" class="php">
+	$db = new Dbbak('localhost','root','123456','qy','utf8','data/dbbak/');
+	//恢复导入sql文件
+	if($db->importSql())
+	{
+		echo '恢复成功';
+	}
+	else
+	{
+		echo '恢复失败';
+	}
+	</pre>
+	</div>
+	<div class="footer" id="footer"></div>
+</div>
+

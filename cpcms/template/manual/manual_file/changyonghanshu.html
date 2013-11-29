@@ -1,0 +1,243 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--常用函数</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>下面介绍的常用函数位于CanPHP/lib/common.function.php文件中</li>
+				<li>common.function.php文件默认已经加载，不需要手动include</li>
+				<li>cp1.3版本将数据过滤函数文件filter.function.php合并到了common.function.php</li>
+				</ul>
+			</span></div>
+	</div>
+			<div class="bd">
+			<div class="fun">函数：in($data,$force=false)</div>
+			<div class="readme"><span class="title">说明：</span><span>用来过滤字符串和字符串数组，防止被挂马和sql注入，字符串过滤用in()函数，数字过滤采用php自带的intval()函数。</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$data，待过滤的字符串或字符串数组。</li>
+				<li>$force为true，忽略get_magic_quotes_gpc，用于过滤非cookie，get，post提交的数据</li>
+				</ul>
+			</span></div>
+	</div>
+		
+	<div class="bd">
+			<div class="fun">函数：out($data)</div>
+			<div class="readme"><span class="title">说明：</span>用来还原字符串和字符串数组，把已经转义的字符还原回来</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$data：字符串或数组。</li>
+			</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">函数：text_in($str)</div>
+			<div class="readme"><span class="title">说明：</span>文本输入，用于textarea文本区域的内容换行和空格处理</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$str：字符串</li>
+			</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">函数：text_out($str)</div>
+			<div class="readme"><span class="title">说明：</span>文本输出，用于textarea文本区域的内容换行和空格处理</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$str：字符串</li>
+			</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">函数： html_in($str)</div>
+			<div class="readme"><span class="title">说明：</span>html代码输入，用于在线编辑器提交的数据过滤，
+			<br />注意此函数会过滤掉iframe和js代码，且html_out()不能还原js代码</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$str：含html代码的字符串。</li>
+			</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">函数：html_out($str)</div>
+			<div class="readme"><span class="title">说明：</span>html代码输出，用于还原过滤后的文章内容</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$str：经过转义后的html代码字符串</li>
+			</ul>
+			</span></div>
+	</div>
+	<div class="bd">
+			<div class="fun">函数：get_client_ip()</div>
+			<div class="readme"><span class="title">说明：</span><span>获取客户端ip地址</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>如果能成功获取ip地址，返回ip地址，否则返回‘unknown’。</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+	$ip=get_client_ip();
+	</pre>
+	</div>
+		
+	<div class="bd">
+			<div class="fun">函数：msubstr($str, $start=0, $length, $charset="utf-8", $suffix=true)</div>
+			<div class="readme"><span class="title">说明：</span>中文字符串截取</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$str：要截取的字符串。</li>
+				<li>$start：开始截取的字符，一般从0开始。</li>
+				<li>$length：截取的字符长度，按字符计算，不是按字节计算。</li>
+				<li>$charset：字符串的编码。utf-8,gbk,gb2312,big5</li>
+				<li>$suffix：字符串过长，截断之后是否显示”……“。</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php2" class="php">
+	msubstr($str, 0, 20);//截取20个字符
+	</pre>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">函数：is_email($user_email)</div>
+			<div class="readme"><span class="title">说明：</span>检查是否是正确的邮箱地址，是则返回true，否则返回false</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$user_email：给定的邮箱地址。</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php3" class="php">
+	if(!is_email($user_email))
+	{
+		echo '邮箱地址不正确';
+	}
+	</pre>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">函数：module($module)</div>
+			<div class="readme"><span class="title">说明：</span>模块调用</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$module：模块名称</li>
+				<li>返回模块实例化对象</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php4" class="php">
+	module('article')->getList();//调用article模块的getList方法
+	</pre>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">函数：is_utf8($string)</div>
+			<div class="readme"><span class="title">说明：</span> 检查字符串是否是UTF8编码,是返回true,否则返回false</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$string：要判断的字符串。</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php5" class="php">
+	//如果数据，不是utf8编码，则转换成utf-8编码
+	if(!is_utf8($str))
+	{
+		$str=auto_charset($str,'gbk','utf-8');
+	}
+	</pre>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">函数：auto_charset($fContents,$from='gbk',$to='utf-8')</div>
+			<div class="readme"><span class="title">说明：</span>编码转换，常用于解决乱码问题</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$fContents：要转换的字符串或数组</li>
+				<li>$from：数据原始编码</li>
+				<li>$to：需要转换成的编码</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php6" class="php">
+	$data=auto_charset($data,'gbk','utf-8');//gbk编码转成utf-8编码
+	$data=auto_charset($data,'utf-8','gbk');//utf-8编码转成gbk编码
+	</pre>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">函数：dump($var, $exit=false)</div>
+			<div class="readme"><span class="title">说明：</span>浏览器友好的变量输出，常用于调试</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$var：要输出的字符串或数组。</li>
+				<li>$exit：输出数据之后，是否执行exit,退出程序</li>
+			</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php7" class="php">
+	dump($data);//输出数据
+	dump($data,true);//输出数据,并退出程序，不再执行下面的代码
+	</pre>
+    </div>
+	
+	<div class="bd">
+			<div class="fun">函数：utime()</div>
+			<div class="readme"><span class="title">说明：</span>获取微秒时间，常用于计算程序的运行时间</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>参数为空</li>
+				<li>返回当前时间戳+微秒时间</li>
+			</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">函数：cp_uniqid()</div>
+			<div class="readme"><span class="title">说明：</span>生成唯一的值，常用于文件上传时的文件命名</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>参数为空</li>
+				<li>返回32位的字符串</li>
+			</ul>
+			</span></div>
+	</div>
+	<div class="bd">
+			<div class="fun">函数：cp_encode($data,$key='',$expire = 0))</div>
+			<div class="readme"><span class="title">说明：</span>加密函数，可用cp_decode()函数解密</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$data：待加密的字符串或数组；</li>
+				<li>$key：密钥；</li>
+				<li>$expire 过期时间</li>
+				<li>返回加密后的字符串</li>
+			</ul>
+			</span></div>
+	</div>	
+	<div class="bd">
+			<div class="fun">函数：cp_decode($string,$key='')</div>
+			<div class="readme"><span class="title">说明：</span>解密函数,解密经cp_encode之后的密文</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$string：待解密的字符串</li>
+				<li>$key:密钥</li>
+			</ul>
+			</span></div>
+	</div>
+	<div class="bd">
+			<div class="fun">函数：json_encode($data)</div>
+			<div class="readme"><span class="title">说明：</span>如果json_encode没有定义，则定义json_encode函数，常用于返回ajax数据</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$data：数组</li>
+			</ul>
+			</span></div>
+	</div>
+	<div class="bd">
+			<div class="fun">函数：del_dir($dir)</div>
+			<div class="readme"><span class="title">说明：</span>遍历删除目录和目录下所有文件，可用于删除缓存</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$dir：要删除的目录，字符串</li>
+			</ul>
+			</span></div>
+	</div>
+	<div class="bd">
+			<div class="fun">函数：model($model)</div>
+			<div class="readme"><span class="title">说明：</span>模型调用</div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$model：模型名称</li>
+				<li>返回模型实例化对象</li>
+			</ul>
+			</span></div>
+	</div>
+	<div class="footer" id="footer"></div>
+</div>
+

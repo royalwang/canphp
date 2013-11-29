@@ -1,0 +1,32 @@
+2012-02-17 14:52:26 | 127.0.0.1 | /cp/cpcms/index.php |	<b>出错</b>: MySQL Query Error<br>
+						<b>SQL</b>: SELECT id,title FROM `cp_article`  ORDER BY id desc LIMIT 9<br>
+						<b>错误详情</b>: Table 'cp.cp_article' doesn't exist<br>
+						<b>错误代码</b>:1146<br>
+2012-02-17 14:54:52 | 127.0.0.1 | /cp/cpcms/index.php/article/show |	<b>出错</b>: MySQL Query Error<br>
+						<b>SQL</b>: SELECT id,title FROM `cp_article`  WHERE id<125 and db_name()>0 ORDER BY id desc LIMIT 1<br>
+						<b>错误详情</b>: FUNCTION cp2.db_name does not exist<br>
+						<b>错误代码</b>:1305<br>
+2012-02-17 14:55:34 | 127.0.0.1 | /cp/cpcms/index.php/article/show |	<b>出错</b>: MySQL Query Error<br>
+						<b>SQL</b>: SELECT id,title FROM `cp_article`  WHERE id<125 and backup database ORDER BY id desc LIMIT 1<br>
+						<b>错误详情</b>: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database ORDER BY id desc LIMIT 1' at line 1<br>
+						<b>错误代码</b>:1064<br>
+2012-02-17 16:24:25 | 127.0.0.1 | /cp/cpcms/index.php/article/show |	<b>出错</b>: MySQL Query Error<br>
+						<b>SQL</b>: SELECT id,title FROM `cp_article`  WHERE id<125 and union select SCHEMA_NAME from information_schema.SCHEMATA limit 5,1 ORDER BY id desc LIMIT 1<br>
+						<b>错误详情</b>: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'union select SCHEMA_NAME from information_schema.SCHEMATA limit 5,1 ORDER BY id ' at line 1<br>
+						<b>错误代码</b>:1064<br>
+2012-02-17 16:24:44 | 127.0.0.1 | /cp/cpcms/index.php/article/show |	<b>出错</b>: MySQL Query Error<br>
+						<b>SQL</b>: SELECT id,title FROM `cp_article`  WHERE id<125 and union select SCHEMA_NAME from information_schema.SCHEMATA ORDER BY id desc LIMIT 1<br>
+						<b>错误详情</b>: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'union select SCHEMA_NAME from information_schema.SCHEMATA ORDER BY id desc LIMIT' at line 1<br>
+						<b>错误代码</b>:1064<br>
+2012-02-17 16:28:06 | 127.0.0.1 | /cp/cpcms/index.php/article/show |	<b>出错</b>: MySQL Query Error<br>
+						<b>SQL</b>: SELECT id,title FROM `cp_article`  WHERE id<1 and 1=2 union select 1,2,3,database(),5,version(),6,user(),7 ORDER BY id desc LIMIT 1<br>
+						<b>错误详情</b>: The used SELECT statements have a different number of columns<br>
+						<b>错误代码</b>:1222<br>
+2012-02-17 16:28:41 | 127.0.0.1 | /cp/cpcms/index.php/article/show |	<b>出错</b>: MySQL Query Error<br>
+						<b>SQL</b>: SELECT id,title FROM `cp_article`  WHERE id<1 and 1=2 union select database() ORDER BY id desc LIMIT 1<br>
+						<b>错误详情</b>: The used SELECT statements have a different number of columns<br>
+						<b>错误代码</b>:1222<br>
+2012-02-17 16:29:01 | 127.0.0.1 | /cp/cpcms/index.php/article/show |	<b>出错</b>: MySQL Query Error<br>
+						<b>SQL</b>: SELECT id,title FROM `cp_article`  WHERE id<1 union select database() ORDER BY id desc LIMIT 1<br>
+						<b>错误详情</b>: The used SELECT statements have a different number of columns<br>
+						<b>错误代码</b>:1222<br>

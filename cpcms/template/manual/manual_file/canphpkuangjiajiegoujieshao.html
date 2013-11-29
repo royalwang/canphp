@@ -1,0 +1,66 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--canphp框架结构介绍</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>CanPHP目录有core,lib,ext三个目录</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">core目录 </div>
+			<div class="readme"><span class="title">说明：</span><span>用于存放框架核心类</span></div>
+			<div class="readme"><span class="title">类文件：</span><ul>
+				<li>cpApp.class.php，单一入口应用控制类</li>
+				<li>cpModel.class.php，数据库封装类</li>
+				<li>cpTemplate.class.php，模板引擎类</li>
+				<li>cpError.class.php，错误提示类，统一控制单一入口类，数据库类，模板类的错误信息</li>
+				<li>cpHtmlCache.class.php，静态页面生成类，单一入口应用控制类需要调用</li>
+				<li>cpCache.class.php，缓存类，数据库封装类需要调用</li>
+				<li>cpConfig.class.php,默认参数配置</li>
+				<li>db/mysql.class.php，mysql数据库驱动类，数据库封装类需要调用</li>
+				</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">lib目录</div>
+			<div class="readme"><span class="title">说明：</span><span>用于存放官方扩展类</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+、				<li>Auth.class.php，权限认证类</li>
+				<li>Category.class.php，无限分类，常用于文章栏目和商品栏目的无限级分类</li>
+				<li>Check.class.php，表单验证类</li>
+				<li>common.function.php，常用函数</li>				
+				<li>Dbbak.class.php，数据库备份与恢复类</li>				
+				<li>Http.class.php，文件下载及数据采集类</li>
+				<li>Image.class.php，验证码生成及图片压缩类</li>
+				<li>Install.class.php，数据库安装类，常用于安装程序</li>
+				<li>Lang.class.php，多语言类</li>
+				<li>Page.class.php，多样式分页类</li>
+				<li>Plugin.class.php，插件类</li>
+				<li>UploadFile.class.php，文件和图片上传类</li>
+				<li>Xml.class.phpp，xml类,用于xml转php数组</li>
+				<li>Zip.class.php，zip压缩与解压缩</li>
+				</ul>
+			</span></div>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">ext目录 </div>
+			<div class="readme"><span class="title">说明：</span><span>用于存放第三方或您自己写的类</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>extend.php，自定义扩展函数</li>
+				<li>Email.class.php，邮件发送类</li>
+				<li>IpArea.class.php，获取ip地址的地理位置信息</li>
+				<li>Pinyin.class.php，汉字转化为拼音类</li>
+				<li>template_ext.php，模板标签扩展</li>
+				</ul>
+			</span></div>
+	</div>
+		
+	<div class="footer" id="footer"></div>
+</div>
+

@@ -1,0 +1,216 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--数据库操作</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>CP数据库操作类，仅是封装了常用的单表操作，如果复杂的sql语句，请用原生的sql语句</li>
+				<li>目前仅支持mysql，如需扩展其他数据库，请自行写数据库驱动</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">模板配置</div>
+			<div class="readme"><span class="title">说明：</span><span>在config.php文件中配置</span></div>
+			<div class="title">代码如下：</div>
+	<pre id="php" class="php">
+//数据库配置
+$config['DB_TYPE']='mysql';//数据库类型，一般不需要修改
+$config['DB_HOST']='localhost';//数据库主机，一般不需要修改
+$config['DB_USER']='root';//数据库用户名
+$config['DB_PWD']='123456';//数据库密码
+$config['DB_PORT']=3306;//数据库端口，mysql默认是3306，一般不需要修改
+$config['DB_NAME']='cp';//数据库名
+$config['DB_CHARSET']='utf8';//数据库编码，一般不需要修改
+$config['DB_PREFIX']='';//数据库前缀
+$config['DB_PCONNECT']=false;//true表示使用永久连接，false表示不适用永久连接，一般不使用永久连接
+ 
+$config['DB_CACHE_ON']=false;//是否开启数据库缓存，true开启，false不开启
+$config['DB_CACHE_PATH']='./data/db_cache/';//数据库查询内容缓存目录，地址相对于入口文件，一般不需要修改
+$config['DB_CACHE_TIME']=0;//缓存时间,0不缓存，-1永久缓存
+$config['DB_CACHE_CHECK']=false;//是否对缓存进行校验，一般不需要修改
+$config['DB_CACHE_FILE']='cachedata';//缓存的数据文件名
+$config['DB_CACHE_SIZE']='15M';//预设的缓存大小，最小为10M，最大为1G
+$config['DB_CACHE_FLOCK']=true;//是否存在文件锁，设置为false，将模拟文件锁，一般不需要修改
+//数据库配置结束
+
+	</pre>
+	</div>
+
+	<div class="bd">
+			<div class="fun">实例化模板引擎类</div>
+			<div class="readme"><span class="title">说明：</span>在公共模块commodMod.class.php的构造函数中实例化</div>
+			<div class="title">参考代码如下：</div>
+	<pre id="php2" class="php">
+	<?php
+//公共类
+class commonMod
+{
+	public $this->model;//数据库模型对象
+	public $tpl;//模板对象
+	public $config;//全局配置
+	static $global;//静态变量，用来实现单例模式
+	public function __construct()
+	{	
+		session_start();//开启session
+
+		//参数配置			
+		if(!isset(self::$global['config']))
+		{
+			global $config;
+			self::$global['config']=$config;			
+		}
+		$this->config=self::$global['config'];//配置
+		//数据库模型初始化
+		if(!isset(self::$global['model']))
+		{
+			//require(CP_PATH.'core/cpModel.class.php');//加载数据库模型类
+			self::$global['model']=new cpModel($this->config);//实例化数据库模型类				
+		}
+		$this->model=self::$global['model'];//数据库模型对象
+		//模板初始化
+		if(!isset(self::$global['tpl']))
+		{	
+		  //  require(CP_PATH.'core/cpTemplate.class.php');//加载模板类
+		    self::$global['tpl']=new cpTemplate($this->config);//实例化模板类		
+		}
+		$this->tpl=self::$global['tpl'];//模板类对象
+	}
+	//模板变量解析
+	protected function assign($name, $value)
+	{
+		return $this->tpl->assign($name, $value);
+	}
+	//模板输出
+	protected  function display($tpl='')
+	{	
+		return $this->tpl->display($tpl);	
+	}
+	?>
+	</pre>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">插入数据</div>
+			<div class="title">使用方法：</div>
+	<pre id="php3" class="php">
+	/*
+	$data为数据数组如
+     $data['name']='admin';
+	$data['email']='404352772@q.com';
+	 插入成功返回插入数据的id，否则返回false
+	*/
+	$this->model->table('表名')->data($data)->insert();
+
+	</pre>
+	</div>
+	
+		<div class="bd">
+			<div class="fun">更新数据</div>
+			<div class="title">使用方法：</div>
+	<pre id="php4" class="php">
+	/*
+	$data为数据数组 如
+	$data['name']='admin';
+	$data['email']='404352772@q.com';
+	$condition为查询条件,可为数组或字符串,$condition['id']=1;
+	更新成功返回影响的数据行数，否则返回false
+	*/
+	$this->model->table('表名')->data($data)->where($condition)->update();
+	</pre>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">数据库查询</div>
+			<div class="title">使用方法：</div>
+	<pre id="php5" class="php">
+	1、查询一条数据：
+	$info=$this->model->table('表名')->where($condition)->find();
+	成功返回一维数组，否则返回false
+	
+	限制字段
+	$info=$this->model->table('表名')->field('id,title')->where($condition)->find();
+	
+	排序
+	$info=$this->model->table('表名')->field('id,title')->where($condition)->order('id desc')->find();	
+	注意:order('id desc')逆序order('id asc')升序
+	
+	缓存
+	$info=$this->model->table('表名')->cache(10)->where($condition)->find();
+	cache($time) $time>0,数据缓存时间，$time=0，不缓存,$time=-1永久缓存
+	
+2、查询多条数据
+	$list=$this->model->table('表名')->where($condition)->select();
+	成功返回二维数组，否则返回false
+	限制字段
+	$list=$this->model->table('表名')->field('id,title')->where($condition)->select();
+	
+	排序
+	$list=$this->model->table('表名')->field('id,title')->where($condition)->order('id desc')->select();
+	
+	限制条数
+	$list=$this->model->table('表名')->field('id,title')->where($condition)->order('id desc')->limit(10)->select();
+	
+	缓存
+	$list=$this->model->table('表名')->cache($time)->field('id,title')->where($condition)->order('id desc')->limit(10)->select();
+	cache($time) $time>0,数据缓存时间，$time=0，不缓存,$time=-1永久缓存
+	
+3、查询数据条数
+	$count=$this->model->table('表名')->where($condition)->count();
+	成功返回一个整数，否则返回false
+	
+	$count=$this->model->table('表名')->cache($time)->where($condition)->count();
+/*
+注意:field(),limit(),order(),cache(),table(),where()没有先后顺序之分
+$condition条件可为字符串或数组，如果是数组，数组下标表示数据库字段名 多个元素用and连接,
+复杂一点的sql，可以写成原生的sql查询条件
+$config['DB_CACHE_ON']=true;等于true时，数据库缓存才生效
+*/
+	</pre>
+	</div>
+	<div class="bd">
+	<div class="fun">删除数据</div>
+	<div class="title">使用方法：</div>
+	<pre id="php6" class="php">
+	/*
+	$condition为查询条件,可为数组或字符串,$condition['id']=1;
+	删除成功返回影响的数据行数，否则返回false
+	注意，当$condition为空时,不会删除数据。防止不小心把整个表的数据给删除了
+	*/
+	$this->model->table('表名')->where($condition)->delete();
+	</pre>
+	</div>	
+	<div class="bd">
+		<div class="fun">执行原生sql代码</div>
+		<div class="title">使用方法：</div>
+	<pre id="php7" class="php">
+	/*
+	如果$sql为查询条件，则返回二维数组，且可以设置缓存$this->model->cache(缓存时间)->query($sql);
+	如果sql不是查询条件语句，缓存设置无效，返回的数据跟mysql_query($sql)一样
+	*/
+	$this->model->query($sql);
+	</pre>
+	</div>
+	
+	<div class="bd">
+	<div class="fun">其他</div>
+	<pre id="php8" class="php">
+	1，查看生成的sql语句，echo $model->sql;或者echo $model->getSql();
+	数据库操作有问题时，用来查看生成的sql语句 是否正确
+	
+	2，使用数据库配置的前缀，$model->pre;
+	主要用于写原生的sql语句用到
+	
+	3 特殊数据库前缀
+	$this->model->table('表名',true)->
+	table表第二个参数为true时，忽略默认的表前缀
+	
+	4 操作数据库基类，具体方法查看db/mysql.class.php文件
+	$this->model->db->
+	</pre>
+	</div>
+	<div class="footer" id="footer"></div>
+</div>
+

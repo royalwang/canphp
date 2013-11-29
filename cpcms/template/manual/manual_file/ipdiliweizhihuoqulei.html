@@ -1,0 +1,36 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--ip地理位置获取类</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/ext/IpArea.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				<li>使用场景：获取访客或会员的ip地址信息等</li>
+				<li>注意：需要ip地址库的支持，ip地址库到 <a href="http://www.canphp.com/bbs/thread-666-1-1.html" target="_blank">http://www.canphp.com/bbs/thread-666-1-1.html</a> 下载</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：get($ip='',$all=false, $charset='utf-8')</div>
+			<div class="readme"><span class="title">说明：</span><span>通过ip获取得到相应的地理位置信息（如省份城市等）</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$ip，要转换的ip地址，如果为空，则获取客户端的ip地址</li>
+				<li>$all，是否显示全部信息(包括相同网段的ip)</li>
+				<li>$charset，输出的内容编码，默认是utf-8</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+		$ip=new IpArea();
+		echo $ip->get('113.64.57.230');//输出 广东省广州市电信
+		print_r($ip->get('113.64.57.230',true));
+		//输出Array ( [ip] => 113.64.57.230 [beginip] => 113.64.43.0 [endip] => 113.64.58.255 [country] => 广东省广州市 [area] => 电信 ) 
+	</pre>
+	</div>
+
+	<div class="footer" id="footer"></div>
+</div>
+

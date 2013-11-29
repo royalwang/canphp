@@ -1,0 +1,72 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--程序执行流程</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>采用单一入口控制，具体实现在cpApp.class.php文件里面</li>
+				<li>模块与方法的访问方式 http://域名/index.php/模块/方法.html,<br />
+				可以通过url重写功能，把网址中的index.php去掉，重写之后：http://域名/模块/方法.html</li>
+				<li>网址参数传递，有三种方式：
+				<p>1，传统方式传递  http://域名/模块/方法?参数名1=参数值1&参数名2=参数值2<br />
+				参数获取：$_GET['参数名1'] $_GET['参数名2']</p>
+				<p>2，http://域名/index.php/模块/方法-参数名1-参数值1-参数名2-参数值2.html<br />
+				参数获取：$_GET['参数名1'] $_GET['参数名2']</p>
+				<p>3 http://域名/index.php/模块/方法-参数值1-参数值2.html <br />
+				数据获取： 参数值1$_GET[0] 参数值2$_GET[1]</p>
+				</li>
+				<li>以网址 http://www.canphp.com/article/show-114.html 为例进行讲解</li>
+				</ul>
+			</span></div>
+	</div>
+	 <div class="bd">
+	<div class="readme"><span class="title">第一步：解析网址</span><ul>
+				<li>解析得到当前模块 $_GET['_module']为article</li>
+				<li>解析得到当前方法$_GET['_action']为show</li>
+				<li>解析得到参数$_GET[0]为114</li>
+				</ul>
+			</span></div>
+	</div>	
+	<div class="bd">
+			<div class="readme"><span class="title">第二步：检查初始化init.php程序是否存在，存在则加载。不存在，则跳过</span><ul>
+				<li>初始化init.php程序作为扩展使用，一般用不到</li>
+				<li>init.php文件执行在网址解析之后，执行模块之前，在这里可以进行实现加载一些扩展，如网址路由，模块分组(这些功能CP默认没有提供，需要自行实现)</li>
+				
+				</ul>
+			</span></div>
+	</div>
+	 <div class="bd">
+			<div class="readme"><span class="title">第三步：常量定义</span><ul>
+	<li>__ROOT__  值为 http://www.canphp.com/</li>
+	<li>__PUBLIC__ 值为 http://www.canphp.com/public</li>
+	<li>__APP__ 值为 http://www.canphp.com/</li>
+	<li>__URL__ 值为 http://www.canphp.com/article</li>
+
+	<li>若$config['URL_REWRITE_ON']=false;等于false时</li>
+	<li>__APP__ 将加上index.php入口文件名 此时值为 http://www.canphp.com/index.php</li>
+	<li>__URL__ 将加上index.php入口文件名 此时值为 http://www.canphp.com/index.php/article</li>	
+	<li>注意：__ROOT__，__PUBLIC__常用于定位图片，css，js路径； __APP__，__URL__常用于网址</li>
+		</ul>
+			</span></div>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">第四步：执行模块和方法</span><ul>				
+	检查module/articleMod.class.php文件是否存在，如果存在继续检查articleMod类是否定义，如果articleMod类已经定义，则检查show方法是否存在，如果存在，则执行show方法，如果不存在show方法，继续检查空操作empty()方法是否存在，存在，则执行，不存在则报错。
+	如果不存在module/articleMod.class.php，则检查空模块empty.class.php文件是否存在，存在则加载，否则报错。
+				</ul>
+			</span></div>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">第五步：检查结束前回调函数cp_app_end()是否存在，存在则执行，不存在则跳过</span><ul>
+				<li>cp_app_end()，扩展使用，一般用不到</li>
+				</ul>
+			</span></div>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">至此，程序运行结束</span>
+			</span></div>
+	</div>
+	<div class="footer" id="footer"></div>
+</div>
+

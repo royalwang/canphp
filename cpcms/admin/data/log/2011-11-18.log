@@ -1,0 +1,2 @@
+2011-11-18 16:55:45 | 127.0.0.1 | /cp/cpcms/admin/index.php/system |unlink(../data/db_cache/.svn/all-wcprops) [<a href='function.unlink'>function.unlink</a>]: Permission denied
+2011-11-18 17:20:48 | 127.0.0.1 | /cp/cpcms/admin/index.php/system |index操作方法在system模块中不存在

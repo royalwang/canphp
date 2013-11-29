@@ -1,0 +1,32 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--xml类</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Xml.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				<li>使用场景：xml数据转成php数组</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：decode($xml)</div>
+			<div class="readme"><span class="title">说明：</span><span>xml数据转成php数组</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$xml，xml格式的数据内容</li>
+				<li>返回php数组</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+	//读取美团网接口，并将xml转换成php数组输出
+	print_r(Xml::decode(file_get_contents('http://www.meituan.com/api/v1/divisions')));
+	</pre>
+	</div>
+		
+	<div class="footer" id="footer"></div>
+</div>
+

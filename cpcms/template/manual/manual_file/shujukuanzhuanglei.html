@@ -1,0 +1,38 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--数据库安装类</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Install.class.php</li>
+				<li>常用于制作系统安装程序</li>
+				<li>默认会自动加载，不需要手动include</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：mysql($sql_path,$old_prefix="",$new_prefix="") </div>
+			<div class="readme"><span class="title">说明：</span><span>将sql数据库文件解析成一个数组，用于程序安装时，将数据库文件导入到数据库中</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$sql_path，db.sql数据库文件</li>
+				<li>$old_prefix，旧的数据库前缀，即db.sql数据库文件前缀</li>
+				<li>$new_prefix，新的数据库前缀</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+	<?php
+	$sql_array=Install::mysql('../data/db.sql','cp_',$config['DB_PREFIX']); 
+	//执行数据库操作
+	foreach($sql_array as $sql)
+	{
+		mysql_query($sql);//安装数据
+	}
+	</pre>
+	</div>
+	
+	<div class="footer" id="footer"></div>
+</div>
+

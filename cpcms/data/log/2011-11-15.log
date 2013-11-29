@@ -1,0 +1,4 @@
+2011-11-15 17:08:36 | 127.0.0.1 | /cp/cpcms/index.php/article/index-11.html |	<b>出错</b>: MySQL Query Error<br>
+						<b>SQL</b>: SELECT * FROM `cp_article`  WHERE  `status`='1'  ORDER BY id desc LIMIT 0,<br>
+						<b>错误详情</b>: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1<br>
+						<b>错误代码</b>:1064<br>

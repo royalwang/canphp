@@ -1,0 +1,32 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--汉字转拼音类</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/ext/Pinyin.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				<li>使用场景：按首字母搜索和生成拼音标题等</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：output($str, $utf8 = true)</div>
+			<div class="readme"><span class="title">说明：</span><span>汉字转换成拼音，并输出</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$str，所要转化拼音的汉字</li>
+				<li>$utf8，所要转化拼音的汉字是否是utf8编码，默认为true，如果是gbk或gb2312编码，设置为false</li>
+				</ul>
+			</span></div>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+		$py=new Pinyin();
+		echo $py->output('好好学习天天向上');//输出haohaoxuexitiantianxiangshang
+	</pre>
+	</div>
+
+	<div class="footer" id="footer"></div>
+</div>
+

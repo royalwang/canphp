@@ -1,0 +1,29 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册——日志和错误调试配置</h1>
+	</div>
+	<div class="bd">
+		<div class="fun">日志和错误调试配</div>
+		<div class="readme"><span class="title">说明</span><ul>
+			<li>作用：用来控制错误日志和错误显示</li>
+			<li>开发时，建议调试模式设置为true，日志开启</li>
+			<li>发布时，建议调试模式设置为false,日志开启</li>
+			<li>错误重定向，一般在多语言网站中使用</li>
+		</ul>
+		</span></div>
+		<div class="title">详细</div>
+<pre id="php" class="php">
+//日志和错误调试配置
+$config['DEBUG']=true;	//是否开启调试模式，true开启，false关闭
+$config['LOG_ON']=false;//是否开启出错信息保存到文件，true开启，false不开启
+$config['LOG_PATH']='./data/log/';//出错信息存放的目录，出错信息以天为单位存放，一般不需要修改
+$config['ERROR_URL']='';//出错信息重定向页面，为空采用默认的出错页面，一般不需要修改
+$config['ERROR_HANDLE']=true;//是否启动CP内置的错误处理，如果开启了xdebug，建议设置为false
+//日志和错误调试配置介绍
+</pre>
+
+	</div>
+	<div class="footer" id="footer">	
+	</div>
+</div>

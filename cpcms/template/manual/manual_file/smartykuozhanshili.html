@@ -1,0 +1,82 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--smarty扩展实例</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>将下载下来的smarty放到CanPHP/ext/smarty目录里面</li>
+				<li>在公共模块的构造函数中通过require_once(CP_PATH.'ext/smarty/Smarty.class.php');来加载smarty </li>
+				<li>smarty参数配置和使用，请参考smarty手册</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">在公共模块，扩展smarty模板引擎样例：</div>
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>$this->assign($name, $value);//赋值</li>
+				<li>$this->display();//显示模板</li>
+				<li>在模板中，模板标签的使用，参考smarty手册</li>
+				</ul>
+			  </div>
+			<div class="title">使用方法：</div>
+	<pre id="php2" class="php">
+<?php
+class commonMod
+{
+	public $tpl;
+	public $model;
+	static $global;
+	public function __construct()
+	{		
+		global $model;
+		$this->model=$model;
+		//加载并实例化smarty类
+		require_once(CP_PATH.'ext/smarty/Smarty.class.php'); 
+		$Smarty=new Smarty(); 
+		$Smarty->caching=false;     
+		$Smarty->cache_lifetime=30;    
+		$Smarty->template_dir="./template";    
+		$Smarty->compile="./templates_c";    
+		$Smarty->cache_dir="./smarty_cache";   
+		$Smarty->left_delimiter="{";   
+		$Smarty->right_delimiter="}";    
+		$this->tpl=$Smarty;
+		
+	if(!isset(self::$global['config']))
+		{
+			global $config;
+			self::$global['config']=$config;			
+		}	
+		$this->config=self::$global['config'];//配置
+	}
+	
+		//模板变量解析
+	public function assign($name, $value)
+	{
+		return $this->tpl->assign($name, $value);
+	}
+
+	
+	//模板输出
+	public function display($tpl='')
+	{	
+		//在模板中使用CP定义的常量,使用方式如{$__ROOT__} {$__APP__}
+		$this->assign("__ROOT__",__ROOT__);
+		$this->assign("__APP__",__APP__);
+		$this->assign("__URL__",__URL__);
+		$this->assign("__PUBLIC__",__PUBLIC__);
+		
+		//实现不加参数时，自动加载相应的模板
+		$tpl=empty($tpl)?$_GET['_module'].'/'.$_GET['_action'].$this->config['TPL_TEMPLATE_SUFFIX'] : $tpl; 	
+		return $this->tpl->display($tpl);	
+	}
+}
+?>
+	</pre>
+	</div>
+		
+	<div class="footer" id="footer"></div>
+</div>
+

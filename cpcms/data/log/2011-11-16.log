@@ -1,0 +1,8 @@
+2011-11-16 14:14:53 | 127.0.0.1 | /cp/cpcms/index.php/case/ |	<b>出错</b>: MySQL Query Error<br>
+						<b>SQL</b>: SELECT count(*) FROM `cp_case`  WHERE  `status`='1' <br>
+						<b>错误详情</b>: Unknown column 'status' in 'where clause'<br>
+						<b>错误代码</b>:1054<br>
+2011-11-16 09:56:12 | 127.0.0.1 | /cp/cpcms/install/install.php |请填写数据库参数
+2011-11-16 09:56:17 | 127.0.0.1 | /cp/cpcms/install/install.php |Invalid argument supplied for foreach()
+2011-11-16 09:56:47 | 127.0.0.1 | /cp/cpcms/install/install.php |请填写数据库参数
+2011-11-16 09:56:48 | 127.0.0.1 | /cp/cpcms/install/install.php |请填写数据库参数

@@ -1,0 +1,11 @@
+@charset "utf-8";
+A:link, A:visited, A:active, A:hover { COLOR: #6f9822; TEXT-DECORATION: none }
+A:hover{ color:#6C6 }
+body{font-family:"宋体", Verdana, Arial, Helvetica, sans-serif; font-size:12px; color: #555; line-height: 150%; }
+h4{font-weight:normal; font-size:14px; padding-left:20px; height:10px;font-family:"黑体", "微软雅黑", "宋体";}
+div{margin:0; padding:0; }
+.info,.topbg,.footbg{background: url(../images/sucess.gif);width:512px; height:30px;background-position: -512px 0px; background-repeat: no-repeat;}
+.container{background: url(../images/sucess.gif); margin:60px auto; width:512px; }
+.info{background-position: 0px 0px;  background-repeat: repeat-y; height:auto; text-indent:30px; }
+.info span{ color:#FF0000; font-weight:bold}
+.footbg{background-position: -512px -30px;}

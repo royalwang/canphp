@@ -1,0 +1,100 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--多语言实现</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/Lang.class.php</li>
+				<li>默认会自动加载，不需要手动include</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：init($config=array())</div>
+			<div class="readme"><span class="title">说明：</span><span>初始化参数</span></div>
+	<pre id="php" class="php">
+	//多语言配置
+	$config['LANG_DEFAULT']='zh-cn';       //默认语言
+	$config['LANG_PACK_PATH']='./lang/';      //语言包目录
+	$config['LANG_PACK_SUFFIX']='.lang.php';    //语言包后缀
+	$config['LANG_PACK_COMMON']='common';   //公用语言包，默认会自动加载
+	//多语言配置结束
+	</pre>
+			<div class="fun">方法：getPack($pack='') </div>
+			<div class="readme"><span class="title">说明：</span><span>获取语言包数组</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$pack，指定加载某个语言包，为空则加载公共语言包，否则加载公共语言包和指定的语言包</li>
+				</ul>
+			</span></div>
+			
+			<div class="fun">方法：get($key,$pack='') </div>
+			<div class="readme"><span class="title">说明：</span><span>获取不同语言的值</span></div>
+			<div class="readme"><span class="title">参数：</span><ul>
+				<li>$key，多语言数组下标</li>
+				<li>$pack，指定加载某个语言包，为空则加载公共语言包，否则加载公共语言包和指定的语言包</li>
+				</ul>
+			</span></div>
+			
+			<div class="title">使用方法：</div>
+	<pre id="php2" class="php">
+使用方法：
+1、多语言类是放在canphp目录的lib子目录里面，因为canphp有自动加载的功能，所以在用的时候不需要加载，直接在您的公共模块构造函数初始化语言LANG::init();
+2、在您多语言切换的时候可以如：<a href="?lang=en">ENGLISH</a>，这样获取选择语言不同的语言包。
+3、在您所指定的目录分别写上您所需语言的语言包，格式如下：<?php return array('nihao')=>'你好'?> 和<?php return array('nihao')=>'hello'?>，canphp的多语言实现其实就是将2个或多个语言包数组合并，然后根据下标，切换不同语言。
+4、在您所要实现多语言关键字用<?php LANG::get('关键字')?>来替换，如：<?php LANG::get('nihao')?>，当选择中文的时候显示"你好"，英文的时候显示"hello"。
+补充：若要实现数据库数据的多语言，则只要将数据表用不同前缀就能实现，然后在初始化数据库模型类的前面，更换数据库下标。
+案例1：
+1、在配置文件config.Php中，配置如下：
+$config['LANG_DEFAULT']='zh-cn';//默认语言
+$config['LANG_PACK_PATH']='./lang/';//语言包目录
+$config['LANG_PACK_SUFFIX']= '.lang.php';//语言包后缀
+$config['LANG_PACK_COMMON']= 'common';//公用语言包，默认会自动
+2、根据配置信息，在根目录创建lang目录，然后在lang目录下创建2个子目录，分别为：lang/en(英文包)和lang/zh(中文包)。
+3、编辑语言包，在lang/zh/common.lang.php中写：
+<?php return array('hyxx'=>'欢迎学习');?>
+在lang/common.lang.php中写： <?php return array('hyxx'=>'welcome to study');?>
+4、实现多语言切换:
+<a href="?lang=zh">中文</a>&<a href="?lang=en">英文</a>
+5、模板文件中：
+<b><?php LANG:get('hyxx')?>CanPHP!</b>
+6、输出：
+中文：欢迎学习CanPHP！，英文：welcome to study CanPHP！
+案例2：
+实现数据库数据多语言，案例1的前4步不变，后2步如下：
+5、在数据库中根据不同前缀建表，如：cp_zh_info 和 cp_en_info 。
+cp_zh_info 字段：id=1 ,info="欢迎学习CanPHP！;"
+cp_en_info 字段：id=1 ,info="welcome to study CanPHP！;"
+6、在您的公共模块初始化数据库模型类之前，更改数据库前缀，如：
+Lang::init();//初始化语言类
+$this->config['DB_PREFIX']='cp_'.__LANG__.'_';
+if(!isset(self::$global['model']))
+{
+        require(CP_PATH.'core/cpModel.class.php');//加载数据库模型类
+        self::$global['model']=new cpModel($this->config);//实例化数据库模型类                          
+}
+7、在模块中进行查询操作：
+<?php
+Class indexMod extends commonMod{
+      Public function __construct(){
+             Parent::__construct();
+      }
+      Public function index(){
+              $info=$this->model->field('info')->table('info')->where('id=1')->find();
+              $this->assign('info',$info);
+              $this->display();
+      }
+}
+?>
+8、在index.html模板页进行输出，如下：
+<b>{$info}</b>
+中文显示："欢迎学习CanPHP！"
+英文显示："welcome to study CanPHP！"
+	</pre>
+	</div>
+	
+
+	<div class="footer" id="footer"></div>
+</div>
+

@@ -1,0 +1,108 @@
+
+<div  class="main">
+	<div class="header">
+		<h1>CanPHP开发手册--图片与文件上传</h1>
+	</div>
+	<div class="bd">
+			<div class="readme"><span class="title">说明：</span><ul>
+				<li>类文件：CanPHP/lib/UploadFile.class.php文件中</li>
+				<li>默认会自动加载，不需要手动include</li>
+				</ul>
+			</span></div>
+	</div>
+	
+	<div class="bd">
+			<div class="fun">方法：upload() //上传文件</div>
+			<div class="fun">方法：getErrorMsg()//获取上传失败的信息</div>
+			<div class="fun">方法：getUploadFileInfo()//获取上传成功后的信息</div>
+			<div class="title">属性：</div>
+	<pre id="php" class="php">
+    // 上传文件的最大值
+    public $maxSize = -1;
+
+    // 是否支持多文件上传
+    public $supportMulti = true;
+
+    // 允许上传的文件后缀
+    //  留空不作后缀检查
+    public $allowExts = array();
+
+    // 允许上传的文件类型
+    // 留空不做检查
+    public $allowTypes = array();
+
+    // 使用对上传图片进行缩略图处理
+    public $thumb   =  false;
+    // 缩略图最大宽度
+    public $thumbMaxWidth;
+    // 缩略图最大高度
+    public $thumbMaxHeight;
+    // 缩略图前缀
+    public $thumbPrefix   =  'thumb_';
+    public $thumbSuffix  =  '';
+    // 缩略图保存路径
+    public $thumbPath = '';
+    // 缩略图文件名
+    public $thumbFile		=	'';
+    // 是否移除原图
+    public $thumbRemoveOrigin = false;
+    // 压缩图片文件上传
+    public $zipImages = false;
+    // 启用子目录保存文件
+    public $autoSub   =  false;
+    // 子目录创建方式 可以使用hash date
+    public $subType   = 'hash';
+    public $dateFormat = 'Ymd';
+    public $hashLevel =  1; // hash的目录层次
+    // 上传文件保存路径
+    public $savePath = '';
+    public $autoCheck = true; // 是否自动检查附件
+    // 存在同名是否覆盖
+    public $uploadReplace = false;
+
+    // 上传文件命名规则
+    // 例如可以是 time uniqid com_create_guid 等
+    // 必须是一个无需任何参数的函数名 可以使用自定义函数
+    public $saveRule = '';
+
+    // 上传文件Hash规则函数名
+    // 例如可以是 md5_file sha1_file 等
+    public $hashType = 'md5_file';
+
+    // 错误信息
+    private $error = '';
+
+    // 上传成功的文件信息
+    private $uploadFileInfo ;	</pre>
+			<div class="title">使用方法：</div>
+	<pre id="php" class="php">
+	//在公共模块，定义一个上传方法，在其他模块中，直接使用
+	//$upload_dir上传的目录名
+		protected function _upload($upload_dir)
+    {
+			$upload = new UploadFile();
+			//设置上传文件大小
+			$upload->maxSize=1024*1024*2;//最大2M
+			//设置上传文件类型
+			$upload->allowExts  = explode(',','jpg,gif,png,bmp');
+		
+			//设置附件上传目录
+			$upload->savePath ='../images/'.$upload_dir."/";
+			$upload->saveRule = cp_uniqid;
+	
+			if(!$upload->upload())
+			 {
+				//捕获上传异常
+				$this->error($upload->getErrorMsg());
+			}
+			else 
+			{
+				//取得成功上传的文件信息
+				return $upload->getUploadFileInfo();
+			}
+	}
+	</pre>
+	</div>
+	<div class="footer" id="footer"></div>
+</div>
+

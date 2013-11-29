@@ -1,0 +1,156 @@
+2012-03-27 11:35:08 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: php_network_getaddresses: getaddrinfo failed: ��֪�������������� 
+2012-03-27 11:36:54 | 127.0.0.1 | /cp/cpcms/index.php |mysql_query() expects parameter 2 to be resource, null given
+2012-03-27 11:38:55 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:39:57 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:40:31 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:40:34 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:41:12 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:41:42 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:42:45 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:43:36 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:43:37 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:43:37 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:43:38 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:43:38 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:43:38 | 127.0.0.1 | /cp/cpcms/index.php |mysql_fetch_array() expects parameter 1 to be resource, boolean given
+2012-03-27 11:59:25 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: php_network_getaddresses: getaddrinfo failed: ��֪�������������� 
+2012-03-27 11:59:26 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: php_network_getaddresses: getaddrinfo failed: ��֪�������������� 
+2012-03-27 11:59:26 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: php_network_getaddresses: getaddrinfo failed: ��֪�������������� 
+2012-03-27 12:00:27 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:00:30 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:01:10 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:45:46 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:59:37 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:59:38 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:59:38 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:59:39 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:59:39 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:59:40 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:59:40 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:59:40 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:59:41 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 12:59:42 | 127.0.0.1 | /cp/cpcms/index.php |mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES)
+2012-03-27 13:00:04 | 127.0.0.1 | /cp/cpcms/index.php |	<b>出错</b>: MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 13:00:41 | 127.0.0.1 | /cp/cpcms/index.php |	<b>出错</b>: MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 13:00:43 | 127.0.0.1 | /cp/cpcms/index.php |	<b>出错</b>: MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 13:07:34 | 127.0.0.1 | /cp/cpcms/index.php |	<b>出错</b>: 无法连接到数据库服务器<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 13:07:40 | 127.0.0.1 | /cp/cpcms/index.php |	<b>出错</b>: 无法连接到数据库服务器<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 13:08:14 | 127.0.0.1 | /cp/cpcms/index.php |<b>出错</b>: 无法连接到数据库服务器<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 13:08:24 | 127.0.0.1 | /cp/cpcms/index.php | 无法连接到数据库服务器<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 13:24:04 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 13:24:14 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 13:24:46 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 14:29:17 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: <br>
+					<b>错误代码</b>:<br>
+2012-03-27 14:30:08 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: <br>
+					<b>错误代码</b>:<br>
+2012-03-27 14:30:47 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: <br>
+					<b>错误代码</b>:<br>
+2012-03-27 14:32:22 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: <br>
+					<b>错误代码</b>:<br>
+2012-03-27 14:32:52 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: <br>
+					<b>错误代码</b>:<br>
+2012-03-27 14:32:53 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: <br>
+					<b>错误代码</b>:<br>
+2012-03-27 14:33:23 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: <br>
+					<b>错误代码</b>:<br>
+2012-03-27 14:33:49 | 127.0.0.1 | /cp/cpcms/index.php | MySQL Query Error<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: <br>
+					<b>错误代码</b>:<br>
+2012-03-27 14:36:36 | 127.0.0.1 | /cp/cpcms/index.php | 无法连接到数据库服务器<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 14:36:49 | 127.0.0.1 | /cp/cpcms/index.php | 无法连接到数据库服务器<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root2'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 14:37:02 | 127.0.0.1 | /cp/cpcms/index.php | 无法连接到数据库服务器<br>
+					<b>SQL</b>: show databases<br>
+					<b>错误详情</b>: Access denied for user 'root2'@'localhost' (using password: YES)<br>
+					<b>错误代码</b>:1045<br>
+2012-03-27 15:28:32 | 127.0.0.1 | /cp/cpcms/index.php | sqlite query Errornear "show": syntax error<br>
+					<b>SQL</b>: show databases<br>
+2012-03-27 15:29:06 | 127.0.0.1 | /cp/cpcms/index.php | near "show": syntax error<br>
+					<b>SQL</b>: show databases<br>
+2012-03-27 15:29:07 | 127.0.0.1 | /cp/cpcms/index.php | near "show": syntax error<br>
+					<b>SQL</b>: show databases<br>
+2012-03-27 15:29:08 | 127.0.0.1 | /cp/cpcms/index.php | near "show": syntax error<br>
+					<b>SQL</b>: show databases<br>
+2012-03-27 15:29:08 | 127.0.0.1 | /cp/cpcms/index.php | near "show": syntax error<br>
+					<b>SQL</b>: show databases<br>
+2012-03-27 15:29:52 | 127.0.0.1 | /cp/cpcms/index.php | near "show": syntax error<br>
+					<b>SQL</b>: show databases<br>
+2012-03-27 15:29:54 | 127.0.0.1 | /cp/cpcms/index.php | near "show": syntax error<br>
+					<b>SQL</b>: show databases<br>
+2012-03-27 15:30:16 | 127.0.0.1 | /cp/cpcms/index.php | near "'CREATE TABLE foo (bar varchar(10))": syntax error<br>
+					<b>SQL</b>: 'CREATE TABLE foo (bar varchar(10))<br>
+2012-03-27 15:30:51 | 127.0.0.1 | /cp/cpcms/index.php | table foo already exists<br>
+					<b>SQL</b>: CREATE TABLE foo (bar varchar(10))<br>
+2012-03-27 15:30:53 | 127.0.0.1 | /cp/cpcms/index.php | table foo already exists<br>
+					<b>SQL</b>: CREATE TABLE foo (bar varchar(10))<br>
+2012-03-27 15:35:43 | 127.0.0.1 | /cp/cpcms/index.php | table foo already exists<br>
+					<b>SQL</b>: CREATE TABLE foo (bar varchar(10))<br>
+2012-03-27 15:35:46 | 127.0.0.1 | /cp/cpcms/index.php | table foo already exists<br>
+					<b>SQL</b>: CREATE TABLE foo (bar varchar(10))<br>
+2012-03-27 15:35:48 | 127.0.0.1 | /cp/cpcms/index.php | table foo already exists<br>
+					<b>SQL</b>: CREATE TABLE foo (bar varchar(10))<br>
+2012-03-27 15:40:38 | 127.0.0.1 | /cp/cpcms/index.php | unrecognized token: "`"<br>
+					<b>SQL</b>: INSERT INTO foo (`bar`) VALUES ('1332834038')<br>
+2012-03-27 15:42:46 | 127.0.0.1 | /cp/cpcms/index.php | no such table: foo<br>
+					<b>SQL</b>: select bar from foo order by bar desc<br>
+2012-03-27 15:42:49 | 127.0.0.1 | /cp/cpcms/index.php | no such table: foo<br>
+					<b>SQL</b>: select bar from foo order by bar desc<br>
+2012-03-27 15:42:50 | 127.0.0.1 | /cp/cpcms/index.php | no such table: foo<br>
+					<b>SQL</b>: select bar from foo order by bar desc<br>
+2012-03-27 15:42:51 | 127.0.0.1 | /cp/cpcms/index.php | no such table: foo<br>
+					<b>SQL</b>: select bar from foo order by bar desc<br>
+2012-03-27 15:42:53 | 127.0.0.1 | /cp/cpcms/index.php | no such table: foo<br>
+					<b>SQL</b>: select bar from foo order by bar desc<br>
+2012-03-27 15:42:54 | 127.0.0.1 | /cp/cpcms/index.php | no such table: foo<br>
+					<b>SQL</b>: select bar from foo order by bar desc<br>
