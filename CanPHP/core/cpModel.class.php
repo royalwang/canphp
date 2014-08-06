@@ -19,7 +19,8 @@ class cpModel{
 	public function connect() {
 		$dbDriver = 'cp' . ucfirst( $this->config['DB_TYPE'] );
 		require_once( dirname(__FILE__) . '/db/' . $dbDriver . '.class.php' );
-		$this->db = new $dbDriver( $this->config );	//实例化数据库驱动类	  
+		$this->db = new $dbDriver( $this->config );	//实例化数据库驱动类
+		$dbDriver::getInstance($this->config);		
 	}
 	
 	//设置表，$$ignore_prefix为true的时候，不加上默认的表前缀
