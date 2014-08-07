@@ -1,5 +1,8 @@
 <?php
-class cpMysql {
+namespace canphp\code\db;
+use \canphp\core\cpObject;
+
+class cpMysql extends cpObject{
 	private $_writeLink = NULL; //主
 	private $_readLink = NULL; //从
 	private $_replication = false; //标志是否支持主从

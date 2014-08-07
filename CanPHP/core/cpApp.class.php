@@ -232,12 +232,15 @@ class cpApp {
 	
 	//实现类的自动加载
 	public function autoload($classname) {   
+		var_dump($classname);	
 		$dir_array = array(	$this->appConfig['MODULE_PATH'],	//模块文件
 							CP_CORE_PATH . '/../lib/',	//官方扩展库
 							CP_CORE_PATH . '/../ext/',	//第三方扩展库
 							CP_CORE_PATH . '/',	//核心文件
+							CP_CORE_PATH . '/../../',	//核心文件
 							$this->appConfig['MODEL_PATH'],	//模型文件
 						  );
+					  
 		$dir_array = array_merge($dir_array, $this->appConfig['AUTOLOAD_DIR']);
 		foreach($dir_array as $dir) {
 			$file = $dir . $classname . '.class.php';
