@@ -1,7 +1,5 @@
 <?php
 namespace canphp\core;
-use namespace canphp\core\cpEvent;
-
 class cpObject{
 	static public $objStorage = array();
 	public $__data = array();
@@ -25,7 +23,7 @@ class cpObject{
 	//执行方法
 	public function __call($method, $args){
 		//前置调用
-		$event = cpEvent::emit("call_{$class}_{$method}_before", array($this->_obj, $method), $args);
+		$event = \canphp\core\cpEvent::emit("call_{$class}_{$method}_before", array($this->_obj, $method), $args);
 		if(false==$event) return ;
 		
 		if( method_exists($this->_obj, $method) ){ //调用普通方法
@@ -33,12 +31,12 @@ class cpObject{
 		}else if( isset($this->__method[$method]) ){ //调用闭包方法
 			$ret = call_user_func_array($this->__method[$method], $args);
 		}else{ //方法不存在		
-			$event = cpEvent::emit("call_{$class}_{$method}_error", array($this->_obj, $method), $args);
+			$event = \canphp\core\cpEvent::emit("call_{$class}_{$method}_error", array($this->_obj, $method), $args);
 			if(false==$event) return ;
 		}
 		
 		//后置调用
-		$event = cpEvent::emit("call_{$class}_{$method}_after", array($this->_obj, $method), $args, $ret);
+		$event = \canphp\core\cpEvent::emit("call_{$class}_{$method}_after", array($this->_obj, $method), $args, $ret);
 		if(false==$event) return ;
 		
 		return $ret;

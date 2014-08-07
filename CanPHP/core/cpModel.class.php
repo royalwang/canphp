@@ -1,6 +1,7 @@
 <?php
+namespace canphp\core;
 //模型类，加载了外部的数据库驱动类和缓存类
-class cpModel{
+class cpModel extends \canphp\core\cpObject{
     public $db = NULL; // 当前数据库操作对象
 	public $cache = NULL;	//缓存对象
 	public $sql = '';	//sql语句，主要用于输出构造成的sql语句

@@ -1,6 +1,7 @@
 <?php
+namespace canphp\core;
 //应用控制类(完成网址解析、单一入口控制、静态页面缓存功能)
-class cpApp {
+class cpApp extends \canphp\core\cpObject{
 	static public $module;//模块名称		
 	static public $action;//操作名称
 	private $appConfig = array(); //配置
