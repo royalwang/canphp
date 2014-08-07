@@ -1,22 +1,9 @@
 <?php
-class cpController{
+namespace canphp\core;
+class cpController extends \canphp\core\cpObject{
 	protected $layout = NULL; //布局视图
 	private $_data = array();
-	
-	protected function init(){}
-	
-	public function __construct(){
-		$this->init();
-	}
-
-	public function __get($name){
-		return isset( $this->_data[$name] ) ? $this->_data[$name] : NULL;
-	}
-
-	public function __set($name, $value){
-		$this->_data[$name] = $value;
-	}
-	
+		
 	//模板赋值
 	protected function assign($name, $value){
 		$this->_data[$name] = $value;
@@ -24,7 +11,7 @@ class cpController{
 	
 	//模板显示
 	protected function display($tpl = '', $return = false, $is_tpl = true ){
-		$template = new cpTemplate( config('TPL') );
+		$template = \canphp\core\cpTemplate::getInstance( config('TPL') );
 		if( $is_tpl ){
 			$tpl = empty($tpl) ? CONTROLLER_NAME . '_'. ACTION_NAME : $tpl;
 			if( $this->layout ){
@@ -50,40 +37,29 @@ class cpController{
 		header('location:' . $url, true, $code);
 		exit;
 	}
+
+	protected function arg($name='', $default = null, $callback = null) {
+		if( null==$name ) return $_REQUEST;
+		if( !isset($_REQUEST[$name]) ) return $default;
+		
+		$arg = $_REQUEST[$name];
+		if($callback) $arg = $callback($arg);
+		
+		return $arg;
+	}
 	
 	//弹出信息
 	protected function alert($msg, $url = NULL){
-		header("Content-type: text/html; charset=utf-8"); 
+		header("Content-type: text/html; charset=utf-8");
+		
 		$alert_msg="alert('$msg');";
 		if( empty($url) ) {
-			$gourl = 'history.go(-1);';
+			$go_url = 'history.go(-1);';
 		}else{
-			$gourl = "window.location.href = '{$url}'";
+			$go_url = "window.location.href = '{$url}'";
 		}
-		echo "<script>$alert_msg $gourl</script>";
+		
+		echo "<script>$alert_msg $go_url</script>";
 		exit;
-	}
-	
-	protected function arg($name, $default = null, $callback = null) {
-		if( !isset($_REQUEST[$name]) ) return $default;
-		$arg = $_REQUEST[$name];
-		if($callback) $arg = $callback($arg);
-		return $arg;
-	}
-
-	//获取分页查询limit
-	protected function pageLimit($url, $num = 10){
-		$url = str_replace(urlencode('{page}'), '{page}', $url);
-		$page = is_object($this->pager['obj']) ? $this->pager['obj'] : new Page();	
-		$cur_page = $page->getCurPage($url);
-		$limit_start = ($cur_page-1) * $num;
-		$limit = $limit_start.','.$num;
-		$this->pager = array('obj'=>$page, 'url'=>$url, 'num'=>$num, 'cur_page'=>$cur_page, 'limit'=>$limit);
-		return $limit;
-	}
-	
-	//分页结果显示
-	protected function pageShow($count){
-		return $this->pager['obj'] ->show($this->pager['url'], $count, $this->pager['num']);
 	}
 }
