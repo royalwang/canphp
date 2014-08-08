@@ -1,7 +1,5 @@
 <?php
 namespace canphp\core;
-use \canphp\core\cpEvent;
-
 class cpObject{
 	static public $objStorage = array();
 	public $__data = array();
