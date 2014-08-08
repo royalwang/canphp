@@ -1,5 +1,4 @@
 <?php
-define('CP_PATH', dirname(__FILE__) . '/../CanPHP/');
+define('CP_PATH', dirname(__FILE__) . '/../canphp/');
+require( CP_PATH. 'core.php' );
 
-require( 'protected/core.php' );
-?> 

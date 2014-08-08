@@ -1,4 +1,8 @@
 <?php
+namespace canphp\core;
+use canphp\core\cpObject;
+use canphp\core\cpConfig;
+
 //模型类，加载了外部的数据库驱动类和缓存类
 class cpModel{
     public $db = NULL; // 当前数据库操作对象

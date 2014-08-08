@@ -1,4 +1,5 @@
 <?php
+namespace canphp\core;
 //CanPHP框架默认配置
 class cpConfig{
 	static public $config=array(		
