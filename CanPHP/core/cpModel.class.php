@@ -1,27 +1,35 @@
 <?php
-namespace canphp\core;
 //模型类，加载了外部的数据库驱动类和缓存类
-class cpModel extends \canphp\core\cpObject{
+class cpModel{
     public $db = NULL; // 当前数据库操作对象
 	public $cache = NULL;	//缓存对象
 	public $sql = '';	//sql语句，主要用于输出构造成的sql语句
 	public  $pre = '';	//表前缀，主要用于在其他地方获取表前缀
 	public $config =array(); //配置
-    protected $options = array(); // 查询表达式参数	
+    protected $options = array(); // 查询表达式参数
+	protected $table = '';	
 	
     public function __construct( $config = array() ) {
 		$this->config = array_merge(cpConfig::get('DB'), $config);	//参数配置	
 		$this->options['field'] = '*';	//默认查询字段
 		$this->pre = $this->config['DB_PREFIX'];	//数据表前缀
 		$this->connect();
+		$this->table($this->table);
     }
 	
 	//连接数据库
 	public function connect() {
-		$dbDriver = 'cp' . ucfirst( $this->config['DB_TYPE'] );
-		require_once( dirname(__FILE__) . '/db/' . $dbDriver . '.class.php' );
-		$this->db = new $dbDriver( $this->config );	//实例化数据库驱动类
-		$dbDriver::getInstance($this->config);		
+		$this->db = self::_connect($this->config);
+	}
+	
+	protected static function _connect($config){
+		static $db;
+		if( empty($db) ){
+			$dbDriver = 'cp' . ucfirst( $config['DB_TYPE'] );
+			require( dirname(__FILE__) . '/db/' . $dbDriver . '.class.php' );
+			$db = new $dbDriver( $config );	//实例化数据库驱动类
+		}
+		return $db;
 	}
 	
 	//设置表，$$ignore_prefix为true的时候，不加上默认的表前缀
@@ -52,7 +60,7 @@ class cpModel extends \canphp\core\cpObject{
 		$sql = str_replace('{pre}', $this->pre, $sql);	//表前缀替换
 		$this->sql = $sql;
 		//判断当前的sql是否是查询语句
-		if ( $is_query || strpos(trim(strtolower($sql)), 'select') === 0 ) {
+		if ( $is_query || stripos(trim($sql), 'select') === 0 ) {
 			$data = $this->_readCache();
 			if ( !empty($data) ) return $data;
 
@@ -61,7 +69,7 @@ class cpModel extends \canphp\core\cpObject{
 				$data[] = $row;
 			}
 			$this->_writeCache($data);
-			return $data;				
+			return empty($data) ? array() : $data;				
 		} else {
 			return $this->db->execute($this->sql, $params); //不是查询条件，直接执行
 		}

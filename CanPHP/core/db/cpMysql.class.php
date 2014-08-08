@@ -1,8 +1,5 @@
 <?php
-namespace canphp\code\db;
-use \canphp\core\cpObject;
-
-class cpMysql extends cpObject{
+class cpMysql {
 	private $_writeLink = NULL; //主
 	private $_readLink = NULL; //从
 	private $_replication = false; //标志是否支持主从
@@ -66,7 +63,7 @@ class cpMysql extends cpObject{
 	}
 	
 	//获取行数
-	public function count($table,$where) {
+	public function count($table, $where) {
 		$this->sql = "SELECT count(*) FROM $table $where";
 		$query = $this->query($this->sql);
         $data = $this->fetchArray($query);
@@ -202,7 +199,6 @@ class cpMysql extends cpObject{
 	//获取从服务器连接
     private function _getReadLink() {
         if( isset( $this->_readLink ) ) {
-			 mysql_ping( $this->_readLink );
             return $this->_readLink;
         } else {
             if( !$this->_replication ) {
@@ -217,7 +213,6 @@ class cpMysql extends cpObject{
 	//获取主服务器连接
     private function _getWriteLink() {
         if( isset( $this->_writeLink ) ) {
-			mysql_ping( $this->_writeLink );
             return $this->_writeLink;
         } else{
             $this->_writeLink = $this->_connect( true );

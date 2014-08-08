@@ -1,7 +1,5 @@
 <?php
-namespace canphp\core;
-use \canphp\core\cpObject;
-class cpTemplate  extends cpObject{
+class cpTemplate {
 	public $config =array(); //配置
 	protected $vars = array();//存放变量信息
 	protected $_replace = array();

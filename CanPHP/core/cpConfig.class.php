@@ -36,12 +36,13 @@ class cpConfig{
 				//静态页面缓存
 				'HTML_CACHE_ON' => false,//是否开启静态页面缓存，true开启.false关闭
 				'HTML_CACHE_PATH' => './data/html_cache/',//静态页面缓存目录，一般不需要修改
-				'HTML_CACHE_SUFFIX' => '.html',//静态页面缓存后缀，一般不需要修改
 				'HTML_CACHE_RULE' => array(
 											'index'=>array('index'=>1000,),//缓存时间,单位：秒
 										 ),//静态页面缓存规则 array('模块名'=>array('方法名'=>缓存时间,))
 				
 				'AUTOLOAD_DIR' => array(),	//自动加载扩展目录，cp2.0添加
+				
+				'TIMEZONE' => 'PRC', //时区设置，cp2.1添加
 				),
 		
 		//数据库配置

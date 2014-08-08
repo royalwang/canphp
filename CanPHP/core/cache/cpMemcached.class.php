@@ -1,10 +1,10 @@
 <?php
-class cpMemcache {
+class cpMemcached {
 	private $mmc = NULL;
     private $group = ''; 
     private $ver = 0;
     public function __construct( $memConfig = array() ) {
-		$this->mmc = new Memcache;
+		$this->mmc = new Memcached;
 		if( empty($memConfig) ) {
 			$memConfig['MEM_SERVER'] = array(array('127.0.0.1', 11211));
 			$memConfig['MEM_GROUP'] = '';
@@ -23,7 +23,7 @@ class cpMemcache {
 	
 	//设置缓存
     public function set($key, $value, $expire = 1800) {
-		return $this->mmc->set($this->group.'_'.$this->ver.'_'.$key, $value, 0, $expire);
+		return $this->mmc->set($this->group.'_'.$this->ver.'_'.$key, $value, $expire);
     }
 	
 	//自增1

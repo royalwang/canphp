@@ -1,19 +1,19 @@
 <?php
-namespace canphp\core;
 //应用控制类(完成网址解析、单一入口控制、静态页面缓存功能)
-class cpApp extends \canphp\core\cpObject{
+class cpApp {
 	static public $module;//模块名称		
 	static public $action;//操作名称
 	private $appConfig = array(); //配置
     public function __construct( $config=array() ) {
 		
-		define('CP_VER', '2.0.2012.0415');//框架版本号,后两段表示发布日期
+		define('CP_VER', '2.0.2012.1203');//框架版本号,后两段表示发布日期
 		define('CP_CORE_PATH', dirname(__FILE__) );//当前文件所在的目录
 		
         require( CP_CORE_PATH . '/cpConfig.class.php' );//加载默认配置		
 		$this->appConfig = array_merge(cpConfig::get('APP'), $config);//参数配置
 		cpConfig::set('APP', $this->appConfig );
 		defined('DEBUG') or define('DEBUG', cpConfig::get('DEBUG'));
+		date_default_timezone_set( cpConfig::get('TIMEZONE') );
 		
 		if ( $this->appConfig['DEBUG'] ) {
 			ini_set("display_errors", 1);
@@ -25,8 +25,6 @@ class cpApp extends \canphp\core\cpObject{
 		
 		spl_autoload_register( array($this, 'autoload') );	 //注册类的自动加载
 		
-		require(CP_CORE_PATH . '/cpError.class.php');	//加载错误处理类
-
 		//加载常用函数库
 		if ( is_file(CP_CORE_PATH . '/../lib/common.function.php') ) {
 			require(CP_CORE_PATH . '/../lib/common.function.php');
@@ -68,7 +66,7 @@ class cpApp extends \canphp\core\cpObject{
 			} else if ( $this->_checkModuleExists( $this->appConfig['MODULE_EMPTY'] ) ) {//如果指定模块不存在，则检查是否存在空模块
 				$module = $this->appConfig['MODULE_EMPTY'];
 			} else {
-				 throw new Exception(self::$module . "模块不存在");//指定模块和空模块都不存在，则显示出错信息，并退出程序。
+				 throw new Exception(self::$module . "模块不存在", 404);//指定模块和空模块都不存在，则显示出错信息，并退出程序。
 			}
 			
 			//如果开启静态页面缓存，则尝试读取静态缓存
@@ -82,7 +80,7 @@ class cpApp extends \canphp\core\cpObject{
 				cp_app_end();
 			}
 		} catch( Exception $e){
-			cpError::show( $e->getMessage() );
+			cpError::show( $e->getMessage(), $e->getCode() );
 		}	
 	}
 		
@@ -188,7 +186,7 @@ class cpApp extends \canphp\core\cpObject{
 		$suffix_arr = explode('.', $this->appConfig['MODULE_SUFFIX'], 2);
 		$classname=$module . $suffix_arr[0];//模块名+模块后缀组成完整类名
 		if(!class_exists($classname)) {
-			throw new Exception($classname . "类未定义");
+			throw new Exception($classname . "类未定义", 404);
 		}
 		
 		$object=new $classname();//实例化模块对象
@@ -206,7 +204,7 @@ class cpApp extends \canphp\core\cpObject{
 				return true;
 			}
 		} else {
-			throw new Exception(self::$action."操作方法在" . $module . "模块中不存在");
+			throw new Exception(self::$action."操作方法在" . $module . "模块中不存在", 404);
 		}		
 		//执行指定模块的指定操作	
 		$object->$action();
@@ -217,11 +215,20 @@ class cpApp extends \canphp\core\cpObject{
 	
 	//读取静态页面缓存
 	private function _readHtmlCache($module = '', $action = '') {	
-		if ( $this->appConfig['HTML_CACHE_ON'] ) {
-			require_once(CP_CORE_PATH . '/cpHtmlCache.class.php');
-			return cpHtmlCache::read($module, $action);
+		if ( ($this->appConfig['HTML_CACHE_ON'] == false) || empty($this->appConfig['HTML_CACHE_RULE']) ) {
+			$this->appConfig['HTML_CACHE_ON'] = false;
+			return false;
 		}
-		return false;
+		if( isset($this->appConfig['HTML_CACHE_RULE'][$module][$action]) ){
+			$expire = $this->appConfig['HTML_CACHE_RULE'][$module][$action];
+		}else if(isset($this->appConfig['HTML_CACHE_RULE'][$module]['*'])){
+			$expire = $this->appConfig['HTML_CACHE_RULE'][$module]['*'];
+		}else{
+			$this->appConfig['HTML_CACHE_ON'] = false;
+			return false;
+		}
+		require_once(CP_CORE_PATH . '/cpHtmlCache.class.php');
+		return cpHtmlCache::read($this->appConfig['HTML_CACHE_PATH'], $expire);
 	}
 	
 	//写入静态页面缓存
@@ -233,15 +240,12 @@ class cpApp extends \canphp\core\cpObject{
 	
 	//实现类的自动加载
 	public function autoload($classname) {   
-		var_dump($classname);	
 		$dir_array = array(	$this->appConfig['MODULE_PATH'],	//模块文件
 							CP_CORE_PATH . '/../lib/',	//官方扩展库
 							CP_CORE_PATH . '/../ext/',	//第三方扩展库
 							CP_CORE_PATH . '/',	//核心文件
-							CP_CORE_PATH . '/../../',	//核心文件
 							$this->appConfig['MODEL_PATH'],	//模型文件
 						  );
-					  
 		$dir_array = array_merge($dir_array, $this->appConfig['AUTOLOAD_DIR']);
 		foreach($dir_array as $dir) {
 			$file = $dir . $classname . '.class.php';

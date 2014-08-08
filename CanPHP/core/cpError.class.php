@@ -53,8 +53,12 @@ class cpError extends Exception {
 	}
 	
 	//抛出错误信息，用于外部调用
-	static public function show($message="") {
-		 new cpError($message);
+	static public function show($message="", $code=0) {
+		if( function_exists('cp_error_ext') ){
+			cp_error_ext($message, $code);
+		}else{
+			new cpError($message, $code);
+		}
     }
 		
 	//记录错误信息
@@ -119,7 +123,7 @@ A:hover{text-decoration:underline;}
 	<div style="height:10px"></div>
 	<div class="error_box">出错信息：'.$this->message.'</div>';
 	//开启调试模式之后，显示详细信息
-	if( $this->errorCode && cpConfig::get('DEBUG') ) {
+	if( ($this->errorCode>0) && ($this->errorCode!=404) && cpConfig::get('DEBUG') ) {
 	 echo  '<div class="error_box">出错文件：'.$this->errorFile.'</div>
 		<div class="error_box">错误行：'.$this->errorLine.'</div>
 		<div class="error_box">错误级别：'.$this->errorLevel.'</div>
