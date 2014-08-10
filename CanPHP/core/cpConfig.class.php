@@ -1,10 +1,9 @@
 <?php
 namespace canphp\core;
 //CanPHP框架默认配置
-class cpConfig{
-	static public $config=array(		
-		//应用配置
-		'APP' => array(
+class cpConfig{		
+	//应用配置
+	static public $APP = array(
 				//日志和错误调试配置
 				'DEBUG' => true,	//是否开启调试模式，true开启，false关闭
 				'LOG_ON' => false,//是否开启出错信息保存到文件，true开启，false不开启
@@ -44,10 +43,10 @@ class cpConfig{
 				'AUTOLOAD_DIR' => array(),	//自动加载扩展目录，cp2.0添加
 				
 				'TIMEZONE' => 'PRC', //时区设置，cp2.1添加
-				),
+			);
 		
 		//数据库配置
-		'DB'  => array(								
+		static public $DB  = array(								
 				'DB_TYPE' => 'mysql',//数据库类型，一般不需要修改
 				'DB_HOST' => 'localhost',//数据库主机，一般不需要修改
 				'DB_USER' => 'root',//数据库用户名
@@ -92,10 +91,10 @@ class cpConfig{
 								),
 				*/
 				
-				),
+			);
 		
 		//模板配置			
-		'TPL' => array(
+		static public $TPL = array(
 				'TPL_TEMPLATE_PATH'=>'./template/',//模板目录，一般不需要修改
 				'TPL_TEMPLATE_SUFFIX'=>'.html',//模板后缀，一般不需要修改
 				'TPL_CACHE_ON'=>false,//是否开启模板缓存，true开启,false不开启
@@ -112,26 +111,5 @@ class cpConfig{
 				//SaeMemcache配置，cp2.0添加
 				'SAE_MEM_GROUP' => 'tpl',
 				
-				),
-	);
-	
-	//获取默认配置
-	static public function get( $name = '' ) {
-		if(isset(self::$config[$name])) {
-			return self::$config[$name];
-		} else if(isset(self::$config['APP'][$name])) {
-			return self::$config['APP'][$name];
-		} else if(isset(self::$config['DB'][$name])) {
-			return self::$config['DB'][$name];			
-		} else if(isset(self::$config['TPL'][$name])) {
-			return self::$config['TPL'][$name];
-		} else {
-			return false;
-		}
-	}
-	
-	//设置参数
-	static public function set($name, $value = array()) {
-		return self::$config[$name] = $value;
-	}
+			);
 }

@@ -4,244 +4,152 @@ use canphp\core\cpObject;
 use canphp\core\cpConfig;
 
 //模型类，加载了外部的数据库驱动类和缓存类
-class cpModel{
-    public $db = NULL; // 当前数据库操作对象
-	public $cache = NULL;	//缓存对象
-	public $sql = '';	//sql语句，主要用于输出构造成的sql语句
-	public  $pre = '';	//表前缀，主要用于在其他地方获取表前缀
-	public $config =array(); //配置
-    protected $options = array(); // 查询表达式参数
-	protected $table = '';	
+class cpModel extends cpObject{
+	protected $config =array(); //配置
+    protected $options = array(); //参数
 	
-    public function __construct( $config = array() ) {
-		$this->config = array_merge(cpConfig::get('DB'), $config);	//参数配置	
-		$this->options['field'] = '*';	//默认查询字段
-		$this->pre = $this->config['DB_PREFIX'];	//数据表前缀
-		$this->connect();
-		$this->table($this->table);
+	protected static $db = array(); //存储数据库实例数组
+	protected $database = 'default'; //数据库名称	
+	protected $table = ''; //表名	
+	
+    public function __construct($dbConfig = array(), $database='default') {
+		$this->config = array_merge(cpConfig::$DB, (array)$dbConfig);	//参数配置	
+		$this->database = $database;
     }
 	
 	//连接数据库
-	public function connect() {
-		$this->db = self::_connect($this->config);
-	}
-	
-	protected static function _connect($config){
-		static $db;
-		if( empty($db) ){
-			$dbDriver = 'cp' . ucfirst( $config['DB_TYPE'] );
-			require( dirname(__FILE__) . '/db/' . $dbDriver . '.class.php' );
-			$db = new $dbDriver( $config );	//实例化数据库驱动类
+	public function getDb() {
+		if( empty(self::$db[$this->database]) ){
+			$dbDriver = 'cp' . ucfirst( $this->config['DB_TYPE'] );
+			self::$db[$this->database] = new $dbDriver( $this->config );	//实例化数据库驱动类
 		}
-		return $db;
+		return self::$db[$this->database];
 	}
 	
-	//设置表，$$ignore_prefix为true的时候，不加上默认的表前缀
+	//设置表，$ignore_prefix为true的时候，不加上默认的表前缀
 	public function table($table, $ignorePre = false) {
-		if ( $ignorePre ) {
-			$this->options['table'] = $table;
-		} else {
-			$this->options['table'] = $this->config['DB_PREFIX'] . $table;
-		}
+		$this->$table = $ignorePre ? $table : $this->config['DB_PREFIX'] . $table;
 		return $this;
 	}
 	
 	 //回调方法，连贯操作的实现
     public function __call($method, $args) {
 		$method = strtolower($method);
-        if ( in_array($method, array('field','data','where','group','having','order','limit','cache')) ) {
+        if ( in_array($method, array('field','data','where','order','limit')) ) {
             $this->options[$method] = $args[0];	//接收数据
-			if( $this->options['field'] =='' ) $this->options['field'] = '*'; 
 			return $this;	//返回对象，连贯查询
         } else{
-			throw new Exception($method . '方法在cpModel.class.php类中没有定义');
+			throw new Exception("The method '{$method}' no exists in cpModel.class.php");
 		}
     }
 	
 	//执行原生sql语句，如果sql是查询语句，返回二维数组
     public function query($sql, $params = array(), $is_query = false) {
-        if ( empty($sql) ) return false;
+        $sql = trim($sql);
+		if ( empty($sql) ) return false;
 		$sql = str_replace('{pre}', $this->pre, $sql);	//表前缀替换
-		$this->sql = $sql;
-		//判断当前的sql是否是查询语句
-		if ( $is_query || stripos(trim($sql), 'select') === 0 ) {
-			$data = $this->_readCache();
-			if ( !empty($data) ) return $data;
 
-			$query = $this->db->query($this->sql, $params);		
-			while($row = $this->db->fetchArray($query)) {
-				$data[] = $row;
-			}
-			$this->_writeCache($data);
-			return empty($data) ? array() : $data;				
+		//判断当前的sql是否是查询语句
+		if ( $is_query ||  0=== stripos($sql, 'select') || 0=== stripos(trim($sql), 'show') ) {
+			return $this->getDb()->query($this->sql, $params);				
 		} else {
-			return $this->db->execute($this->sql, $params); //不是查询条件，直接执行
+			return $this->getDb()->execute($this->sql, $params); //不是查询条件，直接执行
 		}
     }
 	
 	//统计行数
 	public function count() {
-		$table = $this->options['table'];	//当前表
-		$field = 'count(*)';//查询的字段
-		$where = $this->_parseCondition();	//条件
-		$this->sql = "SELECT $field FROM $table $where";	//这不是真正执行的sql，仅作缓存的key使用
-		
-		$data = $this->_readCache();
-		if ( !empty($data) ) return $data;
-		
-		$data = $this->db->count($table, $where);
-		$this->_writeCache($data);
-		$this->sql = $this->db->sql; //从驱动层返回真正的sql语句，供调试使用
-		return $data;
+		$condition = $this->options['where'];
+		$this->options['where']= array();	
+
+		return $this->getDb()->count($this->table, $condition);
 	}
 	
 	//只查询一条信息，返回一维数组	
     public function find() {
 		$this->options['limit'] = 1;	//限制只查询一条数据
 		$data = $this->select();
-		return isset($data[0]) ? $data[0] : false;
+		return isset($data[0]) ? $data[0] : array();
      }
 	 
 	//查询多条信息，返回数组
      public function select() {
-		$table = $this->options['table'];	//当前表
-		$field = $this->options['field'];	//查询的字段
-		$where = $this->_parseCondition();	//条件
-		return $this->query("SELECT $field FROM $table $where", array(), true);
-     }
-	 
-	 //获取一张表的所有字段
-	 public function getFields() {
-		$table = $this->options['table'];
-		$this->sql = "SHOW FULL FIELDS FROM {$table}"; //这不是真正执行的sql，仅作缓存的key使用
-	
-		$data = $this->_readCache();
-		if ( !empty($data) ) return $data;
+		$condition = $this->options['where'];
+		$this->options['where'] = '';
 		
-		$data = $this->db->getFields( $table );
-		$this->_writeCache( $data );
-		$this->sql = $this->db->sql; //从驱动层返回真正的sql语句，供调试使用
-		return $data;
-	}
-	
-	 //插入数据
-    public function insert( $replace = false ) {
-		$table = $this->options['table'];	//当前表
-		$data = $this->_parseData('add');	//要插入的数据
-		$INSERT = $replace ? 'REPLACE' : 'INSERT';
-        $this->sql = "$INSERT INTO $table $data" ;
-        $query = $this->db->execute($this->sql);
-		if ( $this->db->affectedRows() ) {
-			 $id = $this->db->lastId();
-			 return empty($id) ? $this->db->affectedRows() : $id;
+		$field = $this->options['field'];
+		if( $field =='' ) $field  = '*'; 
+		$this->options['field'] = '*';
+		
+		$order = $this->options['order'];
+		$this->options['order'] = '';
+
+		$limit = $this->options['limit'];
+		$this->options['limit'] = '';
+		
+		return $this->getDb()->select($this->table, $condition, $field, $order, $limit);		
+     }
+	 	
+	//插入数据
+    public function insert() {
+		if( empty($this->options['data']) || !is_array($this->options['data']) ) {
+			throw new Exception('the data for insert is error');
 		}
-        return false;
-    }
-	
-	//替换数据
-	 public function replace() {
-		return $this->insert( true );
+		
+		$data = $this->options['data'];
+		$this->options['data']= array();	
+		
+		return $this->getDb()->insert($this->table, $data);
     }
 	
 	//修改更新
     public function update() {
-		$table = $this->options['table'];	//当前表
-		$data = $this->_parseData('save');	//要更新的数据
-		$where = $this->_parseCondition();	//更新条件
-		if ( empty($where) ) return false; //修改条件为空时，则返回false，避免不小心将整个表数据修改了
-			
-        $this->sql = "UPDATE $table SET $data $where" ;
-	    $query = $this->db->execute($this->sql);
-		return $this->db->affectedRows();
+		if( empty($this->options['where']) ) {
+			throw new Exception('the condition for update is empty!');
+		}	
+		if( empty($this->options['data']) || !is_array($this->options['data']) ) {
+			throw new Exception('the data for update is error');
+		}
+		
+		$condition = $this->options['where'];
+		$this->options['where']= array();
+		
+		$data = $this->options['data'];
+		$this->options['data']= array();	
+
+		return $this->getDb()->update($this->table, $condition, $data);
     }
 	
 	//删除
     public function delete() {
-		$table = $this->options['table'];	//当前表
-		$where = $this->_parseCondition();	//条件
-		if ( empty($where) ) return false; //删除条件为空时，则返回false，避免数据不小心被全部删除
-			
-		$this->sql = "DELETE FROM $table $where";
-        $query = $this->db->execute($this->sql);
-		return $this->db->affectedRows();
+		if( empty($this->options['where']) ) {
+			throw new Exception('the condition for delete is empty!');
+		}	
+		
+		$condition = $this->options['where'];
+		$this->options['where']= array();	
+
+		return $this->getDb()->delete($this->table, $condition);
     }
-	
-	//数据过滤
-	public function escape($value) {
-		return $this->db->escape($value); 
+
+	//获取一张表的所有字段
+	public function getFields() {
+		return $this->getDb()->getFields($this->table);
 	}
 	
 	//返回sql语句
     public function getSql() {
-        return $this->sql;
+        return $this->getDb()->sql;
     }
 
+	public function cache($expire=1800){
+		 $cache = new cpCache($this);
+		 return $cache;
+	}
+	
 	//删除数据库缓存
     public function clear() {
-		if ( $this->initCache() ) {
-			return $this->cache->clear();
-		}
-		return false;
+		 $cache = new cpCache($this);
+		 return $cache;
     }
-	
-	 //初始化缓存类，如果开启缓存，则加载缓存类并实例化
-	public function initCache() {		
-		if (is_object($this->cache)) {
-			return true;
-		} else if ($this->config['DB_CACHE_ON']) {
-			require_once( dirname(__FILE__) . '/cpCache.class.php' );
-			$this->cache = new cpCache($this->config, $this->config['DB_CACHE_TYPE']);
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	//读取缓存
-	private  function _readCache() {
-		isset($this->options['cache']) or $this->options['cache'] = $this->config['DB_CACHE_TIME'];
-		//缓存时间为0，不读取缓存
-		if ($this->options['cache'] == 0)
-			return false;
-		if ($this->initCache()) {
-			$data = $this->cache->get($this->sql);
-			if ( !empty($data) ) {
-				unset($this->options['cache']);
-				return $data;
-			}
-		}
-		return false;
-	}
-	
-	//写入缓存
-	private function _writeCache($data) {
-		//缓存时间为0，不设置缓存
-		if ( $this->options['cache'] == 0)
-			return false;		
-		if ( $this->initCache() ) {				
-			$expire = $this->options['cache'];
-			unset($this->options['cache']);
-			return $this->cache->set($this->sql, $data, $expire);	
-		}
-		return false;	
-	}
-	
-	//解析数据  
-	private function _parseData($type) {
-		$data = $this->db->parseData($this->options, $type);
-		$this->options['data'] = '';
-		return $data;
-	}
-	
-	//解析条件
-	private function _parseCondition() {
-		$condition = $this->db->parseCondition($this->options);
-		$this->options['where'] = '';
-		$this->options['group'] = '';
-		$this->options['having'] = '';
-		$this->options['order'] = '';
-		$this->options['limit'] = '';
-		$this->options['field'] = '*';		
-		return $condition;		
-	}
 }

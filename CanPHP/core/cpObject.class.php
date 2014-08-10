@@ -19,6 +19,12 @@ class cpObject{
 		is_callable($value)? $this->__method[$name]=$value : $this->__data[$name]=$value;
 	}
 	
+	public function __call($method, $args){
+		if( isset($this->__method[$method]) ){
+			return call_user_func_array($this->__method[$method], func_get_args());
+		}
+	}
+	
 	//实例化一个对象
 	public static function newInstance(){
 		$class = get_called_class();		

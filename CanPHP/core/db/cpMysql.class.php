@@ -1,5 +1,10 @@
 <?php
-class cpMysql {
+namespace canphp\core\db;
+use canphp\core\cpObject;
+use canphp\core\cpConfig;
+use canphp\core\db\cpDbInterface;
+
+class cpMysql extends cpObject implements cpDbInterface{
 	private $_writeLink = NULL; //主
 	private $_readLink = NULL; //从
 	private $_replication = false; //标志是否支持主从
@@ -12,9 +17,13 @@ class cpMysql {
 		$this->_replication = isset( $this->dbConfig['DB_SLAVE']) && !empty($this->dbConfig['DB_SLAVE'] );
 	}
 	
+	public function connect($dbConfig){
+	
+	}
+	
 	//执行sql查询	
-	public function query($sql, $params = array()) {
-		foreach($params as $k => $v){
+	public function query($sql, array $params = array()) {
+		foreach((array)$params as $k => $v){
 			$sql = str_replace(':'.$k, $this->escape($v), $sql);
 		}
 		$this->sql = $sql;
@@ -25,7 +34,7 @@ class cpMysql {
 	}
 	
 	//执行sql命令
-	public function execute($sql, $params = array()) {
+	public function execute($sql, array $params = array()) {
 		foreach($params as $k => $v){
 			$sql = str_replace(':'.$k, $this->escape($v), $sql);
 		}

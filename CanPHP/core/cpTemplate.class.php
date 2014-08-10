@@ -8,7 +8,7 @@ class cpTemplate {
 	protected $_replace = array();
 	
 	public function __construct($config = array()) {
-		$this->config = array_merge(cpConfig::get('TPL'), (array)$config);//参数配置	
+		$this->config = array_merge(cpConfig::TPL, (array)$config);//参数配置	
 		$this->assign('cpTemplate', $this);
 		$this->_replace = array(
 				'str' => array( 'search' => array(),
