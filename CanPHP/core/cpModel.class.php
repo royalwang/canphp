@@ -1,12 +1,11 @@
 <?php
 namespace canphp\core;
-use canphp\core\cpObject;
 use canphp\core\cpConfig;
 
 //模型类，加载了外部的数据库驱动类和缓存类
-class cpModel extends cpObject{
+class cpModel{
 	protected $config =array(); //配置
-    protected $options = array(); //参数
+    protected $options = array('field'=>'','where'=>'','order'=>'','limit'=>'','data'=>''); //参数
 	
 	protected static $db = array(); //存储数据库实例数组
 	protected $database = 'default'; //数据库名称	
@@ -39,15 +38,15 @@ class cpModel extends cpObject{
             $this->options[$method] = $args[0];	//接收数据
 			return $this;	//返回对象，连贯查询
         } else{
-			throw new Exception("The method '{$method}' no exists in cpModel.class.php");
+			throw new Exception("{$method}方法在cpModel类中未定义");
 		}
     }
 	
 	//执行原生sql语句，如果sql是查询语句，返回二维数组
     public function query($sql, $params = array(), $is_query = false) {
         $sql = trim($sql);
-		if ( empty($sql) ) return false;
-		$sql = str_replace('{pre}', $this->pre, $sql);	//表前缀替换
+		if ( empty($sql) ) return array();
+		$sql = str_replace('{pre}', $this->config['DB_PREFIX'], $sql);	//表前缀替换
 
 		//判断当前的sql是否是查询语句
 		if ( $is_query ||  0=== stripos($sql, 'select') || 0=== stripos(trim($sql), 'show') ) {
@@ -60,7 +59,7 @@ class cpModel extends cpObject{
 	//统计行数
 	public function count() {
 		$condition = $this->options['where'];
-		$this->options['where']= array();	
+		$this->options['where']= '';	
 
 		return $this->getDb()->count($this->table, $condition);
 	}
@@ -93,7 +92,7 @@ class cpModel extends cpObject{
 	//插入数据
     public function insert() {
 		if( empty($this->options['data']) || !is_array($this->options['data']) ) {
-			throw new Exception('the data for insert is error');
+			throw new Exception('待插入的数据不能为空');
 		}
 		
 		$data = $this->options['data'];
@@ -105,14 +104,14 @@ class cpModel extends cpObject{
 	//修改更新
     public function update() {
 		if( empty($this->options['where']) ) {
-			throw new Exception('the condition for update is empty!');
+			throw new Exception('修改操作必须指定条件，防止误操作');
 		}	
 		if( empty($this->options['data']) || !is_array($this->options['data']) ) {
-			throw new Exception('the data for update is error');
+			throw new Exception('修改操作数据不能为空');
 		}
 		
 		$condition = $this->options['where'];
-		$this->options['where']= array();
+		$this->options['where']= '';
 		
 		$data = $this->options['data'];
 		$this->options['data']= array();	
@@ -123,7 +122,7 @@ class cpModel extends cpObject{
 	//删除
     public function delete() {
 		if( empty($this->options['where']) ) {
-			throw new Exception('the condition for delete is empty!');
+			throw new Exception('删除操作必须指定条件，防止误操作!');
 		}	
 		
 		$condition = $this->options['where'];

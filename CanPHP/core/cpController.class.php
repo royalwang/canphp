@@ -1,24 +1,26 @@
 <?php
 namespace canphp\core;
-use canphp\core\cpObject;
 use canphp\core\cpConfig;
-class cpController extends cpObject{
+class cpController{
 	protected $layout = NULL; //布局视图
+	protected $_data = array();
 	
-	protected function init(){}
+	public function __get($name){
+		return isset($this->_data[$name]) ? $this->_data[$name] : NULL;
+	}
 	
-	public function __construct(){
-		$this->init();
+	public function __set($name, $value){
+		$this->_data[$name] = $value;
 	}
 	
 	//模板赋值
 	protected function assign($name, $value){
-		$this->__data[$name] = $value;
+		$this->_data[$name] = $value;
 	}
 	
 	//模板显示
 	protected function display($tpl = '', $return = false, $is_tpl = true ){
-		$template = cpTemplate::getInstance( config('TPL') );
+		$template = new cpTemplate( config('TPL') );
 		if( $is_tpl ){
 			$tpl = empty($tpl) ? CONTROLLER_NAME . '_'. ACTION_NAME : $tpl;
 			if( $this->layout ){
@@ -58,9 +60,14 @@ class cpController extends cpObject{
 		exit;
 	}
 	
-	protected function arg($name, $default = null, $callback = null) {
-		if( !isset($_REQUEST[$name]) ) return $default;
-		$arg = $_REQUEST[$name];
+	protected function arg($name=null, $default = null, $callback = null) {
+		static $args;
+		if( !$args ){
+			$args = array_merge((array)$_GET, (array)$_POST);
+		}
+		if( null==$name ) return $args;
+		if( !isset($args[$name]) ) return $default;
+		$arg = $args[$name];
 		if($callback) $arg = $callback($arg);
 		return $arg;
 	}
