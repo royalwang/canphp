@@ -12,7 +12,7 @@ class cpModel{
 	protected $table = ''; //表名	
 	
     public function __construct($dbConfig = array(), $database='default') {
-		$this->config = array_merge(cpConfig::$DB, (array)$dbConfig);	//参数配置	
+		$this->config = array_merge(cpConfig::$DB, (array)$dbConfig); //参数配置	
 		$this->database = $database;
     }
 	
@@ -20,7 +20,7 @@ class cpModel{
 	public function getDb() {
 		if( empty(self::$db[$this->database]) ){
 			$dbDriver = 'cp' . ucfirst( $this->config['DB_TYPE'] );
-			self::$db[$this->database] = new $dbDriver( $this->config );	//实例化数据库驱动类
+			self::$db[$this->database] = new $dbDriver( $this->config ); //实例化数据库驱动类
 		}
 		return self::$db[$this->database];
 	}
