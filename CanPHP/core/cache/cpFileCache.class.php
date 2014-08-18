@@ -1,4 +1,6 @@
 <?php
+namespace canphp\core\cache;
+
 /*
 文件缓存类
 基于secache修改
@@ -27,7 +29,7 @@ class cpFileCache {
 								'DB_CACHE_PATH'	=> 'data/db_cache/', //缓存目录
 								'DB_CACHE_CHECK' => 'false', //是否验证数据
 								'DB_CACHE_FILE'	=> 'cachedata', //缓存的数据文件名
-								'DB_CACHE_SIZE'	=> '15M', //预设的缓存大小
+								'DB_CACHE_SIZE'	=> '1M', //预设的缓存大小
 								'DB_CACHE_FLOCK' => 'true', //是否存在文件锁，设置为false，将模拟文件锁									
 							);
 		$this->config = array_merge($this->config, (array)$config);

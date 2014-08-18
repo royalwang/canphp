@@ -1,6 +1,9 @@
 <?php
 namespace canphp\core;
 use canphp\core\cpConfig;
+use canphp\core\cpTemplate;
+use canphp\core\cpCache;
+
 class cpController{
 	protected $layout = NULL; //布局视图
 	protected $_data = array();

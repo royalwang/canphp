@@ -7,7 +7,7 @@ class cpTemplate {
 	protected $_replace = array();
 	
 	public function __construct($config = array()) {
-		$this->config = array_merge(cpConfig::TPL, (array)$config);//参数配置	
+		$this->config = array_merge(cpConfig::$TPL, (array)$config);//参数配置	
 		$this->assign('cpTemplate', $this);
 		$this->_replace = array(
 				'str' => array( 'search' => array(),
@@ -50,6 +50,8 @@ class cpTemplate {
 			ob_start();
 		}
 		extract($this->vars, EXTR_OVERWRITE);
+		$this->cache= new cpCache($this->config, $this->config['TPL_CACHE_TYPE']);
+		
 		eval('?>' . $this->compile( $tpl, $is_tpl));//直接执行编译后的模板
 		
 		if( $return ){
@@ -73,7 +75,7 @@ class cpTemplate {
 		if( $is_tpl ){
 			$tplFile = $this->config['TPL_TEMPLATE_PATH'] . $tpl . $this->config['TPL_TEMPLATE_SUFFIX'];
 			if ( !file_exists($tplFile) ) {
-				throw new Exception($tplFile . "模板文件不存在");
+				throw new \Exception($tplFile . "模板文件不存在");
 			}
 			$tpl_key = md5( realpath($tplFile) );
 			$cache = new cpCache($this->config, $this->config['TPL_CACHE_TYPE']);

@@ -13,17 +13,17 @@ class cpCache{
 	protected  $forceInstance = false;
 	
     public function __construct( $cacheConfig = array(), $type = 'FileCache', $forceInstance=false) {
-		$this->config = array_merge(cpConfig::$CACHE, (array)$cacheConfig); //参数配置	
+		$this->config = (array)$cacheConfig; //参数配置	
 		$this->forceInstance = $forceInstance;
 		$this->type = $type;
     }
 
 	public function __call($method, $args){
-		if( $this->forceInstance || !isset(self::$cache[$type] ){
-			$cacheDriver = 'cp' . ucfirst( $this->type );
-			self::$cache[$type] = new $cacheDriver($this->config );
+		if( $this->forceInstance || !isset(self::$cache[$this->type]) ){
+			$cacheDriver = '\canphp\core\cache\cp' . ucfirst( $this->type );
+			self::$cache[$this->type] = new $cacheDriver($this->config );
 		}
-		$cache_obj = self::$cache[$type];
+		$cache_obj = self::$cache[$this->type];
 		
 		if( null==$this->link_obj ){
 			return call_user_func_array(array($cache_obj, $method), $args);
@@ -43,34 +43,5 @@ class cpCache{
 		}
 		
 		return $content;		
-	}
-	//读取缓存
-    public function get($key) {
-		return $this->cache->get($key);   
-    }
-	
-	//设置缓存
-    public function set($key, $value, $expire = 1800) {
-		return $this->cache->set($key, $value, $expire);
-    }
-	
-	//自增1
-	public function inc($key, $value = 1) {
-		return $this->cache->inc($key, $value);    
-	}
-	
-	//自减1
-	public function des($key, $value = 1) {
-		return $this->cache->des($key, $value);    
-	}
-	
-	//删除
-	public function del($key) {
-		return $this->cache->del($key);
-	}
-	
-	//清空缓存
-    public function clear() {
-		return $this->cache->clear();    
 	}
 }
