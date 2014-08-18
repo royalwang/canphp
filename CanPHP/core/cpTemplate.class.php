@@ -19,7 +19,7 @@ class cpTemplate {
 												),
 								'replace' => array("<?php echo $0; ?>",
 												 "<?php echo $1; ?>",
-												 "<?php \$cpTemplate->display(\"$1\"); ?>",
+												 "<?php \$cpTemplate->compile(\"$1\"); ?>",
 												)					   
 							)
 		);
@@ -50,41 +50,7 @@ class cpTemplate {
 			ob_start();
 		}
 		extract($this->vars, EXTR_OVERWRITE);
-		if ( $is_tpl && $this->config['TPL_CACHE_ON'] ) {
-			define('CANPHP', true);
-			$tplFile = $this->config['TPL_TEMPLATE_PATH'] . $tpl . $this->config['TPL_TEMPLATE_SUFFIX'];
-			$cacheFile = $this->config['TPL_CACHE_PATH'] . md5($tplFile) . $this->config['TPL_CACHE_SUFFIX'];
-			
-			if ( !file_exists($tplFile) ) {
-				throw new Exception($tplFile . "模板文件不存在");
-			}
-			//普通的文件缓存
-			if ( empty($this->config['TPL_CACHE_TYPE']) ) {
-				if ( !is_dir($this->config['TPL_CACHE_PATH']) ) {
-					@mkdir($this->config['TPL_CACHE_PATH'], 0777, true);	
-				}
-				if ( (!file_exists($cacheFile)) || (filemtime($tplFile) > filemtime($cacheFile)) ) {
-					file_put_contents($cacheFile, "<?php if (!defined('CANPHP')) exit;?>" . $this->compile($tpl));//写入缓存
-				}
-				include( $cacheFile );//加载编译后的模板缓存
-				
-			} else {
-				//支持memcache等缓存
-				$tpl_key = md5( realpath($tplFile) );
-				$tpl_time_key = $tpl_key.'_time';
-				static $cache = NULL;
-				$cache = is_object($cache) ? $cache : new cpCache($this->config, $this->config['TPL_CACHE_TYPE']);
-				$compile_content = $cache->get( $tpl_key );
-				if ( empty($compile_content) || (filemtime($tplFile) > $cache->get($tpl_time_key)) ) {
-					$compile_content = $this->compile($tpl);
-					$cache->set($tpl_key, $compile_content, 3600*24*365);	//缓存编译内容
-					$cache->set($tpl_time_key, time(), 3600*24*365);	//缓存编译内容
-				}
-				eval('?>' . $compile_content);
-			}
-		} else {
-			eval('?>' . $this->compile( $tpl, $is_tpl));//直接执行编译后的模板
-		}
+		eval('?>' . $this->compile( $tpl, $is_tpl));//直接执行编译后的模板
 		
 		if( $return ){
 			$content = ob_get_contents();
@@ -109,9 +75,14 @@ class cpTemplate {
 			if ( !file_exists($tplFile) ) {
 				throw new Exception($tplFile . "模板文件不存在");
 			}
+			$tpl_key = md5( realpath($tplFile) );
+			$cache = new cpCache($this->config, $this->config['TPL_CACHE_TYPE']);
+			$data = $cache->get( $tpl_key );
+			if ( !empty($data['content']) && filemtime($tplFile) < $data['create_time'] ) {
+				return $data['content'];
+			}
 			$template = file_get_contents( $tplFile );
 		} else {
-			extract($this->vars, EXTR_OVERWRITE);
 			$template = $tpl;
 		}
 		
@@ -121,6 +92,11 @@ class cpTemplate {
 		}
 		$template = str_replace($this->_replace['str']['search'], $this->_replace['str']['replace'], $template);
 		$template = preg_replace($this->_replace['reg']['search'], $this->_replace['reg']['replace'], $template);
+		
+		if( isset($tpl_key) ){
+			$data = array('content'=>$template, 'create_time'=>time());
+			$cache->set($tpl_key, $data, 86400*365);
+		}
 		return $template;
 	}
 }
