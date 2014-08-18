@@ -1,5 +1,6 @@
 <?php
-class cpMemcached {
+namespace canphp\core\cache;
+class cpMemcached implements cpCacheInterface{
 	private $mmc = NULL;
     private $group = ''; 
     private $ver = 0;

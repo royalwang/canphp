@@ -1,11 +1,6 @@
 <?php
 namespace canphp\core\cache;
-
-/*
-文件缓存类
-基于secache修改
-*/
-class cpFileCache {
+class cpFileCache implements cpCacheInterface{
 
     private $idx_node_size = 40;
     private $data_base_pos = 262588; //40+20+24*16+16*16*16*16*4;

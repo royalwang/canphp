@@ -1,5 +1,6 @@
 <?php
-class cpSaeMemcache {
+namespace canphp\core\cache;
+class cpSaeMemcache implements cpCacheInterface{
 	private $mmc = NULL;
     private $group = ''; 
     private $ver = 0;
@@ -28,12 +29,12 @@ class cpSaeMemcache {
 	
 	//自增1
 	public function inc($key, $value = 1) {
-		  return $this->set($key, intval($this->get($key)) + intval($value), -1);
+		return $this->set($key, intval($this->get($key)) + intval($value), -1);
     }
 	
 	//自减1
 	public function des($key, $value = 1) {
-		 return $this->set($key, intval($this->get($key)) - intval($value), -1);
+		return $this->set($key, intval($this->get($key)) - intval($value), -1);
     }
 	
 	//删除
@@ -43,7 +44,7 @@ class cpSaeMemcache {
 	
 	//全部清空
     public function clear() {
-        return  memcache_set($this->mmc, $this->group.'_ver', $this->ver+1); 
+		return  memcache_set($this->mmc, $this->group.'_ver', $this->ver+1); 
     }
 	
 }
