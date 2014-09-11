@@ -141,14 +141,17 @@ class cpModel{
         return $this->getDb()->sql;
     }
 
-	public function cache($expire=1800){
-		 $cache = new cpCache($this);
-		 return $cache;
+	public function cache($cache_time=1800){
+		if( !$this->config['DB_CACHE_ON'] ) return $this;
+		$cache = new cpCache($this->config['DB_CACHE_CONFIG'], $this->config['DB_CACHE_TYPE']);
+		$cache->link_obj = $this;
+		$cache->cache_time = $cache_time;
+		return $cache;
 	}
 	
 	//删除数据库缓存
     public function clear() {
-		 $cache = new cpCache($this);
-		 return $cache;
+		$cache = new cpCache($this->config['DB_CACHE_CONFIG'], $this->config['DB_CACHE_TYPE']);
+		$cache->clear();
     }
 }

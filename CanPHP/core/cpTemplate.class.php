@@ -8,7 +8,7 @@ class cpTemplate {
 	
 	public function __construct($config = array()) {
 		$this->config = array_merge(cpConfig::$TPL, (array)$config);//参数配置	
-		$this->assign('cpTemplate', $this);
+		$this->assign('__cpTemplate', $this);
 		$this->_replace = array(
 				'str' => array( 'search' => array(),
 								'replace' => array()
@@ -19,7 +19,7 @@ class cpTemplate {
 												),
 								'replace' => array("<?php echo $0; ?>",
 												 "<?php echo $1; ?>",
-												 "<?php \$cpTemplate->compile(\"$1\"); ?>",
+												 "<?php \$__cpTemplate->compile(\"$1\"); ?>",
 												)					   
 							)
 		);
@@ -38,10 +38,6 @@ class cpTemplate {
 
 	//执行模板解析输出
 	public function display($tpl = '', $return = false, $is_tpl = true ) {
-		//如果没有设置模板，则调用当前模块的当前操作模板
-		if ( $is_tpl &&  ($tpl == "") && (!empty($_GET['_module'])) && (!empty($_GET['_action'])) ) {
-			$tpl = $_GET['_module'] . "/" . $_GET['_action'];
-		}
 		if( $return ){
 			if ( ob_get_level() ){
 				ob_end_flush();
@@ -49,9 +45,8 @@ class cpTemplate {
 			} 
 			ob_start();
 		}
-		extract($this->vars, EXTR_OVERWRITE);
-		$this->cache= new cpCache($this->config, $this->config['TPL_CACHE_TYPE']);
 		
+		extract($this->vars, EXTR_OVERWRITE);
 		eval('?>' . $this->compile( $tpl, $is_tpl));//直接执行编译后的模板
 		
 		if( $return ){
@@ -71,34 +66,30 @@ class cpTemplate {
 	}
 	
 	//模板编译核心
-	protected function compile( $tpl, $is_tpl = true ) {
+	public function compile( $tpl, $is_tpl = true ) {
 		if( $is_tpl ){
 			$tplFile = $this->config['TPL_TEMPLATE_PATH'] . $tpl . $this->config['TPL_TEMPLATE_SUFFIX'];
 			if ( !file_exists($tplFile) ) {
-				throw new \Exception($tplFile . "模板文件不存在");
+				throw new Exception($tplFile . "模板文件不存在");
 			}
-			$tpl_key = md5( realpath($tplFile) );
-			$cache = new cpCache($this->config, $this->config['TPL_CACHE_TYPE']);
-			$data = $cache->get( $tpl_key );
-			if ( !empty($data['content']) && filemtime($tplFile) < $data['create_time'] ) {
-				return $data['content'];
-			}
+
+			$tpl_key = md5(realpath($tplFile));
+			$ret = $this->cache->get( $tpl_key );
+			if ( !empty($ret['content']) && (filemtime($tplFile)<($ret['compile_time'])) ) {
+				return $ret['content'];
+			}		
 			$template = file_get_contents( $tplFile );
 		} else {
 			$template = $tpl;
 		}
 		
-		//如果自定义模板标签解析函数tpl_parse_ext($template)存在，则执行
-		if ( function_exists('tpl_parse_ext') ) {
-			$template = tpl_parse_ext($template);
-		}
 		$template = str_replace($this->_replace['str']['search'], $this->_replace['str']['replace'], $template);
 		$template = preg_replace($this->_replace['reg']['search'], $this->_replace['reg']['replace'], $template);
 		
-		if( isset($tpl_key) ){
-			$data = array('content'=>$template, 'create_time'=>time());
-			$cache->set($tpl_key, $data, 86400*365);
+		if( $is_tpl ){
+			$this->cache->set( $tpl_key, $template, 86400*365);
 		}
+		
 		return $template;
 	}
 }
