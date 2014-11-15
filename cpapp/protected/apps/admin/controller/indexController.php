@@ -1,5 +1,6 @@
 <?php
-class indexController extends adminController{
+namespace apps/admin;
+class indexController extends /apps/base/adminController{
 	
 	public function index(){
 		$this->leftMenu = api('*', 'getMenu');
