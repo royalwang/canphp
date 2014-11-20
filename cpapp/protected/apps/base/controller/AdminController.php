@@ -1,6 +1,5 @@
 <?php
-namespace apps\base\controller;
-class AdminController extends \canphp\core\cpController{
+class adminController extends baseController{
 	protected $appID = 'admin';
 
 	public function __construct(){

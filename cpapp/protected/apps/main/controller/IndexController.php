@@ -1,11 +1,9 @@
 <?php
-namespace apps\main\controller;
-class IndexController extends \apps\base\controller\BaseController{
-	
-	public function actionIndex(){
-		$Demo = model('Demo', 'main');
-		echo $this->title = $Demo->getTitle();
-		echo $this->hello = $Demo->getHello();
-		//$this->display();
+namespace apps\main;
+class indexController{
+	public function index(){
+		$this->title = model('main')->getTitle();
+		$this->hello = model('main')->getHello();
+		$this->display();
 	}
 }

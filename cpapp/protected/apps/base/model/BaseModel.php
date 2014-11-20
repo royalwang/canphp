@@ -1,5 +1,5 @@
 <?php
-namespace apps\base\model;
-class BaseModel extends \canphp\core\cpModel{
+namespace apps/base;
+class baseModel extends canphp/core/cpModel{
 
 }
