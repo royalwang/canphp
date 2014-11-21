@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible" />
+<title>通用后台页面</title>
+<link rel="stylesheet" href="i/global.css"/>
+<script src="http://www.duowan.com/public/assets/sys/js/jquery.js"></script>
+<script type="text/javascript" src="/udb.js"></script>
+</head>
+<body>
+<div id="page">
+
+	<div id="section">
+		<div id="main">
+        
+<!--登录窗{ -->
+<style>
+#popup-win1{width:400px;display:none;}
+    .mod-form{padding-top:10px;padding-bottom:5px;}
+    .mod-form form label{width:98px;}
+    .mod-form form input{width:200px;}
+    #popup-win1 .extra{margin:10px 25px;padding-top:10px;border-top:1px solid #CCC;text-align:center;}
+    #popup-win1 .extra a{margin:0 5px;color:#069;}
+</style>
+<div id="popup-win1" class="pop-box" style="display: block; position:fixed;_position:absolute;left: 50%; top: 50%; z-index: 1; margin: -128.5px 0pt 0pt -206px;">
+    <div class="box">
+        <div class="box-hd">
+            <h3 class="title">欢迎登陆</h3>
+        </div>
+        <div class="box-bd">
+			<div class="mod-form">
+				<form >
+					<div class="btns">
+						<span class="ui-button ui-button-l"><button type="button" title="登录" onclick="Navbar.login('<{url r='default/main'}>');">登录</button></span>
+					</div>
+				</form>
+			</div>
+        </div>
+        <div class="box-ft"></div>
+    </div>
+</div>
+
+		</div>
+	</div>
+</div>
+</body>
+</html>

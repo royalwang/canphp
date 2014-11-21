@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible" />
+<title>通用后台页面</title>
+<link rel="stylesheet" href="i/global.css"/>
+<style>
+#page{background:url(i/aside.png) repeat-y 0 0;}
+</style>
+</head>
+<body style="overflow:hidden">
+<div id="page">
+	<!-- head{ -->
+	<div id="header">
+		<h1>图库2.0管理后台</h1>
+			<div class="welcome">欢迎<b><{$udb_name}></b>登录图库2.0管理后台！<a href="<{url r='default/logout'}>">退出</a></div>
+	</div>
+	<!-- }head -->
+	<div id="section" class="clearfix">
+    
+      <!--aside{ -->
+		<div id="aside">
+			<div class="ad">
+            <h3>公告</h3>
+            这是一个后台实例，好玩吗？</div>
+			<ul id="menu">
+			<{foreach from=$menus item=menu key=menutitle}>
+				<li>
+				  <a class="current"><{$menutitle}></a>
+					<ul>
+					<!--<li class="on"><a href="">菜单一a</a></li>-->
+					<{foreach from=$menu item=amenu key=atitle}>
+					<li><a href="<{url r=$amenu}>" target="mainframe"><{$menutitle}></a></li>
+					<{/foreach}>
+					</ul>
+				</li>
+			<{/foreach}>
+			</ul>
+		</div>
+        <!--}aside -->
+		<div id="main" style="padding:0">
+			<iframe height="100%" width="100%" src="<{url r='default/panel'}>" frameborder="0" scrolling="auto" id="mainframe"></iframe>
+		</div>
+	</div>
+</div>
+</body>
+</html>

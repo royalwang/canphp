@@ -1,0 +1,82 @@
+<{if !$ajax}>
+<!doctype html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible" />
+<title>通用后台页面</title>
+<link rel="stylesheet" href="i/global.css"/>
+<script src="http://www.duowan.com/public/assets/sys/js/jquery.js"></script>
+</head>
+<body>
+<div id="page">
+	<div id="section">
+		<div id="main">
+			<!-- crumbs{ -->
+			<div id="crumbs">
+				你的位置：<a href="#">系统管理</a>
+			</div>
+			<!-- }crumbs -->
+				
+			<!-- top-title{ -->
+			<div class="top-title clearfix">
+				<h2 class="clearfix">用户管理</h2>
+				<p>这里你可以为系统增加UDB用户、删除UDB用户。</p>
+					<span><a href="javascript:newUser();">增加用户</a></span>
+			</div>
+			<!-- }top-title -->
+				
+				
+			<!-- mod-form{ -->
+			<div class="status">
+<{/if}>
+				<table>
+					<thead>
+						<tr>
+							<th>UDB名称</th>
+							<th>添加时间</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					<{if isset($udbs)}><{foreach from=$udbs item=udb}>
+						<tr>
+							<td><{$udb.udb_name}></td>
+							<td><{$udb.created|date_format:"%Y-%m-%d %H:%M:%S"}></td>
+							<td><a href="#" onclick="delUser('<{$udb.udb_name}>');">删除</a></td>
+						</tr>
+					<{/foreach}><{/if}>
+					</tbody>
+				</table>
+<{if !$ajax}>
+			</div>			
+			<!-- }mod-form -->
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function newUser() {
+	var newName = window.prompt("请输入新用户UDB","dw_");
+	if(newName){
+		$.get('index.php', {'r':'default/managerop','op':'add', 'udb':newName}, function(){
+			listUser();
+		});
+	}
+}
+function delUser(udb) {
+	if(window.confirm("确定要删除"+udb+"吗？")) {}
+		$.get('index.php', {'r':'default/managerop','op':'del', 'udb':udb}, function(){listUser();});
+	
+}
+function listUser() {
+	$.get('index.php', {'r':'default/managerop','op':'list'}, function(data){
+		$('.status').html(data);
+	});
+}
+$(document).ready(function(){
+	listUser();
+});
+</script>
+</body>
+</html>
+<{/if}>

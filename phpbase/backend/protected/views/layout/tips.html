@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible" />
+<title>通用后台页面</title>
+<link rel="stylesheet" href="i/global.css"/>
+</head>
+<body>
+<div id="page">
+
+	<div id="section">
+		
+		<div id="main">
+
+<!--登录窗{ -->
+<style>
+    #popup-win2{width:500px;display:none;}
+    #popup-win2 .box-bd{padding:5px 30px 10px;}
+</style>
+
+<div class="pop-box" id="popup-win2" style="display: block;position:fixed;_position:absolute; left: 50%; top: 30%; z-index: 32767; margin: -78px 0pt 0pt -256px;">
+    <div class="box">
+		<div class="box-bd">
+			<div class="mod-msg msg-<{$type}>-l">
+				<i class="icon"></i>
+				<p><{$title}><br><{$msg}></p>
+				<p><a href="<{$url}>" target="_self">如果你的浏览器没有自动跳转，请点击此链接</a></p>
+			</div>
+        </div>
+        <div class="box-ft"></div>
+    </div>
+</div>
+<!--}登录窗 -->
+
+
+
+		</div>
+	</div>
+</div>
+</body>
+</html>

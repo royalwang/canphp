@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible" />
+<title>通用后台页面</title>
+<link rel="stylesheet" href="admin/global.css"/>
+</head>
+<body>
+<div id="page">
+
+	<div id="section">
+		
+		<div id="main">
+			<!-- crumbs{ -->
+			<div id="crumbs">
+				你的位置：<a href="#">菜单位置</a> &gt; 菜单位置 &gt; 菜单位置
+			</div>
+			<!-- }crumbs -->
+            
+             <!-- top-title{ -->
+				<div class="top-title clearfix">
+				<h2 class="clearfix">这是神马大菜单</h2>
+				<p>我是注释我是注释我是注注释我是注释我是注释我是注释...</p>
+				</div>
+				<!-- }top-title -->
+			
+            
+<!-- mod-form{ -->
+<div class="mod-form">
+	<form accept-charset="utf-8" autocomplete="on" name="" method="get" action="" id="">
+		
+        <fieldset>
+        
+        <div class="file">
+			<label for="">图片上传</label>
+            <div>
+             <button type="button">选择文件</button>未选择文件
+             <p><img src="http://maxlee.org/200x140" alt=""></p>
+            </div>
+		</div>
+        
+        
+        <div class="radio">
+			<label for="">单选文字</label>
+            <div>
+			<input type="radio" >多选选项
+            <input type="radio">多选选项
+            </div>
+		</div>
+        
+         <div class="radio">
+			<label for="">单选文字</label>
+            <div>
+			<input type="radio" >单选选选项多选选项文字项文字很长的哟很长<br/>
+            <input type="radio" >单选选选项多选选项文字很长的哟<br/>
+            <input type="radio" >单选选项多选选项文字很长的哟<br/>
+            <input type="radio" >单选选项多选选项文字很长的哟
+            </div>
+		</div>
+        
+        <div class="check">
+			<label for="">多选文字</label>
+            <div>
+			<input type="checkbox">多选选项
+            <input type="checkbox">多选选项
+            </div>
+		</div>
+        
+        <div class="check">
+			<label for="">多选文字</label>
+            <div>
+			<input type="checkbox">多选选项文字很长的哟多选选项文字很长的哟<br/>
+            <input type="checkbox">多选选项多选选项文字很长的哟<br/>
+            <input type="checkbox">多选选项多选选项文字很长的哟<br/>
+            <input type="checkbox">多选选项多选选项文字很长的哟
+            </div>
+		</div>
+        </fieldset>
+        
+        
+        <fieldset>
+
+		<div>
+			<label for="email">邮箱</label>
+			<input type="text" value="" placeholder="yourname@example.com" pattern="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" name="email" maxlength="36" id="email">
+			<p class="tips">请使用常用邮箱，以便及时收到面试和职位通知</p>
+		</div>
+		<div>
+			<label for="confirm-email">确认邮箱</label>
+			<input type="text" value="" placeholder="再次输入邮箱地址" required="" autocomplete="off" pattern="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" name="confirm-email" maxlength="36" id="confirm-email" class="error">
+            <i class="error"></i>
+            <p class="tips error">邮箱错误，请输入正确的邮箱地址！</p>
+		</div>
+		<div>
+			<label for="birthdate">出生日期</label>
+			<!--<input id="birthdate" maxlength="" name="birthdate" type="text" value="" />-->
+			<select name="year" id="year">
+			<option value="">-</option>
+			<option value="1980">1980</option>
+			<option value="1981">1981</option>
+			<option value="1982">1992</option>
+			<option value="1983">1983</option>
+			</select><span>年</span><select name="month" id="month">
+			<option value="">-</option>
+			<option value="01">01</option>
+			<option value="02">02</option>
+			<option value="03">03</option>
+			<option value="04">04</option>
+			</select><span>月</span><select name="day" id="day">
+			<option value="">-</option>
+			<option value="01">01</option>
+			<option value="02">02</option>
+			<option value="03">03</option>
+			<option value="04">04</option>
+			</select><span>日</span>
+		</div>
+		<div>
+			<label for="age">年龄</label>
+			<input type="text" value="" pattern="[0-9]{1}" name="age" maxlength="2" id="age">
+		</div>
+		<div>
+			<label for="gender">性别</label>
+			<!--<input id="gender" name="gender" type="text" maxlength="2" value="" />-->
+			<select name="gender" id="gender">
+			<option value="">-</option>
+			<option value="male">男</option>
+			<option value="female">女</option>
+			</select>
+        </div>
+        <div>
+			<label for="birthdate">出生日期</label>
+			<input type="text" value="" placeholder="2011-05-01" pattern="\d+-\d+-\d+" name="birthdate" id="birthdate">
+		</div>
+		<div>
+			<label for="zip">邮编</label>
+			<input type="text" value="" pattern="[1-9]\d{5}(?!\d)" name="zip" maxlength="6" id="zip">
+		</div>
+		<div>
+			<label for="address">地址</label>
+			<input type="address" value="" name="address" maxlength="36" id="address">
+        </div>
+		<div>
+			<label for="website">网址</label>
+            <input type="url" value="" pattern="[a-zA-z]+://[^\s]*" placeholder="http://www.duowan.com" list="website-list" name="website" id="website">
+            <datalist id="website-list">
+                <option label="Duowan" value="http://www.duowan.com">
+                </option><option label="YY" value="http://www.yy.com">
+                </option><option label="MaxLee" value="http://maxlee.org">
+            </option></datalist>
+		</div>
+		<div>
+			<label for="tel">电话</label>
+            <input type="tel" value="" placeholder="13800138000" pattern="\d{3}-\d{8}|\d{4}-\d{7}" name="tel" maxlength="13" id="tel">
+            <!--  pattern="[-0-9]+" -->
+		</div>
+		<div>
+			<label for="check-code">验证码</label>
+			<input type="text" required="" value="" pattern="[A-Za-z]{5}" name="check-code" maxlength="6" id="check-code">
+			<span class="code">iAmMax</span>
+		</div>
+		<div>
+			<label for="comment">留言</label>
+			<textarea placeholder="留言" rows="5" cols="30" name="comment" id="comment"></textarea>
+		</div>
+		<div class="btns">
+            <span class="ui-button"><button type="submit" title="提交">提交</button></span>
+            <span class="ui-button ui-button-s2"><button type="reset" title="重置">重置</button></span>
+		</div>
+		</fieldset>
+	</form>
+</div>			
+<!-- }mod-form -->
+	
+
+
+
+
+	</div>
+</div>
+</div>
+</body>
+</html>
