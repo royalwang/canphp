@@ -87,5 +87,52 @@ class cpConfig{
 		static public $CACHE = array(
 			'FILE_CACHE_PATH'=>'',//文件缓存路径
 			'MEM_SERVER'=>array( array('127.0.0.1', 11211),  array('localhost', 11211) ),//memcache
-		)	
+		);
+
+		static public init(){
+		
+		}
+		
+		static public loadConfig($file){
+			self::config['global'] = require($file);
+		}
+		
+		static public function get($key){
+			$arr = explode('.', $key);
+			switch( count($ret) ){
+				case 1 : 
+					if( isset(self::config[ $arr[0] ])) {
+						return self::config[ $arr[0] ];
+					}
+					break;
+				case 2 : 
+					if( isset(self::config[ $arr[0] ][ $arr[1] ])) {
+						return self::config[ $arr[0] ][ $arr[1] ];
+					}
+					break;
+				case 3 : 
+					if( isset(self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ])) {
+						return self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ];
+					}
+					break;					
+				default: break;
+			}
+			return NULL;
+		}
+		
+		static public function set($key, $value){
+			$arr = explode('.', $key);
+			switch( count($ret) ){
+				case 1 : 
+					self::config[ $arr[0] ] = $value;
+					break;
+				case 2 : 
+					self::config[ $arr[0] ][ $arr[1] ] = $value;
+					break;
+				case 3 : 
+					self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ]; = $value;
+					break;					
+				default: break;
+			}		
+		}
 }
