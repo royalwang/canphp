@@ -1,6 +1,6 @@
 <?php 
 return array (
-  'default' => 
+  'DEFAULT' => 
 		  array (
 			'DB_TYPE' => 'mysql',
 			'DB_HOST' => 'localhost',
