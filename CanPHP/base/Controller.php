@@ -1,12 +1,13 @@
 <?php
-namespace canphp\core;
-use canphp\core\cpConfig;
-use canphp\core\cpTemplate;
-use canphp\core\cpCache;
+namespace framework\base;
+use framework\base\Config;
+use framework\base\Template;
+use framework\base\Cache;
 
-class cpController{
-	protected $layout = NULL; //布局视图
-	protected $_data = array();
+class Controller{
+	public $layout = NULL; //布局视图
+	public $autoDisplay = true; //自动调用模板
+	public $_data = array();
 	
 	public function __get($name){
 		return isset($this->_data[$name]) ? $this->_data[$name] : NULL;
@@ -17,42 +18,41 @@ class cpController{
 	}
 	
 	//模板赋值
-	protected function assign($name, $value){
+	public function assign($name, $value){
 		$this->_data[$name] = $value;
 	}
 	
 	//模板显示
-	protected function display($tpl = '', $return = false, $is_tpl = true ){
-		$template = new cpTemplate( config('TPL') );
-		if( $is_tpl ){
-			$tpl = empty($tpl) ? CONTROLLER_NAME . '_'. ACTION_NAME : $tpl;
+	public function display($tpl = '', $return = false, $isTpl = true ){
+		$template = new Template( Config::get('TPL') );
+		if( $isTpl ){
+			$tpl = empty($tpl) ? APP_NAME . '/view/' . CONTROLLER_NAME . '_'. ACTION_NAME : $tpl;
 			if( $this->layout ){
 				$this->__template_file = $tpl;
 				$tpl = $this->layout;
 			}
 		}
-		if( defined('APP_NAME') && defined('BASE_PATH') ){
-			$template->config['TPL_TEMPLATE_PATH'] = BASE_PATH . 'apps/' . APP_NAME . '/view/';
-		}
+
 		$template->assign(get_object_vars($this));
 		$template->assign( $this->_data );
+		
 		return $template->display($tpl, $return, $is_tpl);
 	}
 	
 	//判断是否是数据提交	
-	protected function isPost(){
+	public function isPost(){
 		return $_SERVER['REQUEST_METHOD'] == 'POST';
 	}
 	
 	//直接跳转
-	protected function redirect( $url, $code=302) {
+	public function redirect( $url, $code=302) {
 		header('location:' . $url, true, $code);
 		exit;
 	}
 	
 	//弹出信息
-	protected function alert($msg, $url = NULL){
-		header("Content-type: text/html; charset=utf-8"); 
+	public function alert($msg, $url = NULL, $charset='utf-8'){
+		header("Content-type: text/html; charset={$charset}"); 
 		$alert_msg="alert('$msg');";
 		if( empty($url) ) {
 			$go_url = 'history.go(-1);';
@@ -63,7 +63,7 @@ class cpController{
 		exit;
 	}
 	
-	protected function arg($name=null, $default = null, $callback = null) {
+	public function arg($name=null, $default = null, $callback = null) {
 		static $args;
 		if( !$args ){
 			$args = array_merge((array)$_GET, (array)$_POST);
