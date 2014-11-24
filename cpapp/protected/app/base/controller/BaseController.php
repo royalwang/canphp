@@ -1,4 +1,5 @@
 <?php
-class baseController extends controller{
+namespace app\base\controller;
+class BaseController extends \framework\base\Controller{
 
 }

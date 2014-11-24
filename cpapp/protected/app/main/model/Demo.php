@@ -1,6 +1,6 @@
 <?php
-namespace apps\main\model;
-class Demo extends \apps\base\model\BaseModel{
+namespace app\main\model;
+class Demo extends \app\base\model\BaseModel{
 
 	public function getTitle(){
 		return '默认首页';

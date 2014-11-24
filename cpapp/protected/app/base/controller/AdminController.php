@@ -1,5 +1,6 @@
 <?php
-class adminController extends baseController{
+namespace app\base\controller;
+class AdminController extends BaseController{
 	protected $appID = 'admin';
 
 	public function __construct(){
