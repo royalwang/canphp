@@ -1,6 +1,6 @@
 <?php
-namespace canphp\core;
-use canphp\core\cpConfig;
+namespace framework\base;
+use framework\base\Config;
 class cpTemplate {
 	public $config =array(); //配置
 	protected $vars = array();//存放变量信息

@@ -1,6 +1,6 @@
 <?php
-namespace canphp\core;
-use canphp\core\cpConfig;
+namespace framework\base;
+use framework\base\Config;
 
 //模型类，加载了外部的数据库驱动类和缓存类
 class cpModel{
