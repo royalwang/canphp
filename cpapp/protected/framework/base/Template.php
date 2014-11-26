@@ -98,7 +98,7 @@ class Template {
 		}
 	}	
 	
-	public function addTags($tags = array(), $reg = false) {
+	public function addTags($tags = array(), $reg = false, $prepend=false) {
 		$flag = $reg ? 'reg' : 'str';
 		foreach($tags as $k => $v) {
 			$this->_replace[$flag]['search'][] = $k;

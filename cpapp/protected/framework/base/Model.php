@@ -3,24 +3,28 @@ namespace framework\base;
 
 class Model{
 	protected $config =array();
-    protected $options = array('field'=>'','where'=>'','order'=>'','limit'=>'','data'=>''); //参数
+	protected $tag = 'default';	
+    protected $options = array('field'=>'','where'=>'','order'=>'','limit'=>'','data'=>'');
+	protected $table = ''; //表名		
+	protected static $objArr = array();
+
 	
-	protected static $db = array(); //存储数据库实例数组
-	protected $database = 'default'; //数据库名称	
-	protected $table = ''; //表名	
-	
-    public function __construct($dbName='default', $forceInstance=false) {
-		$this->config = array_merge(cpConfig::$DB, (array)$dbConfig); //参数配置	
-		$this->database = $database;
+    public function __construct( $tag = 'default' ) {
+		if( $tag ){
+			$this->tag = $tag;
+		}
+		$this->config = Config::get('DB.' . $this->tag);
+		if( empty($this->config) || !isset($this->config['DB_TYPE']) ) {
+			throw new Exception($this->tag.' cache config error', 500);
+		}
     }
 	
-	//连接数据库
 	public function getDb() {
-		if( empty(self::$db[$this->database]) ){
-			$dbDriver = 'cp' . ucfirst( $this->config['DB_TYPE'] );
-			self::$db[$this->database] = new $dbDriver( $this->config ); //实例化数据库驱动类
+		if( empty(self::$objArr[$this->tag]) ){
+			$dbDriver = 'db\\' . ucfirst( $this->config['CACHE_TYPE'] ).'Driver';
+			self::$objArr[$this->tag] = new $dbDriver( $this->config );
 		}
-		return self::$db[$this->database];
+		return self::$objArr[$this->tag];
 	}
 	
 	//设置表，$ignore_prefix为true的时候，不加上默认的表前缀
@@ -29,7 +33,6 @@ class Model{
 		return $this;
 	}
 	
-	 //回调方法，连贯操作的实现
     public function __call($method, $args) {
 		$method = strtolower($method);
         if ( in_array($method, array('field','data','where','order','limit')) ) {
@@ -40,13 +43,12 @@ class Model{
 		}
     }
 	
-	//执行原生sql语句，如果sql是查询语句，返回二维数组
+
     public function query($sql, $params = array(), $is_query = false) {
         $sql = trim($sql);
 		if ( empty($sql) ) return array();
 		$sql = str_replace('{pre}', $this->config['DB_PREFIX'], $sql);	//表前缀替换
 
-		//判断当前的sql是否是查询语句
 		if ( $is_query ||  0=== stripos($sql, 'select') || 0=== stripos(trim($sql), 'show') ) {
 			return $this->getDb()->query($this->sql, $params);				
 		} else {
@@ -54,7 +56,6 @@ class Model{
 		}
     }
 	
-	//统计行数
 	public function count() {
 		$condition = $this->options['where'];
 		$this->options['where']= '';	
@@ -62,14 +63,13 @@ class Model{
 		return $this->getDb()->count($this->table, $condition);
 	}
 	
-	//只查询一条信息，返回一维数组	
     public function find() {
 		$this->options['limit'] = 1;	//限制只查询一条数据
 		$data = $this->select();
 		return isset($data[0]) ? $data[0] : array();
      }
 	 
-	//查询多条信息，返回数组
+
      public function select() {
 		$condition = $this->options['where'];
 		$this->options['where'] = '';
@@ -87,7 +87,6 @@ class Model{
 		return $this->getDb()->select($this->table, $condition, $field, $order, $limit);		
      }
 	 	
-	//插入数据
     public function insert() {
 		if( empty($this->options['data']) || !is_array($this->options['data']) ) {
 			throw new Exception('待插入的数据不能为空');
@@ -99,7 +98,6 @@ class Model{
 		return $this->getDb()->insert($this->table, $data);
     }
 	
-	//修改更新
     public function update() {
 		if( empty($this->options['where']) ) {
 			throw new Exception('修改操作必须指定条件，防止误操作');
@@ -117,7 +115,6 @@ class Model{
 		return $this->getDb()->update($this->table, $condition, $data);
     }
 	
-	//删除
     public function delete() {
 		if( empty($this->options['where']) ) {
 			throw new Exception('删除操作必须指定条件，防止误操作!');
@@ -129,22 +126,19 @@ class Model{
 		return $this->getDb()->delete($this->table, $condition);
     }
 
-	//获取一张表的所有字段
 	public function getFields() {
 		return $this->getDb()->getFields($this->table);
 	}
 	
-	//返回sql语句
     public function getSql() {
         return $this->getDb()->sql;
     }
 
 	public function cache($expire=1800){
-		 $cache = new cpCache($this);
+		 $cache = new Cache($this->config['DB_CACHE']);
 		 return $cache;
 	}
 	
-	//删除数据库缓存
     public function clear() {
 		 $cache = new cpCache($this);
 		 return $cache;
