@@ -19,7 +19,7 @@ class Config {
 				
 				//数据库配置
 				'DB'=>array(
-					'DEFAULT'=>array(								
+					'default'=>array(								
 							'DB_TYPE' => 'mysql',//数据库类型，一般不需要修改
 							'DB_HOST' => 'localhost',//数据库主机，一般不需要修改
 							'DB_USER' => 'root',//数据库用户名
@@ -28,8 +28,7 @@ class Config {
 							'DB_NAME' => 'cp',//数据库名
 							'DB_CHARSET' => 'utf8',//数据库编码，一般不需要修改
 							'DB_PREFIX' => 'cp_',//数据库前缀
-							'DB_CACHE_TYPE' => '',//缓存类型，为空不缓存，FileCache或Memcache或SaeMemcache
-							'DB_CACHE_CONFIG' => array(),//缓存类型对应的缓存配置
+							'DB_CACHE' => 'default',//数据缓存方式
 							
 							//数据库主从配置，cp2.0添加
 							'DB_SLAVE' => array(),//数据库从机配置，cp2.0添加
@@ -54,11 +53,15 @@ class Config {
 				
 				//模板配置
 				'TPL'=>array(
-					'TPL_TEMPLATE_PATH'=>BASE_PATH.'apps/',//模板目录，一般不需要修改
-					'TPL_TEMPLATE_SUFFIX'=>'.html',//模板后缀，一般不需要修改
-					'TPL_CACHE_TYPE'=>'FileCache',//数据缓存类型	
-					'TPL_CACHE_CONFIG'=>array(),					
+					'TPL_PATH'=>BASE_PATH.'apps/',//模板目录，一般不需要修改
+					'TPL_SUFFIX'=>'.html',//模板后缀，一般不需要修改
+					'TPL_CACHE'=>'default',//模板缓存方式						
+				),
+				
+				'CACHE'=>array(
+					'default'=>array('CACHE_TYPE'=>'FileCache', 'CACHE_PATH'=>''),
 				)
+				
 			);
 
 		
