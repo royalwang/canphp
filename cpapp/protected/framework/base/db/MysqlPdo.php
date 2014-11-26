@@ -1,5 +1,9 @@
 <?php
-class cpMysqlPdo {
+namespace framework\base\db;
+use framework\base\db\DbInterface;
+use framework\base\db\Config;
+
+class MysqlPdoDriver {
 	private $_writeLink = NULL; //主
 	private $_readLink = NULL; //从
 	private $_replication = false; //标志是否支持主从

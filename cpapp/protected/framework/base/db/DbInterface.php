@@ -1,8 +1,8 @@
 <?php
-namespace canphp\core\db;
+namespace framework\base\db;
 
 //db驱动类接口
-interface cpDbInterface{
+interface DbInterface{
 	//连接数据库
 	public function __construct($dbConfig);
 	

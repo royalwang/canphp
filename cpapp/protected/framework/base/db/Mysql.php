@@ -1,10 +1,9 @@
 <?php
-namespace canphp\core\db;
-use canphp\core\cpObject;
-use canphp\core\cpConfig;
-use canphp\core\db\cpDbInterface;
+namespace framework\base\db;
+use framework\base\db\DbInterface;
+use framework\base\db\Config;
 
-class cpMysql extends cpObject implements cpDbInterface{
+class MysqlDriver implements DbInterface{
 	private $_writeLink = NULL; //主
 	private $_readLink = NULL; //从
 	private $_replication = false; //标志是否支持主从
