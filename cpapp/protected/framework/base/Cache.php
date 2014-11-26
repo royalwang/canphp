@@ -1,5 +1,5 @@
 <?php
-cacheNamespace framework\base;
+namespace framework\base;
 
 class Cache{
 	protected  static $objArr = array();
