@@ -1,17 +1,15 @@
 <?php
 namespace framework\base;
-use framework\base\Config;
 
-//模型类，加载了外部的数据库驱动类和缓存类
-class cpModel{
-	protected $config =array(); //配置
+class Model{
+	protected $config =array();
     protected $options = array('field'=>'','where'=>'','order'=>'','limit'=>'','data'=>''); //参数
 	
 	protected static $db = array(); //存储数据库实例数组
 	protected $database = 'default'; //数据库名称	
 	protected $table = ''; //表名	
 	
-    public function __construct($dbConfig = array(), $database='default') {
+    public function __construct($dbName='default', $forceInstance=false) {
 		$this->config = array_merge(cpConfig::$DB, (array)$dbConfig); //参数配置	
 		$this->database = $database;
     }

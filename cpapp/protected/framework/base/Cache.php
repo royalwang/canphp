@@ -2,25 +2,26 @@
 namespace framework\base;
 
 class Cache{
-	protected  static $objArr = array();
-	protected  $cacheName = 'default';
-	protected  $forceInstance = false;
+	protected $config =array();
+	protected $tag = 'default';
+	protected static $objArr = array();
 	
-    public function __construct($cacheName='default', $forceInstance=false) {
-		if( $cacheName ){
-			$this->cacheName = $cacheName;
+    public function __construct( $tag = 'default' ) {
+		if( $tag ){
+			$this->tag = $tag;
 		}
-		$this->forceInstance = $forceInstance;
+		$this->config = Config::get('CACHE.' . $this->tag);
+		if( empty($this->config) || !isset($this->config['CACHE_TYPE']) ) {
+			throw new Exception($this->tag.' cache config error', 500);
+		}
     }
 
 	public function __call($method, $args){
-		if( !isset(self::$objArr[$this->cacheName] || $this->forceInstance ) ){
-			$config = Config::get('CACHE.'.$this->cacheName);
-			if( empty($config) || !isset($config['CACHE_TYPE']) ) throw new Exception($this->cacheName.' cache config error', 500);
-			$cacheDriver = 'cache\\' . ucfirst( $config['CACHE_TYPE'] ).'Driver';
-			self::$objArr[$this->cacheName] = new $cacheDriver( $config );
+		if( !isset(self::$objArr[$this->tag]) ){		
+			$cacheDriver = 'cache\\' . ucfirst( $this->config['CACHE_TYPE'] ).'Driver';
+			self::$objArr[$this->tag] = new $cacheDriver( $this->config );
 		}
 		
-		return call_user_func_array(array(self::$objArr[$this->cacheName], $method), $args);		
+		return call_user_func_array(array(self::$objArr[$this->tag], $method), $args);		
 	}
 }
