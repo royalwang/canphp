@@ -1,69 +1,57 @@
 <?php
 namespace framework\core;
 class Config {		
-	//应用配置
+
 	static protected $config = array(
-				//日志和错误调试配置
-				'DEBUG' => true,	//是否开启调试模式，true开启，false关闭
-				'LOG_ON' => false,//是否开启出错信息保存到文件，true开启，false不开启
-				'LOG_PATH' => BASE_PATH . 'data/log/', //日志存放目录
-				'ERROR_URL' => '',//出错信息重定向页面，为空采用默认的出错页面，一般不需要修改
-				'TIMEZONE' => 'PRC', //时区设置
+				'DEBUG' => true,	
+				'LOG_ON' => false,
+				'LOG_PATH' => BASE_PATH . 'data/log/', 
+				'ERROR_URL' => '', 
+				'TIMEZONE' => 'PRC', 
 				
-				//网址配置
-				'URL_BASE' => '/', //设置网址域名				
-				'URL_REWRITE' =>array(
+				'URL_BASE' => '/', 				
+				'REWRITE_RULE' =>array(),
 				
-				),
+				'DEFAULT_APP' => 'main',
+				'DEFAULT_CONTROLLER' => 'Index',
+				'DEFAULT_ACTION' => 'index',
 				
-				//数据库配置
 				'DB'=>array(
 					'default'=>array(								
-							'DB_TYPE' => 'mysql',//数据库类型，一般不需要修改
-							'DB_HOST' => 'localhost',//数据库主机，一般不需要修改
-							'DB_USER' => 'root',//数据库用户名
-							'DB_PWD' => '',//数据库密码
-							'DB_PORT' => 3306,//数据库端口，mysql默认是3306，一般不需要修改
-							'DB_NAME' => 'cp',//数据库名
-							'DB_CHARSET' => 'utf8',//数据库编码，一般不需要修改
-							'DB_PREFIX' => 'cp_',//数据库前缀
-							'DB_CACHE' => 'default',//数据缓存方式
-							
-							//数据库主从配置，cp2.0添加
-							'DB_SLAVE' => array(),//数据库从机配置，cp2.0添加
-							/* 数据库主从配置示例，可以配置多台从机，如果用户名、密码等跟主机相同，可不设置
+							'DB_TYPE' => 'mysql',
+							'DB_HOST' => 'localhost',
+							'DB_USER' => 'root',
+							'DB_PWD' => '',
+							'DB_PORT' => 3306,
+							'DB_NAME' => 'cp',
+							'DB_CHARSET' => 'utf8',
+							'DB_PREFIX' => 'cp_',
+							'DB_CACHE' => 'default',						
+							'DB_SLAVE' => array(),
+							/* 
 							'DB_SLAVE' => array(
 												array(
 														'DB_HOST' => '127.0.0.1',
-														'DB_USER' => 'root',
-														'DB_PWD' => '',
 													),
 												array(
 														'DB_HOST' => '127.0.0.2',
-														'DB_USER' => 'root',
-														'DB_PWD' => '',
 													),
 											),
-							*/
-							
-						)
-				
+							*/							
+						),				
 				),
 				
-				//模板配置
 				'TPL'=>array(
-					'TPL_PATH'=>BASE_PATH.'app/',//模板目录，一般不需要修改
-					'TPL_SUFFIX'=>'.html',//模板后缀，一般不需要修改
-					'TPL_CACHE'=>'default',//模板缓存方式						
+					'TPL_PATH'=>BASE_PATH . 'app/',
+					'TPL_SUFFIX'=>'.html',
+					'TPL_CACHE'=>'default',						
 				),
 				
 				'CACHE'=>array(
-					'default'=>array('CACHE_TYPE'=>'FileCache', 'CACHE_PATH'=>''),
-				)
-				
+					'default'=>array('CACHE_TYPE'=>'FileCache', 'CACHE_PATH'=>BASE_PATH . 'data/cache/'),
+				),				
 			);
 
-		
 		static public loadConfig($file){
 			if( !file_exists($file) ){
 				throw new Exception("Config file '{$file}' not found", 500); 

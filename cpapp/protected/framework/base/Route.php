@@ -2,13 +2,15 @@
 namespace framework\base;
 
 class Route {			
+	static protected $rewriteRule = array();
 	
-	static public function parseUrl($rewrite){
-		if( !empty($rewrite) ) {
+	static public function parseUrl( $rewriteRule ){
+		self::$rewriteRule = $rewriteRule;
+		if( !empty(self::$rewriteRule ) ) {
 			if( ($pos = strpos( $_SERVER['REQUEST_URI'], '?' )) !== false ){
 				parse_str( substr( $_SERVER['REQUEST_URI'], $pos + 1 ), $_GET );
 			}
-			foreach($rewrite as $rule =>
+			foreach(self::$rewriteRule as $rule =>
 
 	$mapper){
 				$rule = ltrim($rule, "./\\");
@@ -34,29 +36,18 @@ class Route {
 			}
 		}
 		
-		$routeArr = isset($_REQUEST['r']) ? explode("/", $_REQUEST['r']) : array();
-		$app_name = empty($routeArr[0]) ? DEFAULT_APP : $routeArr[0];
-		$controller_name = empty($routeArr[1]) ? DEFAULT_CONTROLLER : $routeArr[1];
-		$action_name = empty($routeArr[2]) ? DEFAULT_ACTION : $routeArr[2];
-		$_REQUEST['r'] = $app_name .'/'. $controller_name .'/'. $action_name;
-		
-		define('APP_NAME', $app_name);
-		define('CONTROLLER_NAME', $controller_name);
-		define('ACTION_NAME', $action_name);
+		return isset($_REQUEST['r']) ? explode("/", $_REQUEST['r']) : array();
 	}
 
 	static public function url($route='index/index', $params=array()){
 		if( count( explode('/', $route) ) < 3 )  $route = APP_NAME . '/' . $route;
-		$param_str = empty($params) ? '' : '&' . http_build_query($params);
-		$url = $_SERVER["SCRIPT_NAME"] . '?r=' . $route . $param_str;
-		
-		static $rewrite = array();
-		if( empty($rewrite) ) $rewrite = \canphp\core\cpConfig::get('REWRITE_RULE');
-		
-		if( !empty($rewrite) ){
+		$paramStr = empty($params) ? '' : '&' . http_build_query($params);
+		$url = $_SERVER["SCRIPT_NAME"] . '?r=' . $route . $paramStr;
+			
+		if( !empty(self::$rewriteRule) ){
 			static $urlArray = array();
 			if( !isset($urlArray[$url]) ){
-				foreach($rewrite as $rule => $mapper){
+				foreach(self::$rewriteRule as $rule => $mapper){
 					$mapper = '/'.str_ireplace(array('/', '<app>', '<c>', '<a>'), array('\/', '(?<app>\w+)', '(?<c>\w+)', '(?<a>\w+)'), $mapper).'/i';
 					if( preg_match($mapper, $route, $matches) ){
 						list($app, $controller, $action) = explode('/', $route);
