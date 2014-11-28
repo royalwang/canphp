@@ -1,19 +1,16 @@
 <?php	
 defined('ROOT_PATH') or define('ROOT_PATH', realpath('./').DIRECTORY_SEPARATOR);
-defined('BASE_PATH') or define('BASE_PATH', realpath('./protected/').DIRECTORY_SEPARATOR);
-defined('CP_PATH') or define('CP_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
+defined('BASE_PATH') or define('BASE_PATH', realpath('./protected').DIRECTORY_SEPARATOR);
+defined('FRAMEWORK_PATH') or define('FRAMEWORK_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
+defined('ENV') or define('ENV', 'development');
 
-require(BASE_PATH . 'config/global.php');//加载全局配置	
+Config.loadConfig( BASE_PATH . 'data/config/global.php' ); //加载全局配置	
+Config.loadConfig( BASE_PATH . 'data/config/'. ENV .'.php' ); //加载当前环境配置
 
 defined('DEFAULT_APP') or define('DEFAULT_APP', 'main');
 defined('DEFAULT_CONTROLLER') or define('DEFAULT_CONTROLLER', 'index');
 defined('DEFAULT_ACTION') or define('DEFAULT_ACTION', 'index');
 
-
-
-function config(){
-
-}
 
 function model($model, $app='', $forceInstance=false){
 	static $model_obj = array();
@@ -32,8 +29,8 @@ function model($model, $app='', $forceInstance=false){
 							
 spl_autoload_register(function($class){
 	$prefixes =array(
-		'canphp'=>array(realpath(CP_PATH.'../')),
-		'apps'=>array(BASE_PATH),
+		'framework' => realpath(CP_PATH.'../')
+		'app' => BASE_PATH,
 	);
 
 	$class = ltrim($class, '\\');
@@ -62,38 +59,27 @@ spl_autoload_register(function($class){
 	return false;
 });
 
+use framework\base\Config;
+use framework\base\Route;
 function run(){
-
-	defined('DEBUG') or define('DEBUG', config('DEBUG'));
-
-
-	
-	if ( DEBUG ) {
-		ini_set("display_errors", 1);
-		error_reporting( E_ALL ^ E_NOTICE );//除了notice提示，其他类型的错误都报告
-	} else {
-		ini_set("display_errors", 0);
-		error_reporting(0);//把错误报告，全部屏蔽
-	}
-	
-	urlRoute();//网址路由解析
-	
-	//加载app配置
-	if( is_file(BASE_PATH . 'apps/' . APP_NAME. '/config.php') ){
-		config( require(BASE_PATH . 'apps/' . APP_NAME. '/config.php') );
-	}
-	config('_APP_NAME', APP_NAME);
-	require(CP_PATH . 'core/cpConfig.class.php');
-	cpConfig::set('APP', config('APP'));
-	
 	try{
+		spl_autoload_register( 'autoload' );
+		Config.loadConfig(BASE_PATH.'data/config/global.php');
+		
+		if ( Config.get('DEBUG') ) {
+			ini_set("display_errors", 1);
+			error_reporting( E_ALL ^ E_NOTICE );//除了notice提示，其他类型的错误都报告
+		} else {
+			ini_set("display_errors", 0);
+			error_reporting(0);//把错误报告，全部屏蔽
+		}
+		
+		Route::parseUrl();//网址路由解析
+			
 		defined('__ROOT__') or define('__ROOT__', config('URL_HTTP_HOST') . rtrim(dirname($_SERVER["SCRIPT_NAME"]), '\\/'));
 		defined('__PUBLIC__') or define('__PUBLIC__', __ROOT__ . '/' . 'public');
-		defined('__PUBLICAPP__') or define('__PUBLICAPP__', __ROOT__ . '/' . 'public/' . APP_NAME);
-		
-		spl_autoload_register( 'autoload' );
-		
-		$controller = "\\apps\\".APP_NAME."\\controller\\{$controller}Controller";
+			
+		$controller = "\\app\\".APP_NAME."\\controller\\{$controller}Controller";
 		$action = ACTION_NAME;
 
 		if( !class_exists($controller) ) {
@@ -107,7 +93,7 @@ function run(){
 		$obj ->$action();
 
 	} catch( Exception $e){
-		cpError::show( $e->getMessage() );
+		Error::show( $e->getMessage() );
 	}
 }
 

@@ -1,7 +1,9 @@
 <?php
-namespace framework\core;
+namespace framework\base;
+
 class Route {			
-	public function urlRoute($rewrite){
+	
+	static public function parseUrl($rewrite){
 		if( !empty($rewrite) ) {
 			if( ($pos = strpos( $_SERVER['REQUEST_URI'], '?' )) !== false ){
 				parse_str( substr( $_SERVER['REQUEST_URI'], $pos + 1 ), $_GET );
@@ -43,7 +45,7 @@ class Route {
 		define('ACTION_NAME', $action_name);
 	}
 
-	public function url($route='index/index', $params=array()){
+	static public function url($route='index/index', $params=array()){
 		if( count( explode('/', $route) ) < 3 )  $route = APP_NAME . '/' . $route;
 		$param_str = empty($params) ? '' : '&' . http_build_query($params);
 		$url = $_SERVER["SCRIPT_NAME"] . '?r=' . $route . $param_str;

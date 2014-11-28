@@ -6,14 +6,13 @@ class Config {
 				//日志和错误调试配置
 				'DEBUG' => true,	//是否开启调试模式，true开启，false关闭
 				'LOG_ON' => false,//是否开启出错信息保存到文件，true开启，false不开启
-				'LOG_PATH' => BASE_PATH . 'cache/log/', //日志目录
+				'LOG_PATH' => BASE_PATH . 'data/log/', //日志存放目录
 				'ERROR_URL' => '',//出错信息重定向页面，为空采用默认的出错页面，一般不需要修改
 				'TIMEZONE' => 'PRC', //时区设置
 				
 				//网址配置
-				'URL_REWRITE_ON' => false,//是否开启重写，true开启重写,false关闭重写	
-				'URL_HTTP_HOST' => '', //设置网址域名				
-				'URL_REWRITE_RULE' =>array(
+				'URL_BASE' => '/', //设置网址域名				
+				'URL_REWRITE' =>array(
 				
 				),
 				
@@ -53,7 +52,7 @@ class Config {
 				
 				//模板配置
 				'TPL'=>array(
-					'TPL_PATH'=>BASE_PATH.'apps/',//模板目录，一般不需要修改
+					'TPL_PATH'=>BASE_PATH.'app/',//模板目录，一般不需要修改
 					'TPL_SUFFIX'=>'.html',//模板后缀，一般不需要修改
 					'TPL_CACHE'=>'default',//模板缓存方式						
 				),
@@ -65,9 +64,12 @@ class Config {
 			);
 
 		
-		static public loadConfig($file, $key){
+		static public loadConfig($file){
+			if( !file_exists($file) ){
+				throw new Exception("Config file '{$file}' not found", 500); 
+			}
 			$config = require($file);
-			self::set($key, $config);
+			self::config = array_merge(self::config, (array)$config);
 		}
 		
 		static public function get($key=NULL){
@@ -88,11 +90,6 @@ class Config {
 					if( isset(self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ])) {
 						return self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ];
 					}
-					break;
-				case 4 : 
-					if( isset(self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ][ $arr[3] ])) {
-						return self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ][ $arr[3] ];
-					}
 					break;						
 				default: break;
 			}
@@ -110,9 +107,6 @@ class Config {
 					break;
 				case 3 : 
 					self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ]; = $value;
-					break;
-				case 4 : 
-					self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ][ $arr[3] ]; = $value;
 					break;					
 				default: break;
 			}		
