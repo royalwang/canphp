@@ -3,28 +3,28 @@ namespace framework\base;
 
 class Model{
 	protected $config =array();
-	protected $tag = 'default';	
     protected $options = array('field'=>'','where'=>'','order'=>'','limit'=>'','data'=>'');
+	protected $database = 'default';	
 	protected $table = ''; //表名		
 	protected static $objArr = array();
 
 	
-    public function __construct( $tag = 'default' ) {
-		if( $tag ){
-			$this->tag = $tag;
+    public function __construct( $database = 'default' ) {
+		if( $database ){
+			$this->database = $database;
 		}
-		$this->config = Config::get('DB.' . $this->tag);
+		$this->config = Config::get('DB.' . $this->database);
 		if( empty($this->config) || !isset($this->config['DB_TYPE']) ) {
-			throw new Exception($this->tag.' cache config error', 500);
+			throw new Exception($this->database.' cache config error', 500);
 		}
     }
 	
 	public function getDb() {
-		if( empty(self::$objArr[$this->tag]) ){
+		if( empty(self::$objArr[$this->database]) ){
 			$dbDriver = 'db\\' . ucfirst( $this->config['CACHE_TYPE'] ).'Driver';
-			self::$objArr[$this->tag] = new $dbDriver( $this->config );
+			self::$objArr[$this->database] = new $dbDriver( $this->config );
 		}
-		return self::$objArr[$this->tag];
+		return self::$objArr[$this->database];
 	}
 	
 	//设置表，$ignore_prefix为true的时候，不加上默认的表前缀
