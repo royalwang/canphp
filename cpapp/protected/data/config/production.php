@@ -3,7 +3,6 @@ return array (
 	//错误调试与日志配置
 	'DEBUG' => false,	//是否开启调试模式
 	'LOG_ON' => true,	//是否开启出错信息保存到文件
-	'LOG_PATH' => BASE_PATH . 'data/log/', //日志存放目录
 	'ERROR_URL' => '', //出错跳转地址
 		
 	//网址与路由配置
@@ -16,14 +15,14 @@ return array (
 	'DB'=>array(
 		'default' => 
 			array (
-			'DB_TYPE' => 'mysql',
-			'DB_HOST' => 'localhost',
-			'DB_USER' => 'root',
-			'DB_PWD' => '123456',
-			'DB_PORT' => '3306',
-			'DB_NAME' => '123',
-			'DB_CHARSET' => 'utf8',
-			'DB_PREFIX' => 'cp_',
+				'DB_TYPE' => 'mysql',
+				'DB_HOST' => 'localhost',
+				'DB_USER' => 'root',
+				'DB_PWD' => '123456',
+				'DB_PORT' => '3306',
+				'DB_NAME' => '123',
+				'DB_CHARSET' => 'utf8',
+				'DB_PREFIX' => 'cp_',
 			),
-		),
+	),
 );
