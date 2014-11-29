@@ -78,7 +78,7 @@ function run(){
 		
 		//路由解析
 		Route::parseUrl( Config::get('REWRITE_RULE') );//网址路由解析
-		echo APP_NAME;
+
 		//执行指定的控制器操作
 		$controller = '\app\\'. APP_NAME .'\controller\\'. CONTROLLER_NAME .'Controller';
 		$action = ACTION_NAME;
