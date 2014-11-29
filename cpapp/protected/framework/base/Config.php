@@ -8,7 +8,9 @@ class Config {
 				'LOG_PATH' => 'data/log/', 
 				'TIMEZONE' => 'PRC', 
 							
-				'REWRITE_RULE' =>array(),
+				'REWRITE_RULE' =>array(
+					//'<app>/<c>/<a>'=>'<app>/<c>/<a>',
+				),
 				
 				'DEFAULT_APP' => 'main',
 				'DEFAULT_CONTROLLER' => 'Default',

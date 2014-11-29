@@ -3,6 +3,7 @@ namespace framework\base;
 class Route {			
 	static protected $rewriteRule = array();
 	
+	//路由解析
 	static public function parseUrl( $rewriteRule ){
 		self::$rewriteRule = $rewriteRule;
 		if( !empty(self::$rewriteRule ) ) {
@@ -46,6 +47,7 @@ class Route {
 		define('ACTION_NAME', $action_name);
 	}
 
+	//生成地址
 	static public function url($route='index/index', $params=array()){
 		if( count( explode('/', $route) ) < 3 )  $route = APP_NAME . '/' . $route;
 		$paramStr = empty($params) ? '' : '&' . http_build_query($params);
