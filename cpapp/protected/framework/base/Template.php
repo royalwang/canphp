@@ -4,14 +4,13 @@ namespace framework\base;
 class Template {
 	protected $config =array();
 	protected $vars = array();
-	protected $_replace = array();
+	protected $_replace = array('str'=>array(), 'reg'=>array());
 	
 	public function __construct( $config = array() ) {
-		$this->config = array_merge(Config::get('TPL', (array)$config);
+		$this->config = array_merge(Config::get('TPL'), (array)$config);
 		$this->assign('__Template', $this);
 												
-		$this->_regReplace = array(
-		$template = preg_replace (				
+		$this->_replace['reg'] = array(			
 				/**variable label
 					{$name}	=> <?php echo $name;?>
 					{$user['name']}	=> <?php echo $user['name'];?>
@@ -19,7 +18,7 @@ class Template {
 				*/	
 				'/{(\\$[a-zA-Z_]\w*(?:\[[\w\.\"\'\[\]\$]+\])*)}/i' => "<?php echo $1; ?>",
 				'/\$(\w+)\.(\w+)\.(\w+)\.(\w+)/is' => "\$\\1['\\2']['\\3']['\\4']",
-				'/\$(\w+)\.(\w+)\.(\w+)/is' => "\$\\1['\\2']['\\3']"),
+				'/\$(\w+)\.(\w+)\.(\w+)/is' => "\$\\1['\\2']['\\3']",
 				'/\$(\w+)\.(\w+)/is' => "\$\\1['\\2']",
 				
 				/**constance label
@@ -98,12 +97,9 @@ class Template {
 		}
 	}	
 	
-	public function addTags($tags = array(), $reg = false, $prepend=false) {
+	public function addTags($tags = array(), $reg = false) {
 		$flag = $reg ? 'reg' : 'str';
-		foreach($tags as $k => $v) {
-			$this->_replace[$flag]['search'][] = $k;
-			$this->_replace[$flag]['replace'][] = $v;
-		}
+		$this->_replace[$flag] = array_merge($this->_replace[$flag], $tags);
 	}
 	
 	public function compile( $tpl, $isTpl = true ) {
@@ -121,11 +117,10 @@ class Template {
 		$ret = $this->cache->get( $tplKey );
 		if ( empty($ret['content']) || ($isTpl&&filemtime($tplFile)>($ret['compile_time'])) ) {
 			$template = $isTpl ? file_get_contents( $tplFile ) : $tpl;
-			$template = str_replace($this->_replace['str']['search'], $this->_replace['str']['replace'], $template);
-			$template = preg_replace($this->_replace['reg']['search'], $this->_replace['reg']['replace'], $template);
+			$template = str_replace(array_keys($this->_replace['str']), array_values($this->_replace['str']), $template);
+			$template = preg_replace(array_keys($this->_replace['reg']), array_values($this->_replace['reg']), $template);
 			$this->cache->set( $tplKey, $template, 86400*365);
 		}		
-	
 		return $template;
 	}
 }

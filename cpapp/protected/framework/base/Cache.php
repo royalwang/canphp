@@ -18,7 +18,10 @@ class Cache{
 
 	public function __call($method, $args){
 		if( !isset(self::$objArr[$this->tag]) ){		
-			$cacheDriver = 'cache\\' . ucfirst( $this->config['CACHE_TYPE'] ).'Driver';
+			$cacheDriver = __NAMESPACE__.'\cache\\' . ucfirst( $this->config['CACHE_TYPE'] ).'Driver';
+			if( !class_exists($cacheDriver) ) {
+				throw new \Exception("Cache Driver '{$cacheDriver}' not found'", 500);
+			}	
 			self::$objArr[$this->tag] = new $cacheDriver( $this->config );
 		}
 		
