@@ -12,7 +12,7 @@ use framework\base\Route;
 //类自动加载
 function autoload($class){
 	$prefixes =array(
-		'framework' => BASE_PATH,
+		'framework' => realpath(__DIR__.'/../').DIRECTORY_SEPARATOR,
 		'app' => BASE_PATH,
 	);
 
