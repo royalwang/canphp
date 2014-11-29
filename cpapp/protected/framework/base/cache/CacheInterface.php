@@ -1,7 +1,7 @@
 <?php
 namespace framework\base\cache;
 
-class CacheInterface {
+Interface CacheInterface {
 
     public function get($key);
 	

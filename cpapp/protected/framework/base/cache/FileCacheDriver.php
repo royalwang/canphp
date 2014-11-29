@@ -2,10 +2,6 @@
 namespace framework\base\cache;
 
 class FileCacheDriver implements CacheInterface{
-	protected $mmc = NULL;
-    protected $group = ''; 
-    protected $ver = 0;
-
     private $idx_node_size = 40;
     private $data_base_pos = 262588; //40+20+24*16+16*16*16*16*4;
     private $schema_item_size = 24;
