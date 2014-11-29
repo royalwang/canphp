@@ -11,7 +11,7 @@ class Config {
 				'REWRITE_RULE' =>array(),
 				
 				'DEFAULT_APP' => 'main',
-				'DEFAULT_CONTROLLER' => 'Index',
+				'DEFAULT_CONTROLLER' => 'Default',
 				'DEFAULT_ACTION' => 'index',
 				
 				'DB'=>array(
