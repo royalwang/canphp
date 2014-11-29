@@ -26,6 +26,12 @@ function model($model, $app='', $forceInstance=false){
 	
 	return $model_obj[$class] = new $class();
 }
+
+use framework\base\Autoloader;
+$Autoloader = new Autoloader();
+$Autoloader->addNamespace('framework', realpath(CP_PATH.'../'));
+$Autoloader->addNamespace('apps', BASE_PATH);
+$Autoloader->register();
 							
 spl_autoload_register(function($class){
 	$prefixes =array(
