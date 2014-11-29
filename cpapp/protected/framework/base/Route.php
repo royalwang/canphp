@@ -1,6 +1,5 @@
 <?php
 namespace framework\base;
-
 class Route {			
 	static protected $rewriteRule = array();
 	
@@ -36,7 +35,15 @@ class Route {
 			}
 		}
 		
-		return isset($_REQUEST['r']) ? explode("/", $_REQUEST['r']) : array();
+		$routeArr = isset($_REQUEST['r']) ? explode("/", $_REQUEST['r']) : array();
+		$app_name = empty($routeArr[0]) ? Config::get('DEFAULT_APP') : $routeArr[0];
+		$controller_name = empty($routeArr[1]) ? Config::get('DEFAULT_CONTROLLER') : $routeArr[1];
+		$action_name = empty($routeArr[2]) ? Config::get('DEFAULT_ACTION') : $routeArr[2];
+		$_REQUEST['r'] = $app_name .'/'. $controller_name .'/'. $action_name;
+		
+		define('APP_NAME', $app_name);
+		define('CONTROLLER_NAME', $controller_name);
+		define('ACTION_NAME', $action_name);
 	}
 
 	static public function url($route='index/index', $params=array()){

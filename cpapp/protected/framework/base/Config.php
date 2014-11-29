@@ -1,15 +1,13 @@
 <?php
-namespace framework\core;
+namespace framework\base;
 class Config {		
 
 	static protected $config = array(
 				'DEBUG' => true,	
 				'LOG_ON' => false,
-				'LOG_PATH' => BASE_PATH . 'data/log/', 
-				'ERROR_URL' => '', 
+				'LOG_PATH' => 'data/log/', 
 				'TIMEZONE' => 'PRC', 
-				
-				'URL_BASE' => '/', 				
+							
 				'REWRITE_RULE' =>array(),
 				
 				'DEFAULT_APP' => 'main',
@@ -42,41 +40,41 @@ class Config {
 				),
 				
 				'TPL'=>array(
-					'TPL_PATH'=>BASE_PATH . 'app/',
+					'TPL_PATH'=> '',
 					'TPL_SUFFIX'=>'.html',
 					'TPL_CACHE'=>'default',						
 				),
 				
 				'CACHE'=>array(
-					'default'=>array('CACHE_TYPE'=>'FileCache', 'CACHE_PATH'=>BASE_PATH . 'data/cache/'),
+					'default'=>array('CACHE_TYPE'=>'FileCache', 'CACHE_PATH'=>'data/cache/'),
 				),				
 			);
 
-		static public loadConfig($file){
+		static public function loadConfig($file){
 			if( !file_exists($file) ){
-				throw new Exception("Config file '{$file}' not found", 500); 
+				throw new \Exception("Config file '{$file}' not found", 500); 
 			}
 			$config = require($file);
-			self::config = array_merge(self::config, (array)$config);
+			self::$config = array_merge(self::$config, (array)$config);
 		}
 		
 		static public function get($key=NULL){
-			if( empty($key) ) return self::config;
+			if( empty($key) ) return self::$config;
 			$arr = explode('.', $key);
-			switch( count($ret) ){
+			switch( count($arr) ){
 				case 1 : 
-					if( isset(self::config[ $arr[0] ])) {
-						return self::config[ $arr[0] ];
+					if( isset(self::$config[ $arr[0] ])) {
+						return self::$config[ $arr[0] ];
 					}
 					break;
 				case 2 : 
-					if( isset(self::config[ $arr[0] ][ $arr[1] ])) {
-						return self::config[ $arr[0] ][ $arr[1] ];
+					if( isset(self::$config[ $arr[0] ][ $arr[1] ])) {
+						return self::$config[ $arr[0] ][ $arr[1] ];
 					}
 					break;
 				case 3 : 
-					if( isset(self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ])) {
-						return self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ];
+					if( isset(self::$config[ $arr[0] ][ $arr[1] ][ $arr[2] ])) {
+						return self::$config[ $arr[0] ][ $arr[1] ][ $arr[2] ];
 					}
 					break;						
 				default: break;
@@ -86,15 +84,15 @@ class Config {
 		
 		static public function set($key, $value){
 			$arr = explode('.', $key);
-			switch( count($ret) ){
+			switch( count($arr) ){
 				case 1 : 
-					self::config[ $arr[0] ] = $value;
+					self::$config[ $arr[0] ] = $value;
 					break;
 				case 2 : 
-					self::config[ $arr[0] ][ $arr[1] ] = $value;
+					self::$config[ $arr[0] ][ $arr[1] ] = $value;
 					break;
 				case 3 : 
-					self::config[ $arr[0] ][ $arr[1] ][ $arr[2] ]; = $value;
+					self::$config[ $arr[0] ][ $arr[1] ][ $arr[2] ] = $value;
 					break;					
 				default: break;
 			}		

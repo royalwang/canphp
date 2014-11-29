@@ -1,10 +1,11 @@
 <?php
 namespace app\main\controller;
-class IndexController extends \app\base\ontroller\BaseController{
+class IndexController extends \app\base\controller\BaseController{
 	
-	public function actionIndex(){
-		$this->title = model('main')->getTitle();
-		$this->hello = model('main')->getHello();
+	public function Index(){
+		echo url('c/a');
+		//$this->title = model('main')->getTitle();
+		//$this->hello = model('main')->getHello();
 		$this->display();
 	}
 }

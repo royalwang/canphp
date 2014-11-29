@@ -1,3 +1,6 @@
 <?php
-require( dirname(__FILE__) . '/protected/framework/core.php' );
+define('ENV', 'development');
+require( __DIR__ . '/protected/framework/core.php' );
+
+
 
