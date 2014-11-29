@@ -9,6 +9,7 @@ defined('ENV') or define('ENV', 'development');
 use framework\base\Config;
 use framework\base\Route;
 
+//类自动加载
 function autoload($class){
 	$prefixes =array(
 		'framework' => BASE_PATH,
@@ -37,22 +38,36 @@ function autoload($class){
 	return false;
 }
 
+//根据路由规则，生成url地址
 function url($route='index/index', $params=array()){
 	return Route::url($route, $params);
 }
 
-function model(){
-
+//调用模型
+function model($model, $app='', $forceInstance=false){
+	static $objArr = array();
+	if( empty($app) ) $app = APP_NAME;
+	
+	$class = "\\app\\{$app}\\model\\{$model}";
+	if( isset($objArr[$class]) && false==$forceInstance ){
+		return $objArr[$class];
+	}
+	if( !class_exists($class) ) {
+		throw new Exception("Model '{$class}' not found'", 500);
+	}		
+	return $objArr[$class] = new $class();
 }
 
 function run(){
 	try{
-		//类自动加载
+		//注册类自动加载
 		spl_autoload_register('autoload');
 		
+		//加载配置
 		Config::loadConfig( CONFIG_PATH . 'global.php' ); //加载全局配置	
 		Config::loadConfig( CONFIG_PATH . ENV .'.php' ); //加载当前环境配置
 		
+		//错误信息显示控制
 		if ( Config::get('DEBUG') ) {
 			ini_set("display_errors", 1);
 			error_reporting( E_ALL ^ E_NOTICE );//除了notice提示，其他类型的错误都报告
@@ -60,26 +75,23 @@ function run(){
 			ini_set("display_errors", 0);
 			error_reporting(0);//把错误报告，全部屏蔽
 		}
-
+		
+		//路由解析
 		Route::parseUrl( Config::get('REWRITE_RULE') );//网址路由解析
-
-			
+		
+		//执行指定的控制器操作
 		$controller = '\app\\'. APP_NAME .'\controller\\'. CONTROLLER_NAME .'Controller';
 		$action = ACTION_NAME;
 
 		if( !class_exists($controller) ) {
-			throw new Exception("Class '{$controller}' not found", 404);
+			throw new Exception("Controller '{$controller}' not found", 404);
 		}
 		$obj = new $controller();
 		if( !method_exists($obj, $action) ){
-			if(!method_exists($obj, '_empty')){
-				throw new Exception("Action '{$controller}::{$action}()' not found", 404);
-			}else{
-				$action = '_empty';
-			}
+			throw new Exception("Action '{$controller}::{$action}()' not found", 404);
 		}
 		$obj ->$action();
-
+		
 	} catch( Exception $e ){
 		if( in_array($e->getCode(), array(403, 404, 500) )){
 			$action = 'error'.$e->getCode();
