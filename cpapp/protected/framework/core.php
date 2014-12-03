@@ -1,13 +1,18 @@
 <?php	
-defined('ROOT_PATH') or define('ROOT_PATH', realpath('./').DIRECTORY_SEPARATOR);
-defined('BASE_PATH') or define('BASE_PATH', realpath('./protected').DIRECTORY_SEPARATOR);
-defined('CONFIG_PATH') or define('CONFIG_PATH', BASE_PATH.'data/config/');
-defined('ROOT_URL') or define('ROOT_URL',  rtrim(dirname($_SERVER["SCRIPT_NAME"]), '\\/'));
-defined('PUBLIC_URL') or define('PUBLIC_URL', ROOT_URL . '/' . 'public');
-defined('ENV') or define('ENV', 'development');
+if( !defined('ROOT_PATH') ) define('ROOT_PATH', realpath('./').DIRECTORY_SEPARATOR);
+if( !defined('BASE_PATH') ) define('BASE_PATH', realpath('./protected').DIRECTORY_SEPARATOR);
+if( !defined('CONFIG_PATH') ) define('CONFIG_PATH', BASE_PATH.'data/config/');
+if( !defined('ROOT_URL') ) define('ROOT_URL',  rtrim(dirname($_SERVER["SCRIPT_NAME"]), '\\/'));
+if( !defined('PUBLIC_URL') ) define('PUBLIC_URL', ROOT_URL . '/' . 'public');
+if( !defined('ENV') ) define('ENV', 'development');
+if( !defined('ENV') ) define('ENV', 'development');
 
 use framework\base\Config;
-use framework\base\Route;
+if( class_exists($RouteExt) ){
+	use app\base\model\Route;
+}else{
+	use framework\base\Route;
+}
 
 //类自动加载
 function autoload($class){
@@ -77,8 +82,10 @@ function run(){
 		}
 		
 		//路由解析
-		Route::parseUrl( Config::get('REWRITE_RULE') );//网址路由解析
-
+		if( !defined('CONTROLLER_NAME') ){
+			Route::parseUrl( Config::get('REWRITE_RULE') );//网址路由解析
+		}
+		
 		//执行指定的控制器操作
 		$controller = '\app\\'. APP_NAME .'\controller\\'. CONTROLLER_NAME .'Controller';
 		$action = ACTION_NAME;

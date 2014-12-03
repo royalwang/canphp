@@ -42,9 +42,9 @@ class Route {
 		$action_name = empty($routeArr[2]) ? Config::get('DEFAULT_ACTION') : $routeArr[2];
 		$_REQUEST['r'] = $app_name .'/'. $controller_name .'/'. $action_name;
 		
-		define('APP_NAME', $app_name);
-		define('CONTROLLER_NAME', $controller_name);
-		define('ACTION_NAME', $action_name);
+		if( !defined('APP_NAME') ) define('APP_NAME', $app_name);
+		if( !defined('CONTROLLER_NAME') ) define('CONTROLLER_NAME', $controller_name);
+		if( !defined('ACTION_NAME') ) define('ACTION_NAME', $action_name);
 	}
 
 	//生成地址
