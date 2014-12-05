@@ -104,7 +104,8 @@ class Config {
 				case 3 : 
 					self::$config[ $arr[0] ][ $arr[1] ][ $arr[2] ] = $value;
 					break;					
-				default: break;
-			}		
+				default: return false;
+			}
+			return true;
 		}
 }

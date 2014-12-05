@@ -15,9 +15,12 @@ class ErrorController extends BaseController{
 			$this->errorLevel = $this->_level($this->errorCode);
 			$this->trace = $e->getTrace();		
 		}
+				
 		//关闭调试或者是线上版本，不显示详细错误
 		if( false==config('DEBUG') || 'production'==config('ENV') ){
 			$tpl = 'error_production';
+			//记录错误日志
+			
 		}else{
 			$tpl = 'error_development';
 		}

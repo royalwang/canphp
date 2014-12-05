@@ -44,6 +44,14 @@ function url($route='index/index', $params=array()){
 	return Route::url($route, $params);
 }
 
+function config($key=NULL, $value=NULL){
+	if( func_num_args() <= 1 ){
+		return Config::get($key);
+	}else{
+		return Config::set($key);
+	}
+}
+
 //调用模型
 function model($model, $app='', $forceInstance=false){
 	static $objArr = array();
