@@ -1,9 +1,6 @@
 <?php
 namespace framework\base;
-use framework\base\Config;
-use framework\base\Template;
-use framework\base\Cache;
-
+//父类控制器
 class Controller{
 	public $layout = NULL; //布局视图
 	public $autoDisplay = true; //自动调用模板
@@ -24,9 +21,12 @@ class Controller{
 	
 	//模板显示
 	public function display($tpl = '', $return = false, $isTpl = true ){
+		if( !Config::get('TPL.TPL_PATH') ) Config::set('TPL.TPL_PATH', BASE_PATH);
 		$template = new Template( Config::get('TPL') );
 		if( $isTpl ){
-			$tpl = empty($tpl) ? APP_NAME . '/view/' . CONTROLLER_NAME . '_'. ACTION_NAME : $tpl;
+			if( empty($tpl) ){
+				$tpl = 'app/'.APP_NAME . '/view/' . strtolower(CONTROLLER_NAME) . '_'. strtolower(ACTION_NAME);
+			}
 			if( $this->layout ){
 				$this->__template_file = $tpl;
 				$tpl = $this->layout;
@@ -35,8 +35,7 @@ class Controller{
 
 		$template->assign(get_object_vars($this));
 		$template->assign( $this->_data );
-		
-		return $template->display($tpl, $return, $is_tpl);
+		return $template->display($tpl, $return, $isTpl);
 	}
 	
 	//判断是否是数据提交	

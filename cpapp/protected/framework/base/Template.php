@@ -1,13 +1,13 @@
 <?php
 namespace framework\base;
-
+//模板引擎
 class Template {
 	protected $config =array();
 	protected $vars = array();
 	protected $_replace = array('str'=>array(), 'reg'=>array());
 	
-	public function __construct( $config = array() ) {
-		$this->config = array_merge(Config::get('TPL'), (array)$config);
+	public function __construct($config) {
+		$this->config = $config;
 		$this->assign('__Template', $this);
 												
 		$this->_replace['reg'] = array(			
@@ -65,7 +65,7 @@ class Template {
 				'/\{([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff:]*\(([^{}]*)\))\}/' => "<?php echo \\1;?>",
 				'/\{(\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff:]*\(([^{}]*)\))\}/' => "<?php echo \\1;?>", 
 		);
-		$this->cache = new Cache($this->config['TPL_CACHE']);
+		$this->cache = new Cache( $this->config['TPL_CACHE'] );
 	}
 	
 	public function assign($name, $value = '') {
@@ -106,21 +106,21 @@ class Template {
 		if( $isTpl ){
 			$tplFile = $this->config['TPL_PATH'] . $tpl . $this->config['TPL_SUFFIX'];
 			if ( !file_exists($tplFile) ) {
-				throw new Exception("Template file '{$tplFile}' not found", 404);
+				throw new \Exception("Template file '{$tplFile}' not found", 500);
 			}
-
 			$tplKey = md5(realpath($tplFile));				
 		} else {
 			$tplKey = md5($tpl);
 		}
-		
-		$ret = $this->cache->get( $tplKey );
-		if ( empty($ret['content']) || ($isTpl&&filemtime($tplFile)>($ret['compile_time'])) ) {
+
+		$ret = unserialize( $this->cache->get( $tplKey ) );	
+		if ( empty($ret['template']) || ($isTpl&&filemtime($tplFile)>($ret['compile_time'])) ) {
 			$template = $isTpl ? file_get_contents( $tplFile ) : $tpl;
 			$template = str_replace(array_keys($this->_replace['str']), array_values($this->_replace['str']), $template);
 			$template = preg_replace(array_keys($this->_replace['reg']), array_values($this->_replace['reg']), $template);
-			$this->cache->set( $tplKey, $template, 86400*365);
-		}		
-		return $template;
+			$ret = array('template'=>$template, 'compile_time'=>time());
+			$this->cache->set( $tplKey, serialize($ret), 86400*365);
+		}	
+		return $ret['template'];
 	}
 }

@@ -3,6 +3,7 @@ namespace framework\base;
 class Config {		
 
 	static protected $config = array(
+				'ENV' => 'development',
 				'DEBUG' => true,	
 				'LOG_ON' => false,
 				'LOG_PATH' => 'data/log/', 
@@ -57,7 +58,14 @@ class Config {
 				throw new \Exception("Config file '{$file}' not found", 500); 
 			}
 			$config = require($file);
-			self::$config = array_merge(self::$config, (array)$config);
+			foreach($config as $k=>$v){
+				if( is_array($v) ){
+					if( !isset(self::$config[$k]) ) self::$config[$k] = array();
+					self::$config[$k] = array_merge((array)self::$config[$k], $config[$k]);
+				}else{
+					self::$config[$k] = $v;
+				}
+			}
 		}
 		
 		static public function get($key=NULL){

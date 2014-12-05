@@ -2,17 +2,13 @@
 if( !defined('ROOT_PATH') ) define('ROOT_PATH', realpath('./').DIRECTORY_SEPARATOR);
 if( !defined('BASE_PATH') ) define('BASE_PATH', realpath('./protected').DIRECTORY_SEPARATOR);
 if( !defined('CONFIG_PATH') ) define('CONFIG_PATH', BASE_PATH.'data/config/');
-if( !defined('ROOT_URL') ) define('ROOT_URL',  rtrim(dirname($_SERVER["SCRIPT_NAME"]), '\\/'));
-if( !defined('PUBLIC_URL') ) define('PUBLIC_URL', ROOT_URL . '/' . 'public');
-if( !defined('ENV') ) define('ENV', 'development');
-if( !defined('ENV') ) define('ENV', 'development');
+if( !defined('ROOT_URL') ) define('ROOT_URL',  rtrim(dirname($_SERVER["SCRIPT_NAME"]), '\\/').'/');
+if( !defined('PUBLIC_URL') ) define('PUBLIC_URL', ROOT_URL . 'public/');
 
 use framework\base\Config;
-if( class_exists($RouteExt) ){
-	use app\base\model\Route;
-}else{
-	use framework\base\Route;
-}
+use framework\base\Route;
+use app\base\controller\ErrorController;
+use app\base\model\Route as RouteExt;
 
 //类自动加载
 function autoload($class){
@@ -70,7 +66,10 @@ function run(){
 		
 		//加载配置
 		Config::loadConfig( CONFIG_PATH . 'global.php' ); //加载全局配置	
-		Config::loadConfig( CONFIG_PATH . ENV .'.php' ); //加载当前环境配置
+		Config::loadConfig( CONFIG_PATH . Config::get('ENV') . '.php' ); //加载当前环境配置
+		
+		//设置时区
+		date_default_timezone_set( Config::get('TIMEZONE') );
 		
 		//错误信息显示控制
 		if ( Config::get('DEBUG') ) {
@@ -82,7 +81,12 @@ function run(){
 		}
 		
 		//路由解析
-		if( !defined('CONTROLLER_NAME') ){
+		//路由扩展
+		if( class_exists('RouteExt') ){
+			RouteExt::parseUrl( Config::get('REWRITE_RULE') );
+		}
+		//调用内置路由
+		if( !defined('APP_NAME') || !defined('CONTROLLER_NAME') || !defined('ACTION_NAME')){
 			Route::parseUrl( Config::get('REWRITE_RULE') );//网址路由解析
 		}
 		
@@ -100,12 +104,13 @@ function run(){
 		$obj ->$action();
 		
 	} catch( Exception $e ){
-		if( in_array($e->getCode(), array(403, 404, 500) )){
-			$action = 'error'.$e->getCode();
+		//调用错误控制器，处理错误
+		if( 404 == $e->getCode() ){
+			$action = 'error404';
 		}else{
 			$action = 'error';
 		}
-		$obj = new \app\base\controller\ErrorController();
+		$obj = new ErrorController();
 		$obj ->$action($e);
 	}
 }
