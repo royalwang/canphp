@@ -1,6 +1,6 @@
 <?php
 namespace app\base\controller;
-class ErrorController extends \framework\base\Controller{
+class ErrorController extends BaseController{
 	
 	public function error404($e=null){
 		$this->error($e);
@@ -15,7 +15,13 @@ class ErrorController extends \framework\base\Controller{
 			$this->errorLevel = $this->_level($this->errorCode);
 			$this->trace = $e->getTrace();		
 		}
-		$this->display('app/base/view/error_error');
+		//关闭调试或者是线上版本，不显示详细错误
+		if( false==config('DEBUG') || 'production'==config('ENV') ){
+			$tpl = 'error_production';
+		}else{
+			$tpl = 'error_development';
+		}
+		$this->display('app/base/view/'.$tpl);
 	}
 		
 	//处理信息处理

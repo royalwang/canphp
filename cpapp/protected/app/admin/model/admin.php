@@ -1,6 +1,6 @@
 <?php
-namespace apps/main;
-class adminModel extends /apps/base/baseModel{
+namespace app\admin\model;
+class admin extends \app\base\model\BaseModel{
 	protected $table = 'admin';
 	
 	public function getUserInfo( $username ){
