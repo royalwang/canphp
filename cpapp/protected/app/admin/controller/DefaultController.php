@@ -1,6 +1,6 @@
 <?php
-namespace apps/admin;
-class indexController extends /apps/base/adminController{
+namespace app\admin\controller;
+class DefaultController extends \app\base\controller\AdminController{
 	
 	public function index(){
 		$this->leftMenu = api('*', 'getMenu');
