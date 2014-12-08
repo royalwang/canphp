@@ -6,14 +6,7 @@ class Controller{
 	public $autoDisplay = true; //自动调用模板
 	public $_data = array();
 	
-	public function __get($name){
-		return isset($this->_data[$name]) ? $this->_data[$name] : NULL;
-	}
-	
-	public function __set($name, $value){
-		$this->_data[$name] = $value;
-	}
-	
+
 	//模板赋值
 	public function assign($name, $value){
 		$this->_data[$name] = $value;
