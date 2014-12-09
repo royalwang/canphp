@@ -4,6 +4,8 @@ namespace framework\base;
 class Cache{
 	protected $config =array();
 	protected $cache = 'default';
+	public $proxyObj=null;
+	public $proxyExpire=1800;
 	protected static $objArr = array();
 	
     public function __construct( $cache = 'default' ) {
@@ -25,6 +27,16 @@ class Cache{
 			self::$objArr[$this->cache] = new $cacheDriver( $this->config );
 		}
 		
-		return call_user_func_array(array(self::$objArr[$this->cache], $method), $args);		
+		if( $this->proxyObj ){ //代理模式
+			$key = md5( get_class($this->proxyObj) . '_'.$method.'_' . var_export($args) );
+			$value = self::$objArr[$this->cache]->get($key);
+			if( false===$value ){
+				$value = call_user_func_array(array($this->proxyObj, $method), $args);
+				self::$objArr[$this->cache]->set($key, $value, $this->proxyExpire);
+			}
+			return $value;
+		}else{ //普通模式
+			return call_user_func_array(array(self::$objArr[$this->cache], $method), $args);
+		}		
 	}
 }
