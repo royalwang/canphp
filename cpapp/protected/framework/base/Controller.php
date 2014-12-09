@@ -3,19 +3,14 @@ namespace framework\base;
 //父类控制器
 class Controller{
 	public $layout = NULL; //布局视图
-	public $autoDisplay = true; //自动调用模板
-	public $_data = array();
 	
-
 	//模板赋值
-	public function assign($name, $value){
-		$this->_data[$name] = $value;
+	public function assign($name, $value=NULL){
+		return $this->_getView()->assign( $name, $value);
 	}
 	
 	//模板显示
 	public function display($tpl = '', $return = false, $isTpl = true ){
-		if( !Config::get('TPL.TPL_PATH') ) Config::set('TPL.TPL_PATH', BASE_PATH);
-		$template = new Template( Config::get('TPL') );
 		if( $isTpl ){
 			if( empty($tpl) ){
 				$tpl = 'app/'.APP_NAME . '/view/' . strtolower(CONTROLLER_NAME) . '_'. strtolower(ACTION_NAME);
@@ -24,11 +19,9 @@ class Controller{
 				$this->__template_file = $tpl;
 				$tpl = $this->layout;
 			}
-		}
-
-		$template->assign(get_object_vars($this));
-		$template->assign( $this->_data );
-		return $template->display($tpl, $return, $isTpl);
+		}	
+		$this->_getView()->assign( get_object_vars($this));
+		return $this->_getView()->display($tpl, $return, $isTpl);
 	}
 	
 	//判断是否是数据提交	
@@ -55,7 +48,7 @@ class Controller{
 		exit;
 	}
 	
-	public function arg($name=null, $default = null, $callback = null) {
+	public function arg($name=null, $default = null) {
 		static $args;
 		if( !$args ){
 			$args = array_merge((array)$_GET, (array)$_POST);
@@ -63,7 +56,21 @@ class Controller{
 		if( null==$name ) return $args;
 		if( !isset($args[$name]) ) return $default;
 		$arg = $args[$name];
-		if($callback) $arg = $callback($arg);
+		if( is_array($arg) ){
+			array_walk($arg, function(&$v, $k){$v = trim(htmlspecialchars($v, ENT_QUOTES, 'UTF-8'));} );
+		}else{
+			$arg = trim(htmlspecialchars($arg, ENT_QUOTES, 'UTF-8'));
+		}
 		return $arg;
+	}
+	
+	//获取模板引擎实例
+	protected function _getView(){
+		static $view;		
+		if( !isset($view) ){
+			if( !Config::get('TPL.TPL_PATH') ) Config::set('TPL.TPL_PATH', BASE_PATH);
+			$view = new Template( Config::get('TPL') );
+		}		
+		return $view;
 	}
 }
