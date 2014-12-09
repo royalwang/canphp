@@ -1,25 +1,16 @@
 <?php
 namespace framework\base\db;
-use framework\base\db\DbInterface;
-use framework\base\db\Config;
 
 class MysqlDriver implements DbInterface{
-	private $_writeLink = NULL; //主
-	private $_readLink = NULL; //从
-	private $_replication = false; //标志是否支持主从
-	private $dbConfig = array();
-	public $sql = "";
+	protected $config =array();
+	protected $_writeLink = NULL; //主
+	protected $_readLink = NULL; //从
+	protected $sql = "";
 	
-	public function __construct( $dbConfig = array() ){
-		$this->dbConfig = $dbConfig;
-		//判断是否支持主从				
-		$this->_replication = isset( $this->dbConfig['DB_SLAVE']) && !empty($this->dbConfig['DB_SLAVE'] );
+	public function __construct( $config = array() ){
+		$this->config = $config;
 	}
-	
-	public function connect($dbConfig){
-	
-	}
-	
+		
 	//执行sql查询	
 	public function query($sql, array $params = array()) {
 		foreach((array)$params as $k => $v){
@@ -51,9 +42,10 @@ class MysqlDriver implements DbInterface{
 	
 	//取得前一次 MySQL 操作所影响的记录行数
 	public function affectedRows() {
-		return mysql_affected_rows($this->_getWriteLink());
+		return mysql_affected_rows( $this->_getWriteLink() );
 	}
 	
+	public function insert($table, $data){}
 	//获取上一次插入的id
 	public function lastId() {
 		return ($id = mysql_insert_id( $this->_getWriteLink() )) >= 0 ? $id : mysql_result($this->execute("SELECT last_insert_id()"), 0);
@@ -164,94 +156,30 @@ class MysqlDriver implements DbInterface{
 		if( empty($condition) ) return "";
         return $condition;
 	}
-	
-	//输出错误信息
-	public function error($message = ''){
-		$error = mysql_error();
-		$errorno = mysql_errno();
-		if( DEBUG ){
-			$str = " {$message}<br>
-					<b>SQL</b>: {$this->sql}<br>
-					<b>错误详情</b>: {$error}<br>
-					<b>错误代码</b>:{$errorno}<br>"; 
-		} else {
-			$str = "<b>出错</b>: $message<br>";
-		}
-		throw new Exception($str);
-	}
-	
-	/******************兼容以前的版本*****************************/
-		//选择数据库
-	public function select_db($dbname) {
-		return mysql_select_db($dbname, $this->_getWriteLink());
-	}
-	
-	//从结果集中取得一行作为关联数组，或数字数组，或二者兼有 
-	public function fetch_array($query, $result_type = MYSQL_ASSOC) {
-		return $this->fetchArray($query, $result_type);
-	}
-	//获取上一次插入的id
-	public function insert_id() {
-		return $this->lastId();
-	}
-	//取得前一次 MySQL 操作所影响的记录行数
-	public function affected_rows() {
-		return $this->affectedRows();
-	}
-	//取得结果集中行的数目
-	public function num_rows($query) {
-		return mysql_num_rows($query);
-	}
-	/******************兼容以前的版本*****************************/
-
-	//获取从服务器连接
-    private function _getReadLink() {
-        if( isset( $this->_readLink ) ) {
-            return $this->_readLink;
-        } else {
-            if( !$this->_replication ) {
-				return $this->_getWriteLink();
-           	} else {
-                $this->_readLink = $this->_connect( false );
-                return $this->_readLink;
-            }
-        }
-    }
-	
-	//获取主服务器连接
-    private function _getWriteLink() {
-        if( isset( $this->_writeLink ) ) {
-            return $this->_writeLink;
-        } else{
-            $this->_writeLink = $this->_connect( true );
-            return $this->_writeLink;
-        }
-    }
-	
+			
 	//数据库链接
-	private  function _connect($is_master = true) {
-		if( ($is_master == false) && $this->_replication ) {	
-			$slave_count = count($this->dbConfig['DB_SLAVE']);
-			//遍历所有从机
-			for($i = 0; $i < $slave_count; $i++) {
-				$db_all[] = array_merge($this->dbConfig, $this->dbConfig['DB_SLAVE'][$i]);
+	protected  function _connect( $isMaster = true ) {
+		$dbArr = array();
+		if( false==$isMaster && !empty($this->config['DB_SLAVE']) ) {	
+			$master = $this->config;
+			unset($master['DB_SLAVE']);
+			for($this->config['DB_SLAVE'] as $k=>$v) {
+				$dbArr[] = array_merge($master, $this->config['DB_SLAVE'][$k]);
 			}
-			$db_all[] = $this->dbConfig;//如果所有从机都连接不上，连接到主机
-			//随机选择一台从机连接
-			$rand =  mt_rand(0, $slave_count-1);
-			$db = array_unshift($db_all, $db_all[$rand]);			
+			shuffle($dbArr);
 		} else {
-			$db_all[] = $this->dbConfig; //直接连接到主机
+			$dbArr[] = $this->config; //直接连接到主机
 		}
-
-		foreach($db_all as $db) {
-			if( $link = @mysql_connect($db['DB_HOST'] . ':' . $db['DB_PORT'], $db['DB_USER'], $db['DB_PWD'])) {
+		
+		$link =null;
+		foreach($dbArr as $db) {
+			if( $link = @mysql_connect($db['DB_HOST'] . ':' . $db['DB_PORT'], $db['DB_USER'], $db['DB_PWD']) ){
 				break;
 			}
 		}
 		
 		if(!$link){
-			$this->error('无法连接到数据库服务器');
+			throw new Exception('connect database error :'.mysql_error(), 500);
 		}
 
 		$version = mysql_get_server_info($link);
@@ -265,6 +193,22 @@ class MysqlDriver implements DbInterface{
         mysql_select_db($db['DB_NAME'], $link);
         return $link;
 	}
+
+	//获取从服务器连接
+    protected function _getReadLink() {
+		if( !isset( $this->_readLink ) ) {
+			$this->_readLink = $this->_connect( false );               
+		}
+		return $this->_readLink;
+    }
+	
+	//获取主服务器连接
+    protected function _getWriteLink() {
+        if( !isset( $this->_writeLink ) ) {
+            $this->_writeLink = $this->_connect( true );
+        }
+		return $this->_writeLink;
+    }
 	
 	//关闭数据库
 	public function __destruct() {

@@ -1,7 +1,5 @@
 <?php
 namespace framework\base\db;
-use framework\base\db\DbInterface;
-use framework\base\db\Config;
 
 class MysqlPdoDriver {
 	private $_writeLink = NULL; //主
@@ -13,37 +11,48 @@ class MysqlPdoDriver {
 	
 	public function __construct( $dbConfig = array() ){
 		$this->dbConfig = $dbConfig;
-		//判断是否支持主从				
-		$this->_replication = isset( $this->dbConfig['DB_SLAVE']) && !empty($this->dbConfig['DB_SLAVE'] );
+	}
+
+	//执行sql查询
+	public function query($sql, $params=array() ){
+		$sth = $this->_bindParams( $sql, $params, $this->_getReadLink());
+		if( $sth->execute() ) return $sth->fetchAll(PDO::FETCH_ASSOC);
+		$err = $sth->errorInfo();
+		throw new Exception('Database SQL: "' . $sql. '". ErrorInfo: '. $err[2], 1);
 	}
 	
-	//执行sql查询	
-	public function query($sql, $params = array()) {
-		echo $this->sql = $sql;
-		$sth = $this->_bindParam( $sql, $params, $this->_getReadLink());
-		$sth->execute();
-		var_dump($sth->fetch(PDO::FETCH_ASSOC));
-		$errorinfo = $sth->errorInfo();
-		if( $errorinfo[2] !='' ){
-			$this->error('MySQL Query Error', $errorinfo[2], $errorinfo[1]);
-		}else{
-			return $sth;
-		}
+	//执行sql操作语句
+	public function execute( $sql, $params=array() ){
+		$sth = $this->_bindParams( $sql, $params, $this->_getWriteLink() );
+		if( $sth->execute() ) return $sth->rowCount();
+		$err = $sth->errorInfo();
+		throw new Exception('Database SQL: "' . $sql. '". ErrorInfo: '. $err[2], 1);
 	}
-		
-	//执行sql命令
-	public function execute($sql, $params = array()) {
-		$this->sql = $sql;
-		$sth = $this->_bindParam( $sql, $params, $this->_getWriteLink());
-		$sth->execute();
-		$errorinfo = $sth->errorInfo();
-		if( $errorinfo[2] !='' ){
-			$this->error('MySQL Query Error', $errorinfo[2], $errorinfo[1]);
-		}else{
-			$this->affectedRows = $sth->rowCount();
-			return $sth;
+	
+	public function insert($table, array $data){
+		$values = array();
+		foreach($data as $k=>$v){
+			$keys[] = "`{$k}`"; 
+			$values[":{$k}"] = $v; 
+			$marks[] = ":{$k}";
 		}
-
+		$this->execute("INSERT INTO `{$table}` (".implode(', ', $keys).") VALUES (".implode(', ', $marks).")", $values);
+		return $this->_getWriteLink()->lastInsertId();
+	}
+	
+	public function update($table, array $condition, array $data){
+		$values = array();
+		foreach ($data as $k=>$v){
+			$keys[] = "`{$k}`=:__{$k}";
+			$values[":__".$k] = $v;			
+		}
+		$condition = $this->_where( $condition );
+		return $this->execute("UPDATE `{$table}` SET ".implode(', ', $keys).$condition["_where"], $condition["_bindParams"] + $values);
+	}
+	
+	public function delete( array $condition ){
+		$condition = $this->_where( $condition );
+		return $this->execute("DELETE FROM `{$table}` {$condition['_where']}", $condition["_bindParams"]);
 	}
 	
 	//从结果集中取得一行作为关联数组，或数字数组，或二者兼有 
@@ -79,39 +88,7 @@ class MysqlPdoDriver {
         $data = $this->fetchArray($query);
 		return $data['count(*)'];
 	}
-	
-	//数据过滤
-	public function escape($value) {
-		if( isset($this->_readLink) ) {
-            $link = $this->_readLink;
-        } elseif( isset($this->_writeLink) ) {
-            $link = $this->_writeLink;
-        } else {
-            $link = $this->_getReadLink();
-        }
 		
-		if( is_array($value) ) { 
-		   return array_map(array($this, 'escape'), $value);
-		} else {
-			if(is_null($value)) return 'null';
-			if(is_bool($value)) return $value ? 1 : 0;
-			if(is_int($value)) return (int)$value;
-			if( get_magic_quotes_gpc() ) {
-			   $value = stripslashes($value);
-			} 
-			return	$link->quote($value);
-		}
-	}
-	
-	//数据过滤
-	public function unEscape($value) {
-		if (is_array($value)) {
-			return array_map('stripslashes', $value);
-		} else {
-			return stripslashes($value);
-		}
-	}	
-	
 	//解析待添加或修改的数据
 	public function parseData($options, $type) {
 		//如果数据是字符串，直接返回
@@ -169,91 +146,84 @@ class MysqlPdoDriver {
 		if( empty($condition) ) return "";
         return $condition;
 	}
+	
+	private function _bindParams($sql, $params=array(), PDO $pdo){
+		$sth = $pdo->prepare($sql);
+		foreach((array)$params as $k=>&$v){
+			$sth->bindValue($k, $v);
+		}				
+		return $sth;
+	}
 
-	//输出错误信息
-	public function error($message = '',$error = '', $errorno = ''){
-		if( DEBUG ){
-			$str = " {$message}<br>
-					<b>SQL</b>: {$this->sql}<br>
-					<b>错误详情</b>: {$error}<br>
-					<b>错误代码</b>:{$errorno}<br>"; 
-		} else {
-			$str = "<b>出错</b>: $message<br>";
+	private function _where( array $condition ){
+		$result = array( '_where' => '', '_bind' => array());
+		if(is_array($condition) && !empty($condition)){
+			$fields = array(); $sql = null; $join = array();
+			if(isset($condition[0]) && $sql = $condition[0]) unset($condition[0]);
+			foreach( $condition as $key => $condition ){
+				if(substr($key, 0, 1) != ":"){
+					unset($condition[$key]);
+					$condition[":".$key] = $condition;
+				}
+				$join[] = "`{$key}` = :{$key}";
+			}
+			if(!$sql) $sql = join(" AND ",$join);
+
+			$result["_where"] = " WHERE ". $sql;
+			$result["_bindParams"] = $condition;
 		}
-		throw new Exception($str);
+		return $result;
 	}
 	
-	//获取从服务器连接
-    private function _getReadLink() {
-        if( isset( $this->_readLink ) ) {
-            return $this->_readLink;
-        } else {
-            if( !$this->_replication ) {
-				return $this->_getWriteLink();
-           	} else {
-                $this->_readLink = $this->_connect( false );
-                return $this->_readLink;
-            }
-        }
-    }
-	
-	//获取主服务器连接
-    private function _getWriteLink() {
-        if( isset( $this->_writeLink ) ) {
-            return $this->_writeLink;
-        } else{
-            $this->_writeLink = $this->_connect( true );
-            return $this->_writeLink;
-        }
-    }
-	
 	//数据库链接
-	private  function _connect($is_master = true) {
-		if( ($is_master == false) && $this->_replication ) {	
-			$slave_count = count($this->dbConfig['DB_SLAVE']);
-			//遍历所有从机
-			for($i = 0; $i < $slave_count; $i++) {
-				$db_all[] = array_merge($this->dbConfig, $this->dbConfig['DB_SLAVE'][$i]);
+	protected  function _connect( $isMaster = true ) {
+		$dbArr = array();
+		if( false==$isMaster && !empty($this->config['DB_SLAVE']) ) {	
+			$master = $this->config;
+			unset($master['DB_SLAVE']);
+			for($this->config['DB_SLAVE'] as $k=>$v) {
+				$dbArr[] = array_merge($master, $this->config['DB_SLAVE'][$k]);
 			}
-			$db_all[] = $this->dbConfig;//如果所有从机都连接不上，连接到主机
-			//随机选择一台从机连接
-			$rand =  mt_rand(0, $slave_count-1);
-			$db = array_unshift($db_all, $db_all[$rand]);			
+			shuffle($dbArr);
 		} else {
-			$db_all[] = $this->dbConfig; //直接连接到主机
+			$dbArr[] = $this->config; //直接连接到主机
 		}
 
-		foreach($db_all as $db) {
-			$dsn = 'mysql:host=' . $db['DB_HOST'] . ';port=' . $db['DB_PORT'] . ';dbname=' . $db['DB_NAME'];
-			$isError = false;
+		$pdo = null;
+		$error = '';
+		foreach($dbArr as $db) {
+			$dsn = "mysql:host={$db['DB_HOST']};port={$db['DB_PORT']};dbname={$db['DB_NAME']};charset=$db['DB_CHARSET']";
 			try{
-				$pdo = new PDO($dsn, $db['DB_USER'], $db['DB_PWD']);		
-			}catch(PDOException $e){
-				$isError = true;
-			}
-			
-			if( false == $isError){
+				$pdo = new PDO($dsn, $db['DB_USER'], $db['DB_PWD']);
 				break;
+			}catch(PDOException $e){
+				$error = $e->getMessage();
 			}
 		}
 		
-   		if( $isError && isset($e) ){
-			$this->error('无法连接到数据库服务器', $e->errorInfo(), $e->errorCode());
+		if(!$pdo){
+			throw new Exception('connect database error :'.$error, 500);
 		}
 		
-		//设置编码
-    	$pdo->query("SET NAMES {$db['DB_CHARSET']}");
 		return $pdo;
 	}
 
-	private function _bindParam($sql, $params, $link) {
-		$sth = $link->prepare($sql);
-		foreach($params as $k => $v){
-			$sth->bindParam(":" . $k, $this->escape($v));
+	//获取从服务器连接
+    protected function _getReadLink() {
+		if( !isset( $this->_readLink ) ) {
+			$this->_readLink = $this->_connect( false );               
 		}
-		return $sth;
-	}
-  	
+		return $this->_readLink;
+    }
+	
+	//获取主服务器连接
+    protected function _getWriteLink() {
+        if( !isset( $this->_writeLink ) ) {
+            $this->_writeLink = $this->_connect( true );
+        }
+		return $this->_writeLink;
+    }
+	
 	//关闭数据库
 	public function __destruct() {
 		if($this->_writeLink) {
@@ -262,5 +232,5 @@ class MysqlPdoDriver {
 		if($this->_readLink) {
 			$this->_readLink = NULL;
 		}
-	} 
+	}	
 }
