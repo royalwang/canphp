@@ -13,19 +13,19 @@ interface DbInterface{
 	public function execute($sql, array $params);
 	
 	//查询 返回二维数组
-	public function select($table, $condition, $field, $order, $limit);
+	public function select($table, array $condition, $field, $order, $limit);
 	
 	//插入，返回插入id
 	public function insert($table, array $data);
 	
 	//更新，返回影响行数
-	public function update($table, $condition, array $data);
+	public function update($table, array $condition, array $data);
 	
 	//删除，返回影响行数
-	public function delete($table, $condition);
+	public function delete($table, array $condition);
 
 	//统计，返回行数
-	public function count($table, $condition);	
+	public function count($table, array $condition);	
 	
 	//获取表字段
 	public function getFields($table);
