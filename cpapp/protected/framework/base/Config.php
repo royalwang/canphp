@@ -21,7 +21,7 @@ class Config {
 			
 			'DB'=>array(
 				'default'=>array(								
-						'DB_TYPE' => 'mysql',
+						'DB_TYPE' => 'MysqlPdo',
 						'DB_HOST' => 'localhost',
 						'DB_USER' => 'root',
 						'DB_PWD' => '',
