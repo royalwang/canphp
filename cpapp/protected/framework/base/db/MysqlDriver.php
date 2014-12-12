@@ -4,21 +4,21 @@ class MysqlDriver implements DbInterface{
 	protected $config =array();
 	protected $writeLink = NULL;
 	protected $readLink = NULL;
-	protected $sqlMeta = array('sql'='', 'params'=>array(), 'link'=>NULL);
+	protected $sqlMeta = array('sql'=>'', 'params'=>array(), 'link'=>NULL);
 	
 	public function __construct( $config = array() ){
 		$this->config = $config;
 	}
 
-	public function select($table, array $condition, $field='*', $order=NULL, $limit=NULL){
+	public function select($table, array $condition = array(), $field='*', $order=NULL, $limit=NULL){
 		$field = !empty($field) ? $field : '*';
 		$order = !empty($order) ? ' ORDER BY '.$order : '';
 		$limit = !empty($limit) ? ' LIMIT '.$limit : '';
 		$condition = $this->_where($condition);
-		return $this->query("SELECT {$field} FROM `{$table}` {$condition['_where']} $order $limit", $condition['_bindParams']);		
+		return $this->query("SELECT {$field} FROM `{$table}` {$condition['_where']} {$order} {$limit}", $condition['_bindParams']);		
 	}
 	
-	public function query($sql, array $params){
+	public function query($sql, array $params = array()){
 		$this->_bindParams( $sql, $params, $this->_getReadLink());
 		$query = mysql_query( $this->getSql(), $this->_getReadLink() );
 		if($query){
@@ -31,7 +31,7 @@ class MysqlDriver implements DbInterface{
 		throw new \Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. mysql_error(), 500);
 	}
 	
-	public function execute($sql, array $params){
+	public function execute($sql, array $params = array()){
 		$this->_bindParams( $sql, $params, $this->_getWriteLink());
 		$query = mysql_query( $this->getSql(), $this->_getWriteLink() );
 		if($query){
@@ -51,7 +51,7 @@ class MysqlDriver implements DbInterface{
 		return mysql_insert_id( $this->_getWriteLink() );
 	}
 	
-	public function update($table, array $condition, array $data){
+	public function update($table, array $condition = array(), array $data = array()){
 		if( empty($condition) ) return false;
 		$values = array();
 		foreach ($data as $k=>$v){
@@ -62,15 +62,15 @@ class MysqlDriver implements DbInterface{
 		return $this->execute("UPDATE `{$table}` SET ".implode(', ', $keys) . $condition['_where'], $condition['_bindParams'] + $values);
 	}
 	
-	public function delete(($table, array $condition ){
+	public function delete($table, array $condition = array() ){
 		if( empty($condition) ) return false;
 		$condition = $this->_where( $condition );
 		return $this->execute("DELETE FROM `{$table}` {$condition['_where']}", $condition['_bindParams']);
 	}
 
-	public function count($table, array $condition) {
+	public function count($table, array $condition = array()) {
 		$condition = $this->_where( $condition );
-		$count = $this->query("SELECT COUNT(*) AS __total FROM `{$table}` ".$conditions['_where'], $conditions['_bindParams']);
+		$count = $this->query("SELECT COUNT(*) AS __total FROM `{$table}` ".$condition['_where'], $condition['_bindParams']);
 		return isset($count[0]['__total']) && $count[0]['__total'] ? $count[0]['__total'] : 0;
 	}
 	
@@ -129,7 +129,7 @@ class MysqlDriver implements DbInterface{
 		if( false==$isMaster && !empty($this->config['DB_SLAVE']) ) {	
 			$master = $this->config;
 			unset($master['DB_SLAVE']);
-			for($this->config['DB_SLAVE'] as $k=>$v) {
+			foreach($this->config['DB_SLAVE'] as $k=>$v) {
 				$dbArr[] = array_merge($master, $this->config['DB_SLAVE'][$k]);
 			}
 			shuffle($dbArr);
@@ -139,6 +139,7 @@ class MysqlDriver implements DbInterface{
 		
 		$link =null;
 		foreach($dbArr as $db) {
+			print_r($db);
 			if( $link = @mysql_connect($db['DB_HOST'] . ':' . $db['DB_PORT'], $db['DB_USER'], $db['DB_PWD']) ){
 				break;
 			}

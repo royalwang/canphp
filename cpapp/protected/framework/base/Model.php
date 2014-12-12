@@ -2,7 +2,7 @@
 namespace framework\base;
 class Model{
 	protected $config =array();
-    protected $options = array('field'=>'','where'=>'','order'=>'','limit'=>'','data'=>'');
+    protected $options = array('field'=>'*','where'=>array(),'order'=>'','limit'=>'','data'=>array());
 	protected $database = 'default';	
 	protected $table = '';
 	protected static $objArr = array();
@@ -15,7 +15,7 @@ class Model{
 		if( empty($this->config) || !isset($this->config['DB_TYPE']) ) {
 			throw new Exception($this->database.' database config error', 500);
 		}
-		$this->table = $this->table($this->table);
+		$this->table($this->table);
     }
 			
     public function query($sql, $params = array()) {
@@ -33,7 +33,7 @@ class Model{
     }
 	
     public function find() {
-		$this->options['limit'] = 1;
+		$this->limit(1);
 		$data = $this->select();
 		return isset($data[0]) ? $data[0] : array();
      }	 
