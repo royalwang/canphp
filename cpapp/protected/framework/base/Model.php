@@ -5,7 +5,7 @@ class Model{
 	protected $config =array();
     protected $options = array('field'=>'','where'=>'','order'=>'','limit'=>'','data'=>'');
 	protected $database = 'default';	
-	protected $table = ''; //表名		
+	protected $table = '';
 	protected static $objArr = array();
 	
     public function __construct( $database = 'default' ) {
@@ -16,7 +16,6 @@ class Model{
 		if( empty($this->config) || !isset($this->config['DB_TYPE']) ) {
 			throw new Exception($this->database.' database config error', 500);
 		}
-		//加上表前缀
 		$this->table = $this->table($this->table);
     }
 	
@@ -28,7 +27,6 @@ class Model{
 		return self::$objArr[$this->database];
 	}
 	
-	//设置表，$ignorePre为true的时候，不加上默认的表前缀
 	public function table($table, $ignorePre = false) {
 		$this->table = $ignorePre ? $table : $this->config['DB_PREFIX'] . $table;
 		return $this;
@@ -37,8 +35,8 @@ class Model{
     public function __call($method, $args) {
 		$method = strtolower($method);
         if ( in_array($method, array('field','data','where','order','limit')) ) {
-            $this->options[$method] = $args[0];	//接收数据
-			return $this;	//返回对象，连贯查询
+            $this->options[$method] = $args[0];
+			return $this;
         } else{
 			throw new Exception("Method 'Model::{$method}()' not found", 404);
 		}
@@ -48,18 +46,18 @@ class Model{
         $sql = trim($sql);
 		if ( empty($sql) ) return array();
 		$sql = str_replace('{pre}', $this->config['DB_PREFIX'], $sql);
-		return $this->getDb()->query($this->sql, $params);	
+		return $this->getDb()->query($sql, $params);	
     }
 
     public function execute($sql, $params = array()) {
         $sql = trim($sql);
 		if ( empty($sql) ) return 0;
 		$sql = str_replace('{pre}', $this->config['DB_PREFIX'], $sql);
-		return $this->getDb()->execute($this->sql, $params); 
+		return $this->getDb()->execute($sql, $params); 
     }
 	
     public function find() {
-		$this->options['limit'] = 1;	//限制只查询一条数据
+		$this->options['limit'] = 1;
 		$data = $this->select();
 		return isset($data[0]) ? $data[0] : array();
      }	 
@@ -80,12 +78,6 @@ class Model{
 		
 		return $this->getDb()->select($this->table, $condition, $field, $order, $limit);		
      }
-
-	public function count() {
-		$condition = $this->options['where'];
-		$this->options['where']= '';	
-		return $this->getDb()->count($this->table, $condition);
-	}
 	
     public function insert() {
 		if( empty($this->options['data']) || !is_array($this->options['data']) ) 
@@ -124,15 +116,32 @@ class Model{
 		return $this->getDb()->delete($this->table, $condition);
     }
 
+	public function count() {
+		$condition = $this->options['where'];
+		$this->options['where']= '';	
+		return $this->getDb()->count($this->table, $condition);
+	}
+	
 	public function getFields() {
 		return $this->getDb()->getFields($this->table);
 	}
 	
     public function getSql() {
-        return $this->getDb()->sql;
+        return $this->getDb()->getSql();
     }
 
-	//设置缓存
+	public function beginTransaction() {
+        return $this->getDb()->beginTransaction();
+    }
+	
+	public function commit() {
+        return $this->getDb()->commit();
+    }
+	
+	public function rollBack() {
+        return $this->getDb()->rollBack();
+    }
+	
 	public function cache($expire=1800){
 		$cache = new Cache($this->config['DB_CACHE']);
 		$cache->proxyObj = $this;
@@ -140,7 +149,6 @@ class Model{
 		return $cache;
 	}
 	
-	//清空缓存
     public function clear() {
 		$cache = new Cache($this->config['DB_CACHE']);
 		return $cache->clear();

@@ -3,30 +3,34 @@ namespace framework\base\db;
 
 class MysqlPdoDriver implements DbInterface {
 	protected $config =array();
-	protected $writeLink = NULL; //maser
-	protected $readLink = NULL; //slave
+	protected $writeLink = NULL;
+	protected $readLink = NULL;
 	protected $sqlMeta = array('sql'='', 'params'=>array(), 'link'=>NULL);
 	
 	public function __construct( $config = array() ){
 		$this->config = $config;
 	}
 
-	public function select($table, array $condition, $field, $order, $limit){
-		
+	public function select($table, array $condition, $field='*', $order=NULL, $limit=NULL){
+		$field = !empty($field) ? $field : '*';
+		$order = !empty($order) ? ' ORDER BY '.$order : '';
+		$limit = !empty($limit) ? ' LIMIT '.$limit : '';
+		$condition = $this->_where($condition);
+		return $this->query("SELECT {$field} FROM `{$table}` {$condition['_where']} $order $limit", $condition['_bindParams']);		
 	}
 	
 	public function query($sql, array $params){
 		$sth = $this->_bindParams( $sql, $params, $this->_getReadLink());
 		if( $sth->execute() ) return $sth->fetchAll(PDO::FETCH_ASSOC);
 		$err = $sth->errorInfo();
-		throw new Exception('Database SQL: "' . $sql. '". ErrorInfo: '. $err[2], 1);
+		throw new Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. $err[2], 500);
 	}
 	
 	public function execute($sql, array $params){
 		$sth = $this->_bindParams( $sql, $params, $this->_getWriteLink() );
 		if( $sth->execute() ) return $sth->rowCount();
 		$err = $sth->errorInfo();
-		throw new Exception('Database SQL: "' . $sql. '". ErrorInfo: '. $err[2], 1);
+		throw new Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. $err[2], 500);
 	}
 	
 	public function insert($table, array $data){
@@ -48,23 +52,23 @@ class MysqlPdoDriver implements DbInterface {
 			$values[":__{$k}"] = $v;			
 		}
 		$condition = $this->_where( $condition );
-		return $this->execute("UPDATE `{$table}` SET ".implode(', ', $keys) . $condition["_where"], $condition["_bindParams"] + $values);
+		return $this->execute("UPDATE `{$table}` SET ".implode(', ', $keys) . $condition['_where'], $condition['_bindParams'] + $values);
 	}
 	
 	public function delete(($table, array $condition ){
 		if( empty($condition) ) return false;
 		$condition = $this->_where( $condition );
-		return $this->execute("DELETE FROM `{$table}` {$condition['_where']}", $condition["_bindParams"]);
+		return $this->execute("DELETE FROM `{$table}` {$condition['_where']}", $condition['_bindParams']);
 	}
 
 	public function count($table, array $condition) {
 		$condition = $this->_where( $condition );
-		$count = $this->query("SELECT COUNT(*) AS __total FROM {$table} ".$conditions["_where"], $conditions["_bindParams"]);
+		$count = $this->query("SELECT COUNT(*) AS __total FROM `{$table}` ".$conditions['_where'], $conditions['_bindParams']);
 		return isset($count[0]['__total']) && $count[0]['__total'] ? $count[0]['__total'] : 0;
 	}
 	
 	public function getFields($table) {
-		return  $this->query("SHOW FULL FIELDS FROM {$table}");
+		return  $this->query("SHOW FULL FIELDS FROM `{$table}`");
 	}
 	
 	public function getSql(){
@@ -73,6 +77,18 @@ class MysqlPdoDriver implements DbInterface {
 			$sql = str_replace($k, $this->sqlMeta['link']->quote($v), $sql);
 		}
 		return $sql;
+	}
+	
+	public function beginTransaction(){
+		return $this->_getWriteLink()->beginTransaction();
+	}
+	
+	public function commit(){
+		return $this->_getWriteLink()->commit();
+	}
+	
+	public function rollBack(){
+		return $this->_getWriteLink()->rollBack();
 	}
 	
 	private function _bindParams($sql, array $params, PDO $pdo){
@@ -100,9 +116,9 @@ class MysqlPdoDriver implements DbInterface {
 		}
 		if(!$sql) $sql = implode(' AND ', $sqlArr);
 
-		if($sql) $result["_where"] = " WHERE ". $sql;
+		if($sql) $result['_where'] = " WHERE ". $sql;
 		
-		$result["_bindParams"] = $params;		
+		$result['_bindParams'] = $params;		
 		return $result;
 	}
 	

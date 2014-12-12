@@ -32,4 +32,13 @@ interface DbInterface{
 	
 	//获取最后执行的sql语句，用于调试
 	public function getSql();
+	
+	//开始事务
+	public function beginTransaction();
+	
+	//提交事务
+	public function commit();
+	
+	//回滚事务
+	public function rollBack();
 }
