@@ -21,16 +21,16 @@ class FileCacheDriver implements CacheInterface{
 
     public function __construct($config = array()) {
 		$this->config = array(
-								'DB_CACHE_PATH'	=> 'data/db_cache/', //缓存目录
-								'DB_CACHE_CHECK' => 'false', //是否验证数据
-								'DB_CACHE_FILE'	=> 'cachedata', //缓存的数据文件名
-								'DB_CACHE_SIZE'	=> '1M', //预设的缓存大小
-								'DB_CACHE_FLOCK' => 'true', //是否存在文件锁，设置为false，将模拟文件锁									
+								'CACHE_PATH'	=> 'data/cache/', //缓存目录
+								'CACHE_CHECK' => 'true', //是否验证数据
+								'CACHE_FILE'	=> 'cachedata', //缓存的数据文件名
+								'CACHE_SIZE'	=> '10M', //预设的缓存大小
+								'CACHE_FLOCK' => 'true', //是否存在文件锁，设置为false，将模拟文件锁									
 							);
 		$this->config = array_merge($this->config, (array)$config);
 		//检查缓存目录
 		$this->_checkDir();
-		$this->workat($this->config['DB_CACHE_PATH'] . $this->config['DB_CACHE_FILE']);
+		$this->workat($this->config['CACHE_PATH'] . $this->config['CACHE_FILE']);
     }
 
 	//读取缓存
@@ -41,7 +41,7 @@ class FileCacheDriver implements CacheInterface{
             if($expire != -1 && time() >= $expire) {
                 return false;
             }
-            if($this->config['DB_CACHE_CHECK']) {
+            if($this->config['CACHE_CHECK']) {
 				//开启数据校验
                 $check  =  substr($content,12, 32);
                 $content   =  substr($content,44);
@@ -63,7 +63,7 @@ class FileCacheDriver implements CacheInterface{
         $value = serialize($value);//将数据序列化
 		$expire = ($expire == -1) ? $expire : (time() + $expire);//过期时间
 		//是否开启数据校验
-		$check = $this->config['DB_CACHE_CHECK'] ? md5($value) : '';
+		$check = $this->config['CACHE_CHECK'] ? md5($value) : '';
         $value    = sprintf('%012d', $expire).$check.$value;		
         return $this ->store($key, $value);//存储数据
     }
@@ -94,16 +94,16 @@ class FileCacheDriver implements CacheInterface{
 	*/
 	 private function _checkDir(){
         // 如果缓存目录不存在或者不是目录，则创建缓存目录
-        if ( (!file_exists($this->config['DB_CACHE_PATH'])) || (!is_dir($this->config['DB_CACHE_PATH'])) ) {
+        if ( (!file_exists($this->config['CACHE_PATH'])) || (!is_dir($this->config['CACHE_PATH'])) ) {
            //创建缓存目录
-		    if (!@mkdir($this->config['DB_CACHE_PATH'], 0777, true)){
+		    if (!@mkdir($this->config['CACHE_PATH'], 0777, true)){
 			    return false;
 			 }
              
         }
 		//检查缓存目录是否可写，不可写则修改它的属性
-		if (!is_writable($this->config['DB_CACHE_PATH'])) {
-			return	@chmod($this->config['DB_CACHE_PATH'], 0777);
+		if (!is_writable($this->config['CACHE_PATH'])) {
+			return	@chmod($this->config['CACHE_PATH'], 0777);
 		}
 		return true;
     }
@@ -273,7 +273,7 @@ class FileCacheDriver implements CacheInterface{
 	//锁定文件
     protected function lock($is_block,$whatever=false){
       
-	   if($this->config['DB_CACHE_FLOCK'])
+	   if($this->config['CACHE_FLOCK'])
 	  	  return flock($this->_rs, $is_block?LOCK_EX:LOCK_EX+LOCK_NB);
   
         ignore_user_abort(true);
@@ -305,7 +305,7 @@ class FileCacheDriver implements CacheInterface{
 	//解除文件锁定
     protected function unlock()
 	{
-        if($this->config['DB_CACHE_FLOCK'])
+        if($this->config['CACHE_FLOCK'])
 	    	return flock($this->_rs, LOCK_UN);
 		
 	    ignore_user_abort(false);
@@ -417,7 +417,7 @@ class FileCacheDriver implements CacheInterface{
                 ftruncate($this->_rs,$this->idx_node_base);
             }
 
-            $this->max_size = $this->_parse_str_size($this->config['DB_CACHE_SIZE'],15728640); //default:15m
+            $this->max_size = $this->_parse_str_size($this->config['CACHE_SIZE'],15728640); //default:15m
             $this->_puts($this->header_padding,pack('V1a*',$this->max_size,$this->ver));
 
             ksort($this->_bsize_list);
