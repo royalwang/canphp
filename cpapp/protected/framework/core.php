@@ -35,7 +35,6 @@ function model($model, $app='', $forceInstance=false){
 	return $objArr[$class] = new $class();
 }
 
-
 spl_autoload_register(function($class){
 	$prefixes =array(
 		'framework' => realpath(__DIR__.'/../').DIRECTORY_SEPARATOR,
