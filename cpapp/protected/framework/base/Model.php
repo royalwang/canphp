@@ -20,7 +20,7 @@ class Model{
 	
 	public function getDb() {
 		if( empty(self::$objArr[$this->database]) ){
-			$dbDriver = 'db\\' . ucfirst( $this->config['DB_TYPE'] ).'Driver';
+			$dbDriver = __NAMESPACE__.'\db\\' . ucfirst( $this->config['DB_TYPE'] ).'Driver';
 			self::$objArr[$this->database] = new $dbDriver( $this->config );
 		}
 		return self::$objArr[$this->database];
@@ -37,7 +37,7 @@ class Model{
             $this->options[$method] = $args[0];
 			return $this;
         } else{
-			throw new Exception("Method 'Model::{$method}()' not found", 404);
+			throw new Exception("Method 'Model::{$method}()' not found", 500);
 		}
     }
 	

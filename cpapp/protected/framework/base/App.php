@@ -35,6 +35,7 @@ class App{
 				Route::parseUrl( Config::get('REWRITE_RULE') );
 			}
 			
+			//execute action
 			$controller = '\app\\'. APP_NAME .'\controller\\'. CONTROLLER_NAME .'Controller';
 			$action = ACTION_NAME;
 
