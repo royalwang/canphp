@@ -1,6 +1,5 @@
 <?php
 namespace framework\base\db;
-
 class MysqlPdoDriver implements DbInterface {
 	protected $config =array();
 	protected $writeLink = NULL;

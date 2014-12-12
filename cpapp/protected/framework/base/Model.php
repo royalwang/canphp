@@ -1,6 +1,5 @@
 <?php
 namespace framework\base;
-
 class Model{
 	protected $config =array();
     protected $options = array('field'=>'','where'=>'','order'=>'','limit'=>'','data'=>'');

@@ -1,6 +1,5 @@
 <?php
 namespace framework\base\db;
-
 class MysqlDriver implements DbInterface{
 	protected $config =array();
 	protected $writeLink = NULL;
@@ -125,7 +124,6 @@ class MysqlDriver implements DbInterface{
 		return $result;
 	}
 					
-	//数据库链接
 	protected  function _connect( $isMaster = true ) {
 		$dbArr = array();
 		if( false==$isMaster && !empty($this->config['DB_SLAVE']) ) {	
