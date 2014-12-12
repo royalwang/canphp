@@ -141,7 +141,7 @@ class Model{
         return $this->getDb()->rollBack();
     }
 	
-	public function cache($expire=1800){
+	public function cache($expire = 1800){
 		$cache = new Cache($this->config['DB_CACHE']);
 		$cache->proxyObj = $this;
 		$cache->proxyExpire = $expire;

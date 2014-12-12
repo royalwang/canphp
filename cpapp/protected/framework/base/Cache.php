@@ -1,6 +1,5 @@
 <?php
 namespace framework\base;
-//缓存类
 class Cache{
 	protected $config =array();
 	protected $cache = 'default';
@@ -27,7 +26,7 @@ class Cache{
 			self::$objArr[$this->cache] = new $cacheDriver( $this->config );
 		}
 		
-		if( $this->proxyObj ){ //代理模式
+		if( $this->proxyObj ){ //proxy mode
 			$key = md5( get_class($this->proxyObj) . '_'.$method.'_' . var_export($args) );
 			$value = self::$objArr[$this->cache]->get($key);
 			if( false===$value ){
@@ -35,7 +34,7 @@ class Cache{
 				self::$objArr[$this->cache]->set($key, $value, $this->proxyExpire);
 			}
 			return $value;
-		}else{ //普通模式
+		}else{
 			return call_user_func_array(array(self::$objArr[$this->cache], $method), $args);
 		}		
 	}

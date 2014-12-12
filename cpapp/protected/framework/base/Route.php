@@ -3,7 +3,6 @@ namespace framework\base;
 class Route {			
 	static protected $rewriteRule = array();
 	
-	//路由解析
 	static public function parseUrl( $rewriteRule ){
 		self::$rewriteRule = $rewriteRule;
 		if( !empty(self::$rewriteRule ) ) {
@@ -47,7 +46,6 @@ class Route {
 		if( !defined('ACTION_NAME') ) define('ACTION_NAME', $action_name);
 	}
 
-	//生成地址
 	static public function url($route='index/index', $params=array()){
 		if( count( explode('/', $route) ) < 3 )  $route = APP_NAME . '/' . $route;
 		$paramStr = empty($params) ? '' : '&' . http_build_query($params);
@@ -68,17 +66,16 @@ class Route {
 								$urlArray[$url] = str_ireplace('<'.$argkey.'>', $arg, $urlArray[$url], $count);
 								if(!$count) $_args[$argkey] = $arg;
 							}
-							//处理多出来的参数
+
 							if( !empty($_args) ){
 								$urlArray[$url] = preg_replace('/<\w+>/', '', $urlArray[$url]). '?' . http_build_query($_args);
 							}	
 						}
-						//自动加上域名
+
 						if(false === stripos($urlArray[$url], 'http://')){
 							$urlArray[$url] = 'http://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), "./\\") .'/'.ltrim($urlArray[$url], "./\\");
 						}
 						
-						//参数个数匹配则返回
 						$rule = str_ireplace(array('<app>', '<c>', '<a>'), '', $rule);
 						if( count($params) == preg_match_all('/<\w+>/is', $rule, $_match)){
 							return $urlArray[$url];

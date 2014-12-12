@@ -1,6 +1,5 @@
 <?php
 namespace framework\base;
-//模板引擎
 class Template {
 	protected $config =array();
 	protected $vars = array();
