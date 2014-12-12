@@ -16,11 +16,11 @@ return array (
 		'default' => 
 			array (
 				'DB_TYPE' => 'mysqlpdo',
-				'DB_HOST' => '172.16.54.50',
-				'DB_USER' => 'dddw',
-				'DB_PWD' => 'dddw',
-				'DB_PORT' => '6306',
-				'DB_NAME' => 'dddw',
+				'DB_HOST' => 'localhost',
+				'DB_USER' => 'root',
+				'DB_PWD' => 'asdfgh',
+				'DB_PORT' => '3306',
+				'DB_NAME' => 'cp',
 				'DB_CHARSET' => 'utf8',
 				'DB_PREFIX' => '',
 			),
