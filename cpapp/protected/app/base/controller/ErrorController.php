@@ -14,7 +14,6 @@ class ErrorController extends BaseController{
 			$this->errorCode = $e->getCode();
 			$this->errorFile = $e->getFile();
 			$this->errorLine = $e->getLine();
-			$this->errorLevel = $this->_level($this->errorCode);
 			$this->trace = $e->getTrace();		
 		}
 				
@@ -27,27 +26,5 @@ class ErrorController extends BaseController{
 			$tpl = 'error_development';
 		}
 		$this->display('app/base/view/'.$tpl);
-	}
-		
-	//处理信息处理
-	protected function _level($errorCode) {
-		$LevelArr = array(	
-			1=> '致命错误(E_ERROR)',
-			2 => '警告(E_WARNING)',
-			4 => '语法解析错误(E_PARSE)',  
-			8 => '提示(E_NOTICE)',  
-			16 => 'E_CORE_ERROR',  
-			32 => 'E_CORE_WARNING',  
-			64 => '编译错误(E_COMPILE_ERROR)', 
-			128 => '编译警告(E_COMPILE_WARNING)',  
-			256 => '致命错误(E_USER_ERROR)',  
-			512 => '警告(E_USER_WARNING)', 
-			1024 => '提示(E_USER_NOTICE)',  
-			2047 => 'E_ALL', 
-			2048 => 'E_STRICT',
-			404  =>  '404错误',
-			500  =>  '异常错误',
-		);
-		return isset( $LevelArr[$errorCode] ) ? $LevelArr[$errorCode]  : $errorCode;
-	}
+	}	
 }
