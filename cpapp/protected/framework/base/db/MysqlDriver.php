@@ -28,7 +28,7 @@ class MysqlDriver implements DbInterface{
 			}
 			return $data;
 		}
-		throw new Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. mysql_error(), 500);
+		throw new \Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. mysql_error(), 500);
 	}
 	
 	public function execute($sql, array $params){
@@ -37,7 +37,7 @@ class MysqlDriver implements DbInterface{
 		if($query){
 			return mysql_affected_rows( $this->_getWriteLink() );
 		}
-		throw new Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. mysql_error(), 500);
+		throw new \Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. mysql_error(), 500);
 	}
 	
 	public function insert($table, array $data){
@@ -145,7 +145,7 @@ class MysqlDriver implements DbInterface{
 		}
 		
 		if(!$link){
-			throw new Exception('connect database error :'.mysql_error(), 500);
+			throw new \Exception('connect database error :'.mysql_error(), 500);
 		}
 
 		$version = mysql_get_server_info($link);

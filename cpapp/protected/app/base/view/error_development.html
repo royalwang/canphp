@@ -22,7 +22,6 @@
 		<div class="error_box">出错信息：{$errorMessage}</div>
 		<div class="error_box">出错文件：{$errorFile}</div>
 		<div class="error_box">错误行：{$errorLine}</div>
-		<div class="error_box">错误级别：{$errorLevel}</div>
 		<div class="error_box">Trace信息：<br>
 		{foreach $trace as $k=>$v}
 			#{$k} {$v['file']}({$v['line']}) {$v['class']}{$v['type']}{$v['function']}() <br>

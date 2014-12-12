@@ -22,14 +22,14 @@ class MysqlPdoDriver implements DbInterface {
 		$sth = $this->_bindParams( $sql, $params, $this->_getReadLink());
 		if( $sth->execute() ) return $sth->fetchAll(PDO::FETCH_ASSOC);
 		$err = $sth->errorInfo();
-		throw new Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. $err[2], 500);
+		throw new \Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. $err[2], 500);
 	}
 	
 	public function execute($sql, array $params){
 		$sth = $this->_bindParams( $sql, $params, $this->_getWriteLink() );
 		if( $sth->execute() ) return $sth->rowCount();
 		$err = $sth->errorInfo();
-		throw new Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. $err[2], 500);
+		throw new \Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. $err[2], 500);
 	}
 	
 	public function insert($table, array $data){
@@ -147,7 +147,7 @@ class MysqlPdoDriver implements DbInterface {
 		}
 		
 		if(!$pdo){
-			throw new Exception('connect database error :'.$error, 500);
+			throw new \Exception('connect database error :'.$error, 500);
 		}
 		$pdo->exec("set names {$db['DB_CHARSET']}");
 		return $pdo;

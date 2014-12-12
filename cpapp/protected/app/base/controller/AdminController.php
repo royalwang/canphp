@@ -14,7 +14,7 @@ class AdminController extends BaseController{
 	protected function checkLogin(){
 		//不需要登录验证的页面
 		$noLogin = array(
-						'index'=>array('login','verify'),
+						'default'=>array('login','verify'),
 				);
 		
 		//如果当前访问是无需登录验证，则直接返回		
@@ -24,7 +24,7 @@ class AdminController extends BaseController{
 		
 		//没有登录,则跳转到登录页面
 		if( !$this->isLogin() ){
-			$this->redirect( url('admin/index/login') );
+			$this->redirect( url('admin/default/login') );
 		}
 		return true;
 	}

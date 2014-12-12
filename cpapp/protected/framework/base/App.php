@@ -40,15 +40,15 @@ class App{
 			$action = ACTION_NAME;
 
 			if( !class_exists($controller) ) {
-				throw new Exception("Controller '{$controller}' not found", 404);
+				throw new \Exception("Controller '{$controller}' not found", 404);
 			}
 			$obj = new $controller();
 			if( !method_exists($obj, $action) ){
-				throw new Exception("Action '{$controller}::{$action}()' not found", 404);
+				throw new \Exception("Action '{$controller}::{$action}()' not found", 404);
 			}
 			$obj ->$action();
 			
-		} catch( Exception $e ){
+		} catch( \Exception $e ){
 			if( 404 == $e->getCode() ){
 				$action = 'error404';
 			}else{

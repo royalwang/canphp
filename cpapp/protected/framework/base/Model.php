@@ -17,30 +17,7 @@ class Model{
 		}
 		$this->table = $this->table($this->table);
     }
-	
-	public function getDb() {
-		if( empty(self::$objArr[$this->database]) ){
-			$dbDriver = __NAMESPACE__.'\db\\' . ucfirst( $this->config['DB_TYPE'] ).'Driver';
-			self::$objArr[$this->database] = new $dbDriver( $this->config );
-		}
-		return self::$objArr[$this->database];
-	}
-	
-	public function table($table, $ignorePre = false) {
-		$this->table = $ignorePre ? $table : $this->config['DB_PREFIX'] . $table;
-		return $this;
-	}
-	
-    public function __call($method, $args) {
-		$method = strtolower($method);
-        if ( in_array($method, array('field','data','where','order','limit')) ) {
-            $this->options[$method] = $args[0];
-			return $this;
-        } else{
-			throw new Exception("Method 'Model::{$method}()' not found", 500);
-		}
-    }
-	
+			
     public function query($sql, $params = array()) {
         $sql = trim($sql);
 		if ( empty($sql) ) return array();
@@ -79,7 +56,7 @@ class Model{
      }
 	
     public function insert() {
-		if( empty($this->options['data']) || !is_array($this->options['data']) ) 
+		if( empty($this->options['data']) || !is_array($this->options['data']) ){ 
 			return false;
 		}		
 		$data = $this->options['data'];
@@ -140,6 +117,36 @@ class Model{
 	public function rollBack() {
         return $this->getDb()->rollBack();
     }
+
+	public function table($table, $ignorePre = false) {
+		$this->table = $ignorePre ? $table : $this->config['DB_PREFIX'] . $table;
+		return $this;
+	}
+
+	public function field($field) {
+		$this->options['field'] = $field;
+		return $this;
+	}
+
+	public function data(array $data) {
+		$this->options['data'] = $data;
+		return $this;
+	}
+
+	public function where(array $where) {
+		$this->options['where'] = $where;
+		return $this;
+	}	
+
+	public function order($order) {
+		$this->options['order'] = $order;
+		return $this;
+	}
+
+	public function limit($limit) {
+		$this->options['limit'] = $limit;
+		return $this;
+	}	
 	
 	public function cache($expire = 1800){
 		$cache = new Cache($this->config['DB_CACHE']);
@@ -152,4 +159,12 @@ class Model{
 		$cache = new Cache($this->config['DB_CACHE']);
 		return $cache->clear();
     }
+	
+	protected function getDb() {
+		if( empty(self::$objArr[$this->database]) ){
+			$dbDriver = __NAMESPACE__.'\db\\' . ucfirst( $this->config['DB_TYPE'] ).'Driver';
+			self::$objArr[$this->database] = new $dbDriver( $this->config );
+		}
+		return self::$objArr[$this->database];
+	}	
 }

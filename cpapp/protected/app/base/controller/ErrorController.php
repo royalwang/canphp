@@ -3,6 +3,8 @@ namespace app\base\controller;
 class ErrorController extends BaseController{
 	
 	public function error404($e=null){
+		header('HTTP/1.1 404 Not Found'); 
+		header("status: 404 Not Found");
 		$this->error($e);
 	}
 	
