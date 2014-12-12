@@ -36,6 +36,7 @@ function model($model, $app='', $forceInstance=false){
 }
 
 spl_autoload_register(function($class){
+	static $fileList = array();
 	$prefixes =array(
 		'framework' => realpath(__DIR__.'/../').DIRECTORY_SEPARATOR,
 		'app' => BASE_PATH,
@@ -50,12 +51,21 @@ spl_autoload_register(function($class){
 			if (0 !== strpos($namespace, $prefix)){
 				continue;
 			}
+			
+			//file path case-insensitive
+			$fileDIR = $baseDir.str_replace('\\', DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR;
+			if( !isset($fileList[$fileDIR]) ){
+				$fileList[$fileDIR] = array();
+				foreach(glob($fileDIR.'*.php') as $file){
+					$fileList[$fileDIR][] = $file;
+				}
+			}
+			
 			$fileBase = $baseDir.str_replace('\\', DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR.$className;
-			foreach(array('.php', '.class.php') as $suffix){
-				$file  =$fileBase.$suffix;
-				if( file_exists($file) ) {
+			foreach($fileList[$fileDIR] as $file){
+				if( false!==stripos($file, $fileBase) ){
 					require $file;
-					return true;
+					return true;				
 				}
 			}							
 		}           
